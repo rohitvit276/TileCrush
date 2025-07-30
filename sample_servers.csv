@@ -1,0 +1,8 @@
+hostname,environment,purpose
+server1.example.com,production,web
+server2.example.com,production,web
+db01.company.local,production,database
+app01.company.local,staging,application
+mail.company.com,production,email
+dns1.company.com,production,dns
+dns2.company.com,production,dns

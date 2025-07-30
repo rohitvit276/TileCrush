@@ -97,3 +97,4 @@
       }
     dest: /etc/logrotate.d/ansible-splunk-deployment
     mode: '0644'
+ 
