@@ -1,0 +1,51 @@
+---
+# Main playbook for Splunk Enterprise Deployment Server setup
+- name: Deploy Splunk Enterprise Deployment Server
+  hosts: splunk_deployment_servers
+  become: yes
+  gather_facts: yes
+  serial: 1
+  
+  pre_tasks:
+    - name: Validate required variables
+      assert:
+        that:
+          - splunk_admin_password is defined
+          - splunk_deployment_server_pass4symmkey is defined
+          - github_token is defined
+        fail_msg: "Required variables are not defined. Check your inventory."
+        
+    - name: Check system requirements
+      assert:
+        that:
+          - ansible_memtotal_mb >= 2048
+          - ansible_processor_vcpus >= 2
+        fail_msg: "System does not meet minimum requirements (2GB RAM, 2 CPUs)"
+
+  roles:
+    - common
+    - splunk_enterprise
+    - backup_restoration
+    - github_integration
+    
+  post_tasks:
+    - name: Validate Splunk deployment server status
+      uri:
+        url: "https://{{ ansible_default_ipv4.address }}:8089/services/server/info"
+        user: admin
+        password: "{{ splunk_admin_password }}"
+        method: GET
+        validate_certs: no
+        status_code: 200
+      register: splunk_status
+      retries: 5
+      delay: 30
+      
+    - name: Display deployment summary
+      debug:
+        msg: |
+          Splunk Enterprise Deployment Server has been successfully configured:
+          - Version: {{ splunk_status.json.entry[0].content.version }}
+          - Server Role: {{ splunk_status.json.entry[0].content.server_roles }}
+          - Management Port: 8089
+          - Web Interface: https://{{ ansible_default_ipv4.address }}:8000

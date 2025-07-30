@@ -1,0 +1,19 @@
+---
+# Default variables for Splunk Enterprise role
+splunk_version: "9.1.0"
+splunk_build: "1c86ca0bacc3"
+splunk_home: "/opt/splunk"
+splunk_user: "splunk"
+splunk_group: "splunk"
+splunk_web_port: 8000
+splunk_mgmt_port: 8089
+splunk_deployment_server_port: 8089
+splunk_ssl_enabled: true
+splunk_log_level: "INFO"
+
+# Service configuration
+splunk_service_enabled: true
+splunk_service_state: started
+
+# Default admin password (should be overridden)
+splunk_admin_password: "changeme123!"

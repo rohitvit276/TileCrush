@@ -1,0 +1,23 @@
+---
+# Production specific variables
+splunk_instance_name: "splunk-ds-prod"
+splunk_server_name: "Production Deployment Server"
+
+# License Configuration
+splunk_license_file: "/opt/splunk/etc/licenses/enterprise.lic"
+
+# Index Configuration
+splunk_indexes:
+  - name: "main"
+    max_data_size: "10GB"
+    max_hot_buckets: 10
+  - name: "security"
+    max_data_size: "5GB"
+    max_hot_buckets: 5
+  - name: "application"
+    max_data_size: "15GB"
+    max_hot_buckets: 15
+
+# Monitoring
+monitoring_enabled: true
+monitoring_interval: 300

@@ -1,0 +1,12 @@
+---
+# Common handlers
+
+- name: restart firewalld
+  systemd:
+    name: firewalld
+    state: restarted
+  listen: "restart firewall"
+
+- name: reload sysctl
+  command: sysctl -p
+  listen: "reload sysctl"

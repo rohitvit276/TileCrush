@@ -1,0 +1,37 @@
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-25_05"
+packages = ["glibcLocales", "libyaml"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Ansible Splunk Automation"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "ansible_splunk_test"
+
+[[workflows.workflow]]
+name = "Ansible Splunk Automation"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pip install ansible ansible-core && ansible-playbook --version && echo \"Ansible installation complete. Ready to run Splunk deployment automation.\" && echo \"Available playbooks:\" && ls -la playbooks/ && echo \"Main site.yml playbook ready for execution\""
+
+[[workflows.workflow]]
+name = "ansible_splunk_test"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "ansible-playbook --version && ansible-playbook --check --diff site.yml -i inventory/production --extra-vars \"splunk_admin_password=testpass123 splunk_deployment_server_pass4symmkey=testkey123 github_token=dummy_token backup_source_url=https://example.com/backup.tar.gz github_repo_url=https://github.com/example/splunk-config.git\" --limit localhost"

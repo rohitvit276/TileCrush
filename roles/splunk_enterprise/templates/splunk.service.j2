@@ -1,0 +1,20 @@
+[Unit]
+Description=Splunk Enterprise
+After=network.target
+
+[Service]
+Type=forking
+User={{ splunk_user }}
+Group={{ splunk_group }}
+ExecStart={{ splunk_home }}/bin/splunk start --no-prompt --answer-yes
+ExecStop={{ splunk_home }}/bin/splunk stop
+ExecReload={{ splunk_home }}/bin/splunk reload
+TimeoutStartSec=300
+TimeoutStopSec=300
+KillMode=mixed
+KillSignal=SIGINT
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

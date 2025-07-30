@@ -1,0 +1,114 @@
+---
+# Backup Restoration Tasks
+
+- name: Check if backup restoration is enabled
+  debug:
+    msg: "Backup restoration is {{ 'enabled' if restore_from_backup else 'disabled' }}"
+
+- name: Create backup directory structure
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+    mode: '0755'
+  loop:
+    - "{{ backup_location }}"
+    - "{{ backup_location }}/configs"
+    - "{{ backup_location }}/apps"
+    - "{{ backup_location }}/licenses"
+
+- name: Download backup from remote source
+  get_url:
+    url: "{{ backup_source_url }}"
+    dest: "{{ backup_location }}/splunk_backup.tar.gz"
+    mode: '0644'
+    timeout: 300
+  when: 
+    - restore_from_backup
+    - backup_source_url is defined
+    - backup_source_url != ""
+  register: backup_download
+
+- name: Extract backup archive
+  unarchive:
+    src: "{{ backup_location }}/splunk_backup.tar.gz"
+    dest: "{{ backup_location }}"
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+    remote_src: yes
+  when: backup_download is changed
+
+- name: Check for existing backup files
+  find:
+    paths: "{{ backup_location }}"
+    patterns: "*.conf"
+    recurse: yes
+  register: backup_configs
+
+- name: Restore configuration files
+  copy:
+    src: "{{ item.path }}"
+    dest: "{{ splunk_home }}/etc/system/local/{{ item.path | basename }}"
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+    mode: '0644'
+    backup: yes
+  loop: "{{ backup_configs.files }}"
+  when: 
+    - restore_from_backup
+    - backup_configs.matched > 0
+  notify: restart splunk
+
+- name: Find backup apps
+  find:
+    paths: "{{ backup_location }}/apps"
+    file_type: directory
+  register: backup_apps
+  when: restore_from_backup
+
+- name: Restore deployment apps
+  synchronize:
+    src: "{{ item.path }}/"
+    dest: "{{ splunk_home }}/etc/deployment-apps/{{ item.path | basename }}/"
+    delete: no
+    recursive: yes
+  delegate_to: "{{ inventory_hostname }}"
+  loop: "{{ backup_apps.files }}"
+  when: 
+    - restore_from_backup
+    - backup_apps.matched is defined
+    - backup_apps.matched > 0
+  notify: reload deployment server
+
+- name: Restore license files
+  copy:
+    src: "{{ backup_location }}/licenses/"
+    dest: "{{ splunk_home }}/etc/licenses/"
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+    mode: '0644'
+  when: restore_from_backup
+
+- name: Set proper permissions on restored files
+  file:
+    path: "{{ splunk_home }}"
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+    recurse: yes
+  when: restore_from_backup
+
+- name: Create backup script for future use
+  template:
+    src: backup_script.sh.j2
+    dest: "{{ backup_location }}/backup_splunk.sh"
+    mode: '0755'
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+
+- name: Log backup restoration status
+  lineinfile:
+    path: "{{ deployment_log_file }}"
+    line: "{{ ansible_date_time.iso8601 }} - Backup restoration {{ 'completed' if restore_from_backup else 'skipped' }} on {{ inventory_hostname }}"
+    create: yes
+    mode: '0644'

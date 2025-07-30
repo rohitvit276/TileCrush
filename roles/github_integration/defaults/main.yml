@@ -1,0 +1,7 @@
+---
+# Default variables for GitHub integration
+github_sync_enabled: true
+github_branch: "main"
+github_config_path: "splunk/deployment-server"
+github_sync_interval: "*/30"  # Every 30 minutes
+github_backup_before_sync: true

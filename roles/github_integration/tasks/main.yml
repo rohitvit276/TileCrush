@@ -1,0 +1,114 @@
+---
+# GitHub Integration Tasks
+
+- name: Install git
+  package:
+    name: git
+    state: present
+
+- name: Create GitHub configuration directory
+  file:
+    path: "{{ splunk_home }}/etc/github"
+    state: directory
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+    mode: '0755'
+
+- name: Configure git credentials
+  git_config:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    scope: global
+  become_user: "{{ splunk_user }}"
+  loop:
+    - { name: "user.name", value: "Ansible Automation" }
+    - { name: "user.email", value: "ansible@company.com" }
+    - { name: "credential.helper", value: "store" }
+  no_log: true
+
+- name: Create git credentials file
+  copy:
+    content: |
+      https://{{ github_token }}:x-oauth-basic@github.com
+    dest: "{{ splunk_home }}/.git-credentials"
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+    mode: '0600'
+  become_user: "{{ splunk_user }}"
+  no_log: true
+
+- name: Clone or update GitHub repository
+  git:
+    repo: "{{ github_repo_url }}"
+    dest: "{{ splunk_home }}/etc/github/config-repo"
+    version: "{{ github_branch }}"
+    force: yes
+  become_user: "{{ splunk_user }}"
+  register: git_clone
+
+- name: Find configuration files in GitHub repo
+  find:
+    paths: "{{ splunk_home }}/etc/github/config-repo/{{ github_config_path }}"
+    patterns: "*.conf"
+    recurse: yes
+  register: github_configs
+
+- name: Deploy configuration files from GitHub
+  copy:
+    src: "{{ item.path }}"
+    dest: "{{ splunk_home }}/etc/system/local/{{ item.path | basename }}"
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+    mode: '0644'
+    backup: yes
+  loop: "{{ github_configs.files }}"
+  when: github_configs.matched > 0
+  notify: restart splunk
+
+- name: Find deployment apps in GitHub repo
+  find:
+    paths: "{{ splunk_home }}/etc/github/config-repo/{{ github_config_path }}/apps"
+    file_type: directory
+  register: github_apps
+  ignore_errors: yes
+
+- name: Deploy apps from GitHub to deployment-apps
+  synchronize:
+    src: "{{ item.path }}/"
+    dest: "{{ splunk_home }}/etc/deployment-apps/{{ item.path | basename }}/"
+    delete: no
+    recursive: yes
+  delegate_to: "{{ inventory_hostname }}"
+  loop: "{{ github_apps.files }}"
+  when: 
+    - github_apps.matched is defined
+    - github_apps.matched > 0
+  notify: reload deployment server
+
+- name: Create GitHub sync script
+  template:
+    src: github_sync.sh.j2
+    dest: "{{ splunk_home }}/bin/github_sync.sh"
+    mode: '0755'
+    owner: "{{ splunk_user }}"
+    group: "{{ splunk_group }}"
+
+- name: Create cron job for GitHub sync
+  cron:
+    name: "Sync Splunk configs from GitHub"
+    minute: "*/30"
+    job: "{{ splunk_home }}/bin/github_sync.sh >> /var/log/github-sync.log 2>&1"
+    user: "{{ splunk_user }}"
+    state: present
+
+- name: Validate GitHub integration
+  stat:
+    path: "{{ splunk_home }}/etc/github/config-repo/.git"
+  register: git_validation
+
+- name: Log GitHub integration status
+  lineinfile:
+    path: "{{ deployment_log_file }}"
+    line: "{{ ansible_date_time.iso8601 }} - GitHub integration {{ 'successful' if git_validation.stat.exists else 'failed' }} on {{ inventory_hostname }}"
+    create: yes
+    mode: '0644'
