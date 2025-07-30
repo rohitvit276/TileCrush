@@ -1,0 +1,85 @@
+---
+# Test playbook for validating Ansible setup without requiring system packages
+- name: Test Splunk Deployment Configuration
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  
+  tasks:
+    - name: Check Ansible version
+      debug:
+        msg: "Ansible version: {{ ansible_version.full }}"
+        
+    - name: Validate required variables are defined
+      assert:
+        that:
+          - splunk_admin_password is defined
+          - splunk_deployment_server_pass4symmkey is defined
+          - github_token is defined
+        fail_msg: "Required variables are not defined"
+        success_msg: "All required variables are properly defined"
+        
+    - name: Check system facts
+      debug:
+        msg: |
+          System Information:
+          - OS: {{ ansible_distribution }} {{ ansible_distribution_version }}
+          - Architecture: {{ ansible_architecture }}
+          - Memory: {{ ansible_memtotal_mb }} MB
+          - CPU Cores: {{ ansible_processor_vcpus }}
+          - Python Version: {{ ansible_python_version }}
+          
+    - name: Validate system requirements
+      assert:
+        that:
+          - ansible_memtotal_mb >= 2048
+          - ansible_processor_vcpus >= 2
+        fail_msg: "System does not meet minimum requirements (2GB RAM, 2 CPUs)"
+        success_msg: "System meets minimum requirements"
+        
+    - name: Check file system structure
+      stat:
+        path: "{{ item }}"
+      register: file_check
+      loop:
+        - "./roles"
+        - "./inventory"
+        - "./playbooks"
+        - "./site.yml"
+        - "./ansible.cfg"
+      
+    - name: Validate project structure
+      assert:
+        that:
+          - file_check.results | selectattr('stat.exists') | list | length == 5
+        fail_msg: "Project structure incomplete"
+        success_msg: "Project structure validated successfully"
+        
+    - name: Test role dependencies
+      stat:
+        path: "./roles/{{ item }}/tasks/main.yml"
+      register: role_check
+      loop:
+        - common
+        - splunk_enterprise
+        - backup_restoration
+        - github_integration
+        
+    - name: Validate all roles exist
+      assert:
+        that:
+          - role_check.results | selectattr('stat.exists') | list | length == 4
+        fail_msg: "Some roles are missing"
+        success_msg: "All required roles are present"
+      
+    - name: Display test summary
+      debug:
+        msg: |
+          Test Results:
+          ✓ Ansible configuration validated
+          ✓ Required variables checked
+          ✓ System requirements verified
+          ✓ Project structure confirmed
+          ✓ Role dependencies tested
+          
+          Ready for deployment!

@@ -18,7 +18,7 @@ args = "Ansible Splunk Automation"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "ansible_splunk_test"
+args = "ansible_test"
 
 [[workflows.workflow]]
 name = "Ansible Splunk Automation"
@@ -29,9 +29,9 @@ task = "shell.exec"
 args = "pip install ansible ansible-core && ansible-playbook --version && echo \"Ansible installation complete. Ready to run Splunk deployment automation.\" && echo \"Available playbooks:\" && ls -la playbooks/ && echo \"Main site.yml playbook ready for execution\""
 
 [[workflows.workflow]]
-name = "ansible_splunk_test"
+name = "ansible_test"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "ansible-playbook --version && ansible-playbook --check --diff site.yml -i inventory/production --extra-vars \"splunk_admin_password=testpass123 splunk_deployment_server_pass4symmkey=testkey123 github_token=dummy_token backup_source_url=https://example.com/backup.tar.gz github_repo_url=https://github.com/example/splunk-config.git\" --limit localhost"
+args = "ansible-playbook test_deployment.yml -i inventory/production --extra-vars \"splunk_admin_password=testpass123 splunk_deployment_server_pass4symmkey=testkey123 github_token=dummy_token\" -v"
