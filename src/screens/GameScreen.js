@@ -63,30 +63,96 @@ export default function GameScreen() {
     }
   };
 
-  const playSuccessSound = async () => {
+  const playSuccessSound = async (matchSize = 3) => {
     try {
-      // Generate a success tone using Web Audio API for web
       if (typeof window !== 'undefined' && window.AudioContext) {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
         
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-        
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-        
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.3);
+        if (matchSize >= 5) {
+          // Play cheering sound for 5+ matches
+          await playCheeringSound(audioContext);
+        } else if (matchSize >= 4) {
+          // Play clapping sound for 4+ matches
+          await playClappingSound(audioContext);
+        } else {
+          // Regular success sound for 3 matches
+          await playBasicSuccessSound(audioContext);
+        }
       }
     } catch (error) {
       console.log('Error playing success sound:', error);
     }
+  };
+
+  const playBasicSuccessSound = async (audioContext) => {
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+  };
+
+  const playClappingSound = async (audioContext) => {
+    // Create clapping rhythm with multiple short bursts
+    const times = [0, 0.15, 0.3, 0.45];
+    
+    times.forEach((time, index) => {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Higher pitched rapid bursts for clapping effect
+      oscillator.frequency.setValueAtTime(800 + (index * 50), audioContext.currentTime + time);
+      oscillator.type = 'sawtooth';
+      
+      gainNode.gain.setValueAtTime(0.4, audioContext.currentTime + time);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + time + 0.1);
+      
+      oscillator.start(audioContext.currentTime + time);
+      oscillator.stop(audioContext.currentTime + time + 0.1);
+    });
+  };
+
+  const playCheeringSound = async (audioContext) => {
+    // Create cheering crowd effect with multiple overlapping tones
+    const cheerTones = [
+      { freq: 300, delay: 0 },
+      { freq: 450, delay: 0.1 },
+      { freq: 600, delay: 0.2 },
+      { freq: 750, delay: 0.05 },
+      { freq: 900, delay: 0.15 },
+    ];
+    
+    cheerTones.forEach(({ freq, delay }) => {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + delay);
+      oscillator.frequency.setValueAtTime(freq * 1.2, audioContext.currentTime + delay + 0.3);
+      oscillator.type = 'triangle';
+      
+      gainNode.gain.setValueAtTime(0.2, audioContext.currentTime + delay);
+      gainNode.gain.setValueAtTime(0.4, audioContext.currentTime + delay + 0.2);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + delay + 0.8);
+      
+      oscillator.start(audioContext.currentTime + delay);
+      oscillator.stop(audioContext.currentTime + delay + 0.8);
+    });
   };
 
   const playErrorSound = async () => {
@@ -527,8 +593,8 @@ export default function GameScreen() {
 
     if (matches.length > 0) {
       removeMatches(currentGrid, matches);
-      // Play success sound for successful match
-      playSuccessSound();
+      // Play success sound based on match size
+      playSuccessSound(matches.length);
     } else {
       // No new matches found, check game state
       checkGameState(currentGrid);
