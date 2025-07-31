@@ -349,18 +349,66 @@ export default function GameScreen() {
   };
 
   const wouldCreateInitialMatch = (grid, row, col, rockType) => {
-    // Check horizontal match (left) - ensure we have enough filled positions
-    if (col >= 2 && 
-        grid[row] && grid[row].length > col - 1 && grid[row][col - 1] && grid[row][col - 1].type === rockType &&
-        grid[row] && grid[row].length > col - 2 && grid[row][col - 2] && grid[row][col - 2].type === rockType) {
-      return true;
+    // Check horizontal matches - left side (3+ in a row)
+    if (col >= 2) {
+      let count = 1; // Count the current position
+      
+      // Count backwards
+      for (let c = col - 1; c >= 0; c--) {
+        if (grid[row] && grid[row][c] && grid[row][c].type === rockType) {
+          count++;
+        } else {
+          break;
+        }
+      }
+      
+      if (count >= 3) return true;
     }
     
-    // Check vertical match (up) - ensure we have enough filled rows
-    if (row >= 2 && 
-        grid.length > row - 1 && grid[row - 1] && grid[row - 1][col] && grid[row - 1][col].type === rockType &&
-        grid.length > row - 2 && grid[row - 2] && grid[row - 2][col] && grid[row - 2][col].type === rockType) {
-      return true;
+    // Check horizontal matches - creating match in middle
+    if (col >= 1 && col < GRID_SIZE - 1) {
+      let leftMatch = false;
+      let rightMatch = false;
+      
+      if (grid[row] && grid[row][col - 1] && grid[row][col - 1].type === rockType) {
+        leftMatch = true;
+      }
+      
+      // Check if there will be a rock to the right (not placed yet, but would be same type)
+      // We don't check this since we're filling left to right, top to bottom
+      
+      if (leftMatch && col >= 2 && grid[row] && grid[row][col - 2] && grid[row][col - 2].type === rockType) {
+        return true; // Would create XXX pattern
+      }
+    }
+    
+    // Check vertical matches - up side (3+ in a column)
+    if (row >= 2) {
+      let count = 1; // Count the current position
+      
+      // Count upwards
+      for (let r = row - 1; r >= 0; r--) {
+        if (grid[r] && grid[r][col] && grid[r][col].type === rockType) {
+          count++;
+        } else {
+          break;
+        }
+      }
+      
+      if (count >= 3) return true;
+    }
+    
+    // Check vertical matches - creating match in middle
+    if (row >= 1 && row < GRID_SIZE - 1) {
+      let topMatch = false;
+      
+      if (grid[row - 1] && grid[row - 1][col] && grid[row - 1][col].type === rockType) {
+        topMatch = true;
+      }
+      
+      if (topMatch && row >= 2 && grid[row - 2] && grid[row - 2][col] && grid[row - 2][col].type === rockType) {
+        return true; // Would create XXX pattern vertically
+      }
     }
     
     return false;
