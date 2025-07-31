@@ -1,8 +1,8 @@
-# Splunk Enterprise Deployment Server Ansible Automation
+# Music Mood Mapper Android Application
 
 ## Overview
 
-This repository contains Ansible automation for deploying and configuring Splunk Enterprise as a deployment server. The system provides complete installation, configuration management, backup restoration, and GitHub integration capabilities with Ansible Tower compatibility.
+This repository contains a complete Android application for the Play Store that detects user mood through selfies and audio, then recommends music from Spotify/YouTube based on the detected mood. The app includes comprehensive mood tracking and music history features.
 
 ## User Preferences
 
@@ -24,7 +24,7 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-### July 30, 2025 - Complete Ansible Automation Implementation & Debugging
+### July 31, 2025 - Music Mood Mapper Android App Development
 - ✓ Created comprehensive Ansible automation for Splunk Enterprise deployment server
 - ✓ Implemented modular role-based architecture with 4 core roles:
   - common: Base system configuration and requirements

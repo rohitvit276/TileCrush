@@ -1,0 +1,71 @@
+{
+  "expo": {
+    "name": "Music Mood Mapper",
+    "slug": "music-mood-mapper",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6366f1"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.musicmoodmapper.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to detect your mood from selfies.",
+        "NSMicrophoneUsageDescription": "This app uses the microphone to detect your mood from voice tone.",
+        "NSPhotoLibraryUsageDescription": "This app saves mood photos to your library for history tracking."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#6366f1"
+      },
+      "package": "com.musicmoodmapper.app",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Music Mood Mapper to access your camera to detect mood from selfies."
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow Music Mood Mapper to access your microphone to detect mood from voice."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow Music Mood Mapper to save mood photos to your gallery.",
+          "savePhotosPermission": "Allow Music Mood Mapper to save mood detection photos."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "music-mood-mapper-2025"
+      }
+    }
+  }
+}
