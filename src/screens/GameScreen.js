@@ -37,6 +37,9 @@ export default function GameScreen() {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showGameControls, setShowGameControls] = useState(false);
   const [sounds, setSounds] = useState({});
+  const [hintAvailable, setHintAvailable] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [hintPattern, setHintPattern] = useState(null);
 
   useEffect(() => {
     loadHighScore();
@@ -111,6 +114,87 @@ export default function GameScreen() {
     }
   };
 
+  // Check if there are any possible moves
+  const checkPossibleMoves = (gridToCheck) => {
+    const possibleMoves = [];
+    
+    for (let row = 0; row < GRID_SIZE; row++) {
+      for (let col = 0; col < GRID_SIZE; col++) {
+        // Check right swap
+        if (col < GRID_SIZE - 1) {
+          const testGrid = gridToCheck.map(r => [...r]);
+          [testGrid[row][col], testGrid[row][col + 1]] = [testGrid[row][col + 1], testGrid[row][col]];
+          const matches = findMatches(testGrid);
+          if (matches.length > 0) {
+            possibleMoves.push({
+              from: { row, col },
+              to: { row, col: col + 1 },
+              matches: matches
+            });
+          }
+        }
+        
+        // Check down swap
+        if (row < GRID_SIZE - 1) {
+          const testGrid = gridToCheck.map(r => [...r]);
+          [testGrid[row][col], testGrid[row + 1][col]] = [testGrid[row + 1][col], testGrid[row][col]];
+          const matches = findMatches(testGrid);
+          if (matches.length > 0) {
+            possibleMoves.push({
+              from: { row, col },
+              to: { row: row + 1, col },
+              matches: matches
+            });
+          }
+        }
+      }
+    }
+    
+    return possibleMoves;
+  };
+
+  // Check game state and provide hints or end game
+  const checkGameState = (currentGrid) => {
+    const possibleMoves = checkPossibleMoves(currentGrid);
+    
+    if (possibleMoves.length === 0) {
+      // No moves possible - Game Over
+      setGameOver(true);
+      Alert.alert(
+        'Game Over',
+        'No more matches possible!\nFinal Score: ' + score,
+        [{ text: 'Play Again', onPress: () => resetGame() }]
+      );
+    } else if (possibleMoves.length === 1) {
+      // Only one move possible - Show hint option
+      setHintAvailable(true);
+      setHintPattern(possibleMoves[0]);
+    } else {
+      // Multiple moves possible
+      setHintAvailable(false);
+      setHintPattern(null);
+      setShowHint(false);
+    }
+  };
+
+  const showHintToPlayer = () => {
+    if (hintPattern) {
+      setShowHint(true);
+      // Auto-hide hint after 3 seconds
+      setTimeout(() => {
+        setShowHint(false);
+      }, 3000);
+    }
+  };
+
+  const isHintRock = (rock) => {
+    if (!hintPattern) return false;
+    return (
+      (rock.row === hintPattern.from.row && rock.col === hintPattern.from.col) ||
+      (rock.row === hintPattern.to.row && rock.col === hintPattern.to.col)
+    );
+  };
+
   useEffect(() => {
     if (moves === 0 && gameStarted) {
       endGame();
@@ -159,6 +243,9 @@ export default function GameScreen() {
     setGameStarted(false);
     setGameOver(false);
     setSelectedRock(null);
+    setHintAvailable(false);
+    setShowHint(false);
+    setHintPattern(null);
   };
 
   const handleRockPress = (rock) => {
@@ -258,6 +345,9 @@ export default function GameScreen() {
       removeMatches(currentGrid, matches);
       // Play success sound for successful match
       playSuccessSound();
+    } else {
+      // No new matches found, check game state
+      checkGameState(currentGrid);
     }
   };
 
@@ -318,6 +408,10 @@ export default function GameScreen() {
     // Check for new matches after dropping
     setTimeout(() => {
       checkForMatches(newGrid);
+      // Check game state after processing matches
+      setTimeout(() => {
+        checkGameState(newGrid);
+      }, 100);
     }, 300);
   };
 
@@ -365,6 +459,9 @@ export default function GameScreen() {
           disabled={gameOver}
         >
           <View style={styles.rockInner} />
+          {showHint && hintPattern && isHintRock(rock) && (
+            <View style={styles.hintHighlight} />
+          )}
         </TouchableOpacity>
       </Animated.View>
     );
@@ -426,14 +523,27 @@ export default function GameScreen() {
             <Text style={styles.movesText}>Moves: {moves}</Text>
           </View>
           
-          <TouchableOpacity 
-            style={styles.helpButton} 
-            onPress={() => setShowGameControls(!showGameControls)}
-          >
-            <Text style={styles.helpButtonText}>
-              {showGameControls ? 'Hide Help' : 'Show Help'}
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity 
+              style={styles.helpButton} 
+              onPress={() => setShowGameControls(!showGameControls)}
+            >
+              <Text style={styles.helpButtonText}>
+                {showGameControls ? 'Hide Help' : 'Show Help'}
+              </Text>
+            </TouchableOpacity>
+
+            {hintAvailable && (
+              <TouchableOpacity 
+                style={styles.hintButton} 
+                onPress={showHintToPlayer}
+              >
+                <Text style={styles.hintButtonText}>
+                  💡 Hint
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
 
           {showGameControls && (
             <View style={styles.gameControlsContainer}>
@@ -580,6 +690,35 @@ const styles = StyleSheet.create({
     color: '#fff',
     lineHeight: 18,
     textAlign: 'left',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 15,
+    marginTop: 10,
+  },
+  hintButton: {
+    backgroundColor: '#FF9800',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 15,
+  },
+  hintButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  hintHighlight: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 255, 0, 0.4)',
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#FFD700',
   },
   header: {
     marginBottom: 20,
