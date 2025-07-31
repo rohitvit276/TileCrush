@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Modal, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as InAppPurchases from 'expo-in-app-purchases';
+
+// Import in-app purchases only on native platforms
+let InAppPurchases = null;
+if (Platform.OS !== 'web') {
+  try {
+    InAppPurchases = require('expo-in-app-purchases');
+  } catch (error) {
+    console.log('In-app purchases not available in this environment');
+  }
+}
 
 export const MonetizationManager = ({ children }) => {
   const [isPremium, setIsPremium] = useState(false);
@@ -22,14 +31,18 @@ export const MonetizationManager = ({ children }) => {
       const premiumStatus = await AsyncStorage.getItem('isPremium');
       setIsPremium(premiumStatus === 'true');
 
-      // Initialize in-app purchases
-      await InAppPurchases.connectAsync();
-      
-      // Get available products
-      const { responseCode, results } = await InAppPurchases.getProductsAsync([PREMIUM_PRODUCT_ID]);
-      
-      if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-        console.log('Available products:', results);
+      // Initialize in-app purchases only on native platforms
+      if (InAppPurchases && Platform.OS !== 'web') {
+        await InAppPurchases.connectAsync();
+        
+        // Get available products
+        const { responseCode, results } = await InAppPurchases.getProductsAsync([PREMIUM_PRODUCT_ID]);
+        
+        if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+          console.log('Available products:', results);
+        }
+      } else {
+        console.log('Running in test mode - in-app purchases simulated');
       }
 
       setLoading(false);
@@ -43,6 +56,25 @@ export const MonetizationManager = ({ children }) => {
     try {
       setLoading(true);
       
+      // Test mode for web and development
+      if (!InAppPurchases || Platform.OS === 'web') {
+        // Simulate successful purchase for testing
+        setTimeout(() => {
+          setIsPremium(true);
+          AsyncStorage.setItem('isPremium', 'true');
+          setShowUpgradeModal(false);
+          setLoading(false);
+          
+          Alert.alert(
+            'Premium Activated! (Test Mode)',
+            'Thank you for upgrading to Rock Crush Premium! Enjoy ad-free gameplay, unlimited hints, and exclusive features.',
+            [{ text: 'Awesome!', style: 'default' }]
+          );
+        }, 1500);
+        return;
+      }
+      
+      // Real purchase flow for production
       const { responseCode, results } = await InAppPurchases.purchaseItemAsync(PREMIUM_PRODUCT_ID);
       
       if (responseCode === InAppPurchases.IAPResponseCode.OK) {
@@ -71,6 +103,20 @@ export const MonetizationManager = ({ children }) => {
     try {
       setLoading(true);
       
+      // Test mode for web and development
+      if (!InAppPurchases || Platform.OS === 'web') {
+        // Check if user has premium in local storage for testing
+        const premiumStatus = await AsyncStorage.getItem('isPremium');
+        if (premiumStatus === 'true') {
+          Alert.alert('Premium Restored (Test Mode)', 'Your premium subscription has been restored!');
+        } else {
+          Alert.alert('No Purchases Found (Test Mode)', 'No premium purchases found to restore.');
+        }
+        setLoading(false);
+        return;
+      }
+      
+      // Real restore flow for production
       const { responseCode, results } = await InAppPurchases.getPurchaseHistoryAsync();
       
       if (responseCode === InAppPurchases.IAPResponseCode.OK) {
