@@ -1,50 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { PaperProvider } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { StatusBar } from 'expo-status-bar';
+import { Ionicons } from '@expo/vector-icons';
+import { View, StyleSheet } from 'react-native';
 
 // Import screens
-import HomeScreen from './src/screens/HomeScreen';
-import MoodDetectionScreen from './src/screens/MoodDetectionScreen';
-import MusicRecommendationsScreen from './src/screens/MusicRecommendationsScreen';
-import MoodHistoryScreen from './src/screens/MoodHistoryScreen';
+import GameScreen from './src/screens/GameScreen';
+import MenuScreen from './src/screens/MenuScreen';
+import LeaderboardScreen from './src/screens/LeaderboardScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import StoreScreen from './src/screens/StoreScreen';
 
 // Import theme
-import { theme } from './src/theme/theme';
+import { gameTheme } from './src/theme/gameTheme';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider theme={gameTheme}>
       <NavigationContainer>
-        <StatusBar style="light" backgroundColor="#6366f1" />
+        <StatusBar style="light" backgroundColor="#1a1a2e" />
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
-              if (route.name === 'Home') {
+              if (route.name === 'Play') {
+                iconName = focused ? 'play-circle' : 'play-circle-outline';
+              } else if (route.name === 'Menu') {
                 iconName = focused ? 'home' : 'home-outline';
-              } else if (route.name === 'Detect Mood') {
-                iconName = focused ? 'camera' : 'camera-outline';
-              } else if (route.name === 'Music') {
-                iconName = focused ? 'musical-notes' : 'musical-notes-outline';
-              } else if (route.name === 'History') {
-                iconName = focused ? 'analytics' : 'analytics-outline';
+              } else if (route.name === 'Leaderboard') {
+                iconName = focused ? 'trophy' : 'trophy-outline';
+              } else if (route.name === 'Store') {
+                iconName = focused ? 'storefront' : 'storefront-outline';
               } else if (route.name === 'Settings') {
                 iconName = focused ? 'settings' : 'settings-outline';
               }
 
               return <Ionicons name={iconName} size={size} color={color} />;
             },
-            tabBarActiveTintColor: '#6366f1',
+            tabBarActiveTintColor: '#ff6b6b',
             tabBarInactiveTintColor: 'gray',
+            tabBarStyle: {
+              backgroundColor: '#1a1a2e',
+              borderTopColor: '#ff6b6b',
+              borderTopWidth: 1,
+            },
             headerStyle: {
-              backgroundColor: '#6366f1',
+              backgroundColor: '#1a1a2e',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -53,28 +59,28 @@ export default function App() {
           })}
         >
           <Tab.Screen 
-            name="Home" 
-            component={HomeScreen}
-            options={{ title: 'Music Mood Mapper' }}
+            name="Menu" 
+            component={MenuScreen} 
+            options={{ title: 'Temple Runner' }}
           />
           <Tab.Screen 
-            name="Detect Mood" 
-            component={MoodDetectionScreen}
-            options={{ title: 'Detect Your Mood' }}
+            name="Play" 
+            component={GameScreen} 
+            options={{ title: 'Play Game' }}
           />
           <Tab.Screen 
-            name="Music" 
-            component={MusicRecommendationsScreen}
-            options={{ title: 'Music for You' }}
+            name="Store" 
+            component={StoreScreen} 
+            options={{ title: 'Character Store' }}
           />
           <Tab.Screen 
-            name="History" 
-            component={MoodHistoryScreen}
-            options={{ title: 'Mood History' }}
+            name="Leaderboard" 
+            component={LeaderboardScreen} 
+            options={{ title: 'Leaderboard' }}
           />
           <Tab.Screen 
             name="Settings" 
-            component={SettingsScreen}
+            component={SettingsScreen} 
             options={{ title: 'Settings' }}
           />
         </Tab.Navigator>

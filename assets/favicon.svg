@@ -1,13 +1,12 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Simple favicon version -->
-  <rect width="64" height="64" rx="12" fill="#6366f1"/>
-  
-  <!-- Music Note -->
-  <path d="M20 15 L40 12 L40 35 Q40 38 37 38 Q34 38 34 35 Q34 32 37 32 Q40 32 40 35 L40 25 L20 28 L20 45 Q20 48 17 48 Q14 48 14 45 Q14 42 17 42 Q20 42 20 45 Z" fill="white"/>
-  
-  <!-- Mood indicator -->
-  <circle cx="48" cy="20" r="6" fill="rgba(255,255,255,0.3)"/>
-  <circle cx="46" cy="18" r="1" fill="white"/>
-  <circle cx="50" cy="18" r="1" fill="white"/>
-  <path d="M45 22 Q48 24 51 22" stroke="white" stroke-width="1" stroke-linecap="round" fill="none"/>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" fill="#1a1a2e"/>
+  <polygon points="16,5 8,18 24,18" fill="#8B4513"/>
+  <rect x="10" y="15" width="2" height="8" fill="#654321"/>
+  <rect x="13" y="15" width="2" height="8" fill="#654321"/>
+  <rect x="16" y="15" width="2" height="8" fill="#654321"/>
+  <rect x="19" y="15" width="2" height="8" fill="#654321"/>
+  <rect x="22" y="15" width="2" height="8" fill="#654321"/>
+  <rect x="14" y="18" width="4" height="5" fill="#2c2c54"/>
+  <circle cx="6" cy="14" r="1.5" fill="#ff6b6b"/>
+  <circle cx="26" cy="10" r="1" fill="#ffd93d"/>
 </svg>

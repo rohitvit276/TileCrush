@@ -1,72 +1,45 @@
 {
   "expo": {
-    "name": "Music Mood Mapper",
-    "slug": "music-mood-mapper",
+    "name": "Temple Runner 3D",
+    "slug": "temple-runner-3d",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.svg",
-    "userInterfaceStyle": "light",
-    "primaryColor": "#6366f1",
-    "entryPoint": "./index.js",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.svg",
       "resizeMode": "contain",
-      "backgroundColor": "#6366f1"
+      "backgroundColor": "#1a1a2e"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.musicmoodmapper.app",
-      "infoPlist": {
-        "NSCameraUsageDescription": "This app uses the camera to detect your mood from selfies.",
-        "NSMicrophoneUsageDescription": "This app uses the microphone to detect your mood from voice tone.",
-        "NSPhotoLibraryUsageDescription": "This app saves mood photos to your library for history tracking."
-      }
+      "supportsTablet": false,
+      "bundleIdentifier": "com.templerunner3d.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.svg",
-        "backgroundColor": "#6366f1"
+        "backgroundColor": "#1a1a2e"
       },
-      "package": "com.musicmoodmapper.app",
+      "package": "com.templerunner3d.app",
       "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.INTERNET",
-        "android.permission.ACCESS_NETWORK_STATE"
-      ]
+        "VIBRATE",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "versionCode": 1
     },
     "web": {
-      "favicon": "./assets/favicon.svg"
+      "favicon": "./assets/favicon.svg",
+      "bundler": "metro"
     },
-    "plugins": [
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow Music Mood Mapper to access your camera to detect mood from selfies."
-        }
-      ],
-      [
-        "expo-av",
-        {
-          "microphonePermission": "Allow Music Mood Mapper to access your microphone to detect mood from voice."
-        }
-      ],
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Allow Music Mood Mapper to save mood photos to your gallery.",
-          "savePhotosPermission": "Allow Music Mood Mapper to save mood detection photos."
-        }
-      ]
-    ],
+    "platforms": ["ios", "android", "web"],
+
     "extra": {
       "eas": {
-        "projectId": "music-mood-mapper-2025"
+        "projectId": "temple-runner-3d-project"
       }
     }
   }

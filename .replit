@@ -14,15 +14,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Music Mood Mapper"
+args = "Temple Runner Game"
 
 [[workflows.workflow]]
-name = "Music Mood Mapper"
+name = "Temple Runner Game"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd /home/runner/workspace && python3 -m http.server 5000"
+args = "cd /home/runner/workspace && npx expo start --port 5000 --web"
 waitForPort = 5000
 
 [[ports]]

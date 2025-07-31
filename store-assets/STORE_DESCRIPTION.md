@@ -1,67 +1,81 @@
-# Play Store Listing Content
+# Temple Runner 3D - Play Store Assets
 
 ## App Title
-Music Mood Mapper
+**Temple Runner 3D - Endless Adventure**
 
 ## Short Description (80 characters max)
-AI mood detection with personalized music recommendations for every emotion
+Ultimate endless running adventure through ancient temples with 3D environments!
 
-## Full Description (4000 characters max)
+## Full Description
+🏃 TEMPLE RUNNER 3D - THE ULTIMATE ENDLESS ADVENTURE! 🏃
 
-Discover music that perfectly matches your mood with Music Mood Mapper!
+Embark on an epic journey through mysterious ancient temples in this heart-pounding endless runner game! Dodge deadly obstacles, collect precious coins, and run as far as you can in beautifully crafted 3D environments.
 
-🎭 SMART MOOD DETECTION
-• Take selfies for instant facial emotion analysis
-• Record voice samples for vocal mood detection  
-• Get accurate results with confidence scores
-• Support for multiple mood types: happy, calm, excited, energetic, and more
+🎮 EXCITING GAMEPLAY FEATURES:
+⚡ Intuitive swipe controls - Jump, slide, and turn with simple gestures
+🏛️ Stunning temple environments with immersive 3D graphics
+💎 Collect coins to unlock amazing characters and power-ups
+🏆 Challenge yourself with increasing difficulty and speed
+📊 Track your progress with detailed statistics and leaderboards
 
-🎵 PERSONALIZED MUSIC RECOMMENDATIONS
-• Curated playlists for every detected mood
-• Direct integration with Spotify and YouTube
-• Diverse music genres: pop, rock, classical, indie, hip-hop
-• Search and discover new songs matching your vibe
+🌟 UNLOCK EPIC CHARACTERS:
+👤 Temple Runner - The classic explorer
+🥷 Shadow Ninja - Swift and silent warrior
+🛡️ Temple Knight - Armored protector
+🧙 Mystic Wizard - Master of ancient magic
+🤖 Cyber Runner - High-tech explorer
+🔥 Fire Phoenix - Mythical fire bird
 
-📊 COMPREHENSIVE MOOD TRACKING
-• Complete history of all mood detection sessions
-• Visual charts showing mood patterns over time
-• Weekly, monthly, and all-time analytics
-• Export your data for personal insights
+⚡ POWERFUL GAME ENHANCERS:
+🧲 Coin Magnet - Attract nearby coins automatically
+🛡️ Protection Shield - Survive obstacle collisions
+🚀 Speed Boost - Increase running velocity
+📈 Score Multiplier - Double your points
 
-⚙️ PRIVACY-FOCUSED DESIGN
-• All data stored locally on your device
-• No personal information shared with third parties
-• Full control over your mood history
-• GDPR compliant with transparent privacy policy
+🏆 ACHIEVEMENTS & REWARDS:
+🎯 Complete challenging achievements
+📊 Climb global leaderboards
+💰 Earn coins through gameplay
+🎁 Unlock daily deals and special offers
 
-Perfect for music lovers who want to:
-• Discover new songs based on their current emotions
-• Track mood patterns and emotional well-being
-• Find the right music for any moment
-• Explore different genres and artists
+🎨 PREMIUM GAME EXPERIENCE:
+🌙 Stunning dark theme interface
+📱 Optimized for all Android devices
+🎵 Immersive sound effects and music
+📊 Detailed progress tracking
+⚙️ Customizable game settings
 
-Download Music Mood Mapper today and let AI help you find your perfect soundtrack!
+Whether you're a casual gamer or hardcore runner, Temple Runner 3D offers endless entertainment with its addictive gameplay, beautiful graphics, and challenging obstacles.
+
+🔥 DOWNLOAD TEMPLE RUNNER 3D TODAY - THE ADVENTURE AWAITS! 🔥
 
 ## Keywords
-mood detection, music recommendation, AI emotion recognition, personalized playlist, mood tracker, facial analysis, voice analysis, Spotify, YouTube, music discovery, emotional wellness, mood analytics
+temple run, endless runner, adventure game, 3d runner, obstacle course, ancient temple, coin collector, character unlock, arcade game, mobile gaming
 
 ## Category
-Music & Audio (Primary)
-Health & Fitness (Secondary)
+Games > Arcade
 
 ## Content Rating
-Everyone - Suitable for all ages
+Everyone
 
-## Target Audience
-• Music enthusiasts seeking personalized recommendations
-• People interested in mood tracking and emotional wellness
-• Users who enjoy discovering new songs and artists
-• Anyone looking to match music to their current emotions
+## Privacy Policy URL
+https://templerunner3d.com/privacy-policy
 
-## Privacy Policy
-https://musicmoodmapper.com/privacy (would need to be created)
+## Screenshots Needed
+1. Main menu with game stats
+2. Gameplay with character running
+3. Character store interface
+4. Leaderboard and achievements
+5. Settings and customization
 
-## Contact Information
-- Developer: Music Mood Mapper Team
-- Email: support@musicmoodmapper.com
-- Website: https://musicmoodmapper.com
+## Feature Graphic Dimensions
+1024 x 500 pixels
+
+## App Icon
+512 x 512 pixels (already created as icon.svg)
+
+## Target Age Group
+13+ (suitable for teens and adults)
+
+## Promotional Text
+Experience the ultimate endless running adventure! Dodge obstacles, collect coins, and unlock epic characters in stunning 3D temple environments.

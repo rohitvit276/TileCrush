@@ -1,28 +1,56 @@
-<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect width="1024" height="1024" rx="180" fill="url(#gradient)"/>
-  
-  <!-- Music Note -->
-  <path d="M400 200 L600 160 L600 480 Q600 520 560 520 Q520 520 520 480 Q520 440 560 440 Q600 440 600 480 L600 280 L400 320 L400 600 Q400 640 360 640 Q320 640 320 600 Q320 560 360 560 Q400 560 400 600 Z" fill="white"/>
-  
-  <!-- Mood Face Circle -->
-  <circle cx="720" cy="300" r="80" fill="rgba(255,255,255,0.2)"/>
-  
-  <!-- Happy Face -->
-  <circle cx="700" cy="280" r="8" fill="white"/>
-  <circle cx="740" cy="280" r="8" fill="white"/>
-  <path d="M690 320 Q720 340 750 320" stroke="white" stroke-width="6" stroke-linecap="round" fill="none"/>
-  
-  <!-- Sound Waves -->
-  <path d="M650 400 Q680 420 650 440" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
-  <path d="M670 380 Q710 410 670 460" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
-  <path d="M690 360 Q740 400 690 480" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
-  
-  <!-- Gradient Definition -->
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4ecdc4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd93d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="templeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CD853F;stop-opacity:1" />
     </linearGradient>
   </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="512" cy="512" r="480" fill="url(#iconGrad)" stroke="#1a1a2e" stroke-width="20"/>
+  
+  <!-- Temple Structure -->
+  <rect x="200" y="600" width="624" height="300" fill="url(#templeGrad)" stroke="#654321" stroke-width="4"/>
+  <polygon points="512,200 200,600 824,600" fill="url(#templeGrad)" stroke="#654321" stroke-width="4"/>
+  
+  <!-- Temple Columns -->
+  <rect x="300" y="500" width="40" height="200" fill="#654321"/>
+  <rect x="400" y="500" width="40" height="200" fill="#654321"/>
+  <rect x="500" y="500" width="40" height="200" fill="#654321"/>
+  <rect x="600" y="500" width="40" height="200" fill="#654321"/>
+  <rect x="684" y="500" width="40" height="200" fill="#654321"/>
+  
+  <!-- Temple Door -->
+  <rect x="450" y="550" width="124" height="150" fill="#2c2c54" stroke="#1a1a2e" stroke-width="3"/>
+  
+  <!-- Running Character (Simplified) -->
+  <circle cx="400" cy="420" r="25" fill="#ff6b6b"/>
+  <rect x="380" y="445" width="40" height="60" fill="#ff6b6b" rx="5"/>
+  <rect x="375" y="505" width="20" height="40" fill="#ff6b6b" rx="3"/>
+  <rect x="405" y="505" width="20" height="40" fill="#ff6b6b" rx="3"/>
+  <rect x="370" y="450" width="25" height="8" fill="#ff6b6b" rx="4"/>
+  <rect x="405" y="460" width="25" height="8" fill="#ff6b6b" rx="4"/>
+  
+  <!-- Motion Lines -->
+  <line x1="320" y1="430" x2="360" y2="430" stroke="#fff" stroke-width="3" opacity="0.7"/>
+  <line x1="315" y1="450" x2="355" y2="450" stroke="#fff" stroke-width="3" opacity="0.5"/>
+  <line x1="310" y1="470" x2="350" y2="470" stroke="#fff" stroke-width="3" opacity="0.3"/>
+  
+  <!-- Coins/Gems -->
+  <circle cx="550" cy="380" r="15" fill="#ffd93d" stroke="#ff6b6b" stroke-width="2"/>
+  <circle cx="600" cy="350" r="15" fill="#ffd93d" stroke="#ff6b6b" stroke-width="2"/>
+  <circle cx="650" cy="400" r="15" fill="#ffd93d" stroke="#ff6b6b" stroke-width="2"/>
+  
+  <!-- Title Text -->
+  <text x="512" y="150" font-family="Arial, sans-serif" font-size="60" font-weight="bold" text-anchor="middle" fill="#fff" stroke="#1a1a2e" stroke-width="2">
+    TEMPLE
+  </text>
+  <text x="512" y="950" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#fff" stroke="#1a1a2e" stroke-width="2">
+    RUNNER
+  </text>
 </svg>
