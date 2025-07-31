@@ -327,17 +327,17 @@ export default function GameScreen() {
   };
 
   const wouldCreateInitialMatch = (grid, row, col, rockType) => {
-    // Check horizontal match (left)
+    // Check horizontal match (left) - ensure we have enough filled positions
     if (col >= 2 && 
-        grid[row][col - 1] && grid[row][col - 1].type === rockType &&
-        grid[row][col - 2] && grid[row][col - 2].type === rockType) {
+        grid[row] && grid[row].length > col - 1 && grid[row][col - 1] && grid[row][col - 1].type === rockType &&
+        grid[row] && grid[row].length > col - 2 && grid[row][col - 2] && grid[row][col - 2].type === rockType) {
       return true;
     }
     
-    // Check vertical match (up)
+    // Check vertical match (up) - ensure we have enough filled rows
     if (row >= 2 && 
-        grid[row - 1] && grid[row - 1][col] && grid[row - 1][col].type === rockType &&
-        grid[row - 2] && grid[row - 2][col] && grid[row - 2][col].type === rockType) {
+        grid.length > row - 1 && grid[row - 1] && grid[row - 1][col] && grid[row - 1][col].type === rockType &&
+        grid.length > row - 2 && grid[row - 2] && grid[row - 2][col] && grid[row - 2][col].type === rockType) {
       return true;
     }
     
