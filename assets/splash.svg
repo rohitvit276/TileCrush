@@ -1,0 +1,26 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="1200" fill="#6366f1"/>
+  
+  <!-- App Logo -->
+  <g transform="translate(400, 400)">
+    <!-- Music Note -->
+    <path d="M100 50 L300 20 L300 240 Q300 260 280 260 Q260 260 260 240 Q260 220 280 220 Q300 220 300 240 L300 140 L100 160 L100 300 Q100 320 80 320 Q60 320 60 300 Q60 280 80 280 Q100 280 100 300 Z" fill="white"/>
+    
+    <!-- Mood Indicator -->
+    <circle cx="350" cy="100" r="40" fill="rgba(255,255,255,0.3)"/>
+    <circle cx="340" cy="90" r="4" fill="white"/>
+    <circle cx="360" cy="90" r="4" fill="white"/>
+    <path d="M335 110 Q350 120 365 110" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+  
+  <!-- App Name -->
+  <text x="600" y="750" text-anchor="middle" fill="white" font-family="system-ui" font-size="48" font-weight="bold">
+    Music Mood Mapper
+  </text>
+  
+  <!-- Tagline -->
+  <text x="600" y="800" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui" font-size="24">
+    Discover music that matches your mood
+  </text>
+</svg>
