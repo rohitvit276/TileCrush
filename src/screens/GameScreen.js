@@ -407,8 +407,8 @@ function GameScreenCore() {
   const restartGame = async (showInterstitialAd) => {
     setGamesPlayed(prev => prev + 1);
     
-    // Show ad for free users every few games
-    if (showInterstitialAd) {
+    // Show ad at end of each game for free users
+    if (showInterstitialAd && gamesPlayed > 0) {
       await showInterstitialAd();
     }
 

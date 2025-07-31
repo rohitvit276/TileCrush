@@ -11,8 +11,8 @@
 ✅ **Auto-Renewal**: Managed through app store subscriptions  
 
 ### Free Version with Ads
-✅ **Interstitial Ads**: Shown every 5 completed games  
-✅ **Banner Advertisements**: Persistent bottom banner during gameplay  
+✅ **End-of-Game Ads**: One tasteful ad after each game completion  
+✅ **No Banner Ads**: Clean, uninterrupted gameplay experience  
 ✅ **Hint Limitations**: 3 hints per game session  
 ✅ **Standard Features**: Full core gameplay experience  
 ✅ **Upgrade Prompts**: Strategic upselling at key moments  

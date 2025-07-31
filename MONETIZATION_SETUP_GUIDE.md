@@ -13,8 +13,8 @@ Rock Crush now supports both **Premium Subscriptions** and **Ad-based Revenue**,
 - **Priority Support**: Faster customer service
 
 ### Free with Ads
-- **Interstitial Ads**: Every 5 games completed
-- **Banner Ads**: Persistent bottom banner during gameplay
+- **End-of-Game Ads**: One ad shown after each game completion
+- **No Banner Ads**: Clean gameplay experience during active play
 - **Hint Limit**: 3 hints per game
 - **Basic Features**: Standard game experience
 

@@ -148,33 +148,32 @@ export const MonetizationManager = ({ children }) => {
       const newCounter = adCounter + 1;
       setAdCounter(newCounter);
 
-      // Show ad every 5 games for free users
-      if (newCounter % 5 === 0) {
-        // Simulate ad display
-        Alert.alert(
-          'Advertisement',
-          'This is where an interstitial ad would show. In production, this would be a real ad from AdMob.',
-          [
-            { 
-              text: 'Skip Ad (Premium)', 
-              onPress: () => setShowUpgradeModal(true),
-              style: 'default'
+      // Show ad at the end of every game for free users
+      // Simulate ad display
+      Alert.alert(
+        'Game Complete - Advertisement',
+        'This is where an end-of-game ad would show. In production, this would be a real ad from AdMob.',
+        [
+          { 
+            text: 'Upgrade to Remove Ads', 
+            onPress: () => {
+              setShowUpgradeModal(true);
+              resolve();
             },
-            { 
-              text: 'Continue', 
-              onPress: resolve,
-              style: 'cancel'
-            }
-          ]
-        );
-      } else {
-        resolve();
-      }
+            style: 'default'
+          },
+          { 
+            text: 'Continue Playing', 
+            onPress: resolve,
+            style: 'cancel'
+          }
+        ]
+      );
     });
   };
 
   const shouldShowBannerAd = () => {
-    return !isPremium && adCounter > 0;
+    return false; // Disabled banner ads - only end-of-game ads now
   };
 
   const getHintLimit = () => {
@@ -213,7 +212,7 @@ export const MonetizationManager = ({ children }) => {
             </Text>
 
             <View style={styles.featuresContainer}>
-              <Text style={styles.feature}>✨ Ad-free gameplay</Text>
+              <Text style={styles.feature}>✨ No ads between games</Text>
               <Text style={styles.feature}>💡 Unlimited hints</Text>
               <Text style={styles.feature}>🎯 Exclusive rock themes</Text>
               <Text style={styles.feature}>📊 Advanced statistics</Text>
