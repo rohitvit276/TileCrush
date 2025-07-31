@@ -11,6 +11,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
+import { Audio } from 'expo-av';
 
 const { width, height } = Dimensions.get('window');
 const GRID_SIZE = 8;
@@ -34,11 +35,81 @@ export default function GameScreen() {
   const [highScore, setHighScore] = useState(0);
   const [animations, setAnimations] = useState({});
   const [showInstructions, setShowInstructions] = useState(false);
+  const [showGameControls, setShowGameControls] = useState(false);
+  const [sounds, setSounds] = useState({});
 
   useEffect(() => {
     loadHighScore();
     initializeGrid();
+    loadSounds();
   }, []);
+
+  const loadSounds = async () => {
+    try {
+      // Create sound objects programmatically since we can't load external files
+      const successSound = new Audio.Sound();
+      const errorSound = new Audio.Sound();
+      
+      // We'll use system sounds or generate tones
+      setSounds({
+        success: successSound,
+        error: errorSound
+      });
+    } catch (error) {
+      console.log('Error loading sounds:', error);
+    }
+  };
+
+  const playSuccessSound = async () => {
+    try {
+      // Generate a success tone using Web Audio API for web
+      if (typeof window !== 'undefined' && window.AudioContext) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+      }
+    } catch (error) {
+      console.log('Error playing success sound:', error);
+    }
+  };
+
+  const playErrorSound = async () => {
+    try {
+      // Generate an error tone using Web Audio API for web
+      if (typeof window !== 'undefined' && window.AudioContext) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(200, audioContext.currentTime); // Low tone
+        oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1); // Lower tone
+        
+        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.2);
+      }
+    } catch (error) {
+      console.log('Error playing error sound:', error);
+    }
+  };
 
   useEffect(() => {
     if (moves === 0 && gameStarted) {
@@ -108,6 +179,8 @@ export default function GameScreen() {
     } else if (isAdjacent(selectedRock, rock)) {
       swapRocks(selectedRock, rock);
     } else {
+      // Play error sound for invalid move
+      playErrorSound();
       animateRock(selectedRock.id, 'deselect');
       setSelectedRock(rock);
       animateRock(rock.id, 'select');
@@ -183,6 +256,8 @@ export default function GameScreen() {
 
     if (matches.length > 0) {
       removeMatches(currentGrid, matches);
+      // Play success sound for successful match
+      playSuccessSound();
     }
   };
 
@@ -350,6 +425,27 @@ export default function GameScreen() {
             <Text style={styles.scoreText}>Score: {score}</Text>
             <Text style={styles.movesText}>Moves: {moves}</Text>
           </View>
+          
+          <TouchableOpacity 
+            style={styles.helpButton} 
+            onPress={() => setShowGameControls(!showGameControls)}
+          >
+            <Text style={styles.helpButtonText}>
+              {showGameControls ? 'Hide Help' : 'Show Help'}
+            </Text>
+          </TouchableOpacity>
+
+          {showGameControls && (
+            <View style={styles.gameControlsContainer}>
+              <Text style={styles.gameControlsTitle}>Game Controls:</Text>
+              <Text style={styles.gameControlsText}>
+                • TAP a rock to select it (red border)
+                {'\n'}• TAP adjacent rock to swap
+                {'\n'}• Match 3+ rocks in a line
+                {'\n'}• Get points before moves run out
+              </Text>
+            </View>
+          )}
         </View>
 
         <View style={styles.gridContainer}>
@@ -449,6 +545,40 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
     lineHeight: 22,
+    textAlign: 'left',
+  },
+  helpButton: {
+    backgroundColor: '#2196F3',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 15,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  helpButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  gameControlsContainer: {
+    backgroundColor: 'rgba(33, 150, 243, 0.2)',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#2196F3',
+  },
+  gameControlsTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#2196F3',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  gameControlsText: {
+    fontSize: 13,
+    color: '#fff',
+    lineHeight: 18,
     textAlign: 'left',
   },
   header: {
