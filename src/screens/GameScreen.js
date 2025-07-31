@@ -17,9 +17,9 @@ const GRID_SIZE = 8;
 const ROCK_SIZE = (width - 40) / GRID_SIZE;
 
 const ROCK_TYPES = [
-  { id: 1, color: '#00FF00', name: 'Green Rock' },
+  { id: 1, color: '#32CD32', name: 'Green Rock' },
   { id: 2, color: '#0080FF', name: 'Blue Rock' },
-  { id: 3, color: '#FF0040', name: 'Red Rock' },
+  { id: 3, color: '#8B4513', name: 'Brown Rock' },
   { id: 4, color: '#FFD700', name: 'Yellow Rock' },
   { id: 5, color: '#FF1493', name: 'Pink Rock' },
 ];
