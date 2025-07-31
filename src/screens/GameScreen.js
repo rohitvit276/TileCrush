@@ -160,10 +160,17 @@ export default function GameScreen() {
     if (possibleMoves.length === 0) {
       // No moves possible - Game Over
       setGameOver(true);
+      saveHighScore(score);
       Alert.alert(
-        'Game Over',
-        'No more matches possible!\nFinal Score: ' + score,
-        [{ text: 'Play Again', onPress: () => resetGame() }]
+        'Game Over!',
+        `No more matches possible!\n\nFinal Score: ${score}\nHigh Score: ${Math.max(score, highScore)}\n\nThe board has no valid moves left.`,
+        [{ 
+          text: 'Play Again', 
+          onPress: () => {
+            setGameOver(false);
+            initializeGrid();
+          }
+        }]
       );
     } else if (possibleMoves.length === 1) {
       // Only one move possible - Show hint option
@@ -257,10 +264,25 @@ export default function GameScreen() {
   };
 
   useEffect(() => {
-    if (moves === 0 && gameStarted) {
-      endGame();
+    if (moves === 0 && gameStarted && !gameOver) {
+      // Show out of moves popup
+      Alert.alert(
+        'Out of Moves!',
+        `Game Over!\n\nFinal Score: ${score}\nHigh Score: ${Math.max(score, highScore)}\n\nYou've used all 30 moves.`,
+        [
+          {
+            text: 'Play Again',
+            onPress: () => {
+              setGameOver(false);
+              initializeGrid();
+            },
+          },
+        ]
+      );
+      setGameOver(true);
+      saveHighScore(score);
     }
-  }, [moves, gameStarted]);
+  }, [moves, gameStarted, gameOver, score, highScore]);
 
   const loadHighScore = async () => {
     try {
@@ -516,8 +538,8 @@ export default function GameScreen() {
     saveHighScore(score);
     
     Alert.alert(
-      'Game Over!',
-      `Final Score: ${score}\nHigh Score: ${Math.max(score, highScore)}`,
+      'Out of Moves!',
+      `Game Over!\n\nFinal Score: ${score}\nHigh Score: ${Math.max(score, highScore)}\n\nNo more moves available.`,
       [
         {
           text: 'Play Again',
