@@ -409,10 +409,28 @@ export default function GameScreen() {
   };
 
   const swapRocks = (rock1, rock2) => {
+    // Create a test grid to check if this swap would create matches
+    const testGrid = grid.map(row => [...row]);
+    const temp = testGrid[rock1.row][rock1.col].type;
+    testGrid[rock1.row][rock1.col].type = testGrid[rock2.row][rock2.col].type;
+    testGrid[rock2.row][rock2.col].type = temp;
+
+    // Check if this swap creates any matches
+    const matches = findMatches(testGrid);
+    
+    if (matches.length === 0) {
+      // Invalid move - no matches created
+      playErrorSound();
+      setSelectedRock(null);
+      animateRock(rock1.id, 'deselect');
+      animateRock(rock2.id, 'deselect');
+      return;
+    }
+
+    // Valid move - proceed with swap
     const newGrid = [...grid];
-    const temp = newGrid[rock1.row][rock1.col].type;
-    newGrid[rock1.row][rock1.col].type = newGrid[rock2.row][rock2.col].type;
-    newGrid[rock2.row][rock2.col].type = temp;
+    newGrid[rock1.row][rock1.col].type = testGrid[rock1.row][rock1.col].type;
+    newGrid[rock2.row][rock2.col].type = testGrid[rock2.row][rock2.col].type;
 
     setGrid(newGrid);
     setSelectedRock(null);
