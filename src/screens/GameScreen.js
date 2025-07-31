@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MonetizationManager } from '../components/MonetizationManager';
 import * as Haptics from 'expo-haptics';
 import { Audio } from 'expo-av';
 
@@ -25,7 +26,7 @@ const ROCK_TYPES = [
   { id: 5, color: '#FF1493', name: 'Pink Rock' },
 ];
 
-export default function GameScreen() {
+function GameScreenCore() {
   const [grid, setGrid] = useState([]);
   const [score, setScore] = useState(0);
   const [moves, setMoves] = useState(30);
@@ -40,6 +41,8 @@ export default function GameScreen() {
   const [hintAvailable, setHintAvailable] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [hintPattern, setHintPattern] = useState(null);
+  const [hintsUsed, setHintsUsed] = useState(0);
+  const [gamesPlayed, setGamesPlayed] = useState(0);
 
   useEffect(() => {
     loadHighScore();
@@ -278,8 +281,21 @@ export default function GameScreen() {
     }
   };
 
-  const showHintToPlayer = () => {
+  const showHintToPlayer = (canUseHint) => {
+    if (!canUseHint) {
+      Alert.alert(
+        'Hint Limit Reached',
+        'You\'ve used all your free hints! Upgrade to Premium for unlimited hints.',
+        [
+          { text: 'Maybe Later', style: 'cancel' },
+          { text: 'Upgrade', onPress: () => {/* Will be handled by MonetizationManager */} }
+        ]
+      );
+      return;
+    }
+
     if (hintPattern) {
+      setHintsUsed(prev => prev + 1);
       setShowHint(true);
       // Auto-hide hint after 3 seconds
       setTimeout(() => {
@@ -388,7 +404,14 @@ export default function GameScreen() {
     }
   };
 
-  const restartGame = () => {
+  const restartGame = async (showInterstitialAd) => {
+    setGamesPlayed(prev => prev + 1);
+    
+    // Show ad for free users every few games
+    if (showInterstitialAd) {
+      await showInterstitialAd();
+    }
+
     setGameOver(false);
     setScore(0);
     setMoves(30);
@@ -397,6 +420,7 @@ export default function GameScreen() {
     setHintAvailable(false);
     setHintPattern(null);
     setShowHint(false);
+    setHintsUsed(0);
     initializeGrid();
   };
 
@@ -793,7 +817,9 @@ export default function GameScreen() {
   }
 
   return (
-    <LinearGradient colors={['#1a1a2e', '#16213e']} style={styles.container}>
+    <MonetizationManager>
+      {({ isPremium, showInterstitialAd, shouldShowBannerAd, canUseHint, showUpgradeModal }) => (
+        <LinearGradient colors={['#1a1a2e', '#16213e']} style={styles.container}>
       <View style={styles.gameContainer}>
         <View style={styles.header}>
           <View style={styles.scoreBoard}>
@@ -814,10 +840,17 @@ export default function GameScreen() {
             {hintAvailable && (
               <TouchableOpacity 
                 style={styles.hintButton} 
-                onPress={showHintToPlayer}
+                onPress={() => {
+                  if (canUseHint(hintsUsed)) {
+                    showHintToPlayer(true);
+                  } else {
+                    showHintToPlayer(false);
+                    showUpgradeModal();
+                  }
+                }}
               >
                 <Text style={styles.hintButtonText}>
-                  💡 Hint
+                  💡 Hint {!isPremium && `(${3 - hintsUsed} left)`}
                 </Text>
               </TouchableOpacity>
             )}
@@ -845,9 +878,21 @@ export default function GameScreen() {
         </View>
 
         <View style={styles.bottomContainer}>
-          <TouchableOpacity style={styles.resetButton} onPress={initializeGrid}>
+          <TouchableOpacity 
+            style={styles.resetButton} 
+            onPress={() => restartGame(showInterstitialAd)}
+          >
             <Text style={styles.resetButtonText}>NEW GAME</Text>
           </TouchableOpacity>
+          
+          {!isPremium && (
+            <TouchableOpacity 
+              style={styles.premiumButton} 
+              onPress={showUpgradeModal}
+            >
+              <Text style={styles.premiumButtonText}>⭐ GO PREMIUM</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
@@ -862,14 +907,23 @@ export default function GameScreen() {
             <Text style={styles.highScoreGameOverText}>
               High Score: {Math.max(score, highScore)}
             </Text>
-            <TouchableOpacity style={styles.restartButton} onPress={restartGame}>
+            <TouchableOpacity 
+              style={styles.restartButton} 
+              onPress={() => restartGame(showInterstitialAd)}
+            >
               <Text style={styles.restartButtonText}>RESTART GAME</Text>
             </TouchableOpacity>
           </View>
         </View>
       )}
-    </LinearGradient>
+        </LinearGradient>
+      )}
+    </MonetizationManager>
   );
+}
+
+export default function GameScreen() {
+  return <GameScreenCore />;
 }
 
 const styles = StyleSheet.create({
@@ -1154,5 +1208,20 @@ const styles = StyleSheet.create({
     color: '#ff6b6b',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  premiumButton: {
+    backgroundColor: '#FFD700',
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    borderRadius: 25,
+    marginTop: 10,
+    borderWidth: 2,
+    borderColor: '#FF6B6B',
+  },
+  premiumButtonText: {
+    color: '#8B4513',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
