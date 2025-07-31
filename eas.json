@@ -9,21 +9,30 @@
     },
     "preview": {
       "distribution": "internal",
-      "android": {
-        "buildType": "apk"
+      "ios": {
+        "simulator": true
       }
     },
     "production": {
+      "autoIncrement": true,
+      "ios": {
+        "buildNumber": "1"
+      },
       "android": {
-        "buildType": "aab"
+        "versionCode": 1
       }
     }
   },
   "submit": {
     "production": {
+      "ios": {
+        "appleId": "your-apple-id@email.com",
+        "ascAppId": "your-app-store-connect-app-id",
+        "appleTeamId": "your-apple-team-id"
+      },
       "android": {
-        "serviceAccountKeyPath": "../path/to/service-account-key.json",
-        "track": "internal"
+        "serviceAccountKeyPath": "./google-service-account.json",
+        "track": "production"
       }
     }
   }

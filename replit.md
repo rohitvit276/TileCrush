@@ -24,7 +24,7 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-### July 31, 2025 - Rock Crush Match-3 Game Development
+### July 31, 2025 - Rock Crush Match-3 Game Development & App Store Preparation
 - ✓ **REPLACED**: Temple Runner game with new Rock Crush match-3 game
 - ✓ **CREATED**: Complete Candy Crush-style match-3 game with rocks instead of candies
 - ✓ **IMPLEMENTED**: 3 comprehensive game screens (Game, Leaderboard, Settings)
@@ -35,8 +35,12 @@ Preferred communication style: Simple, everyday language.
 - ✓ **INTEGRATED**: Local data persistence for scores, stats, and achievements
 - ✓ **CONFIGURED**: Professional game UI with dark theme and rock animations
 - ✓ **GENERATED**: Complete SVG icon set and splash screens with "Rock Crush" branding
-- ✓ **PREPARED**: Achievement system with 6 unlockable milestones
-- ✓ **READY**: Complete Android game ready for Play Store submission as "Rock Crush"
+- ✓ **ENHANCED**: Move validation requiring all swaps to create valid 3+ matches
+- ✓ **IMPLEMENTED**: Dynamic audio system - basic success, clapping for 4+ matches, cheering for 5+ matches
+- ✓ **ADDED**: Intelligent hint system with golden highlighting when only one move remains
+- ✓ **BUILT**: Game over music, big "GAME OVER" screen overlay, and restart button functionality
+- ✓ **PREPARED**: Complete App Store deployment guides and EAS configuration
+- ✓ **READY**: Production-ready iOS/Android game for App Store submission
 
 ### July 30, 2025 - Python Server Connectivity Checker Application
 - ✓ Created standalone Python application for SSH connectivity testing
