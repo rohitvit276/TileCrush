@@ -17,12 +17,11 @@ const GRID_SIZE = 8;
 const ROCK_SIZE = (width - 40) / GRID_SIZE;
 
 const ROCK_TYPES = [
-  { id: 1, color: '#8B4513', name: 'Brown Rock' },
-  { id: 2, color: '#696969', name: 'Gray Rock' },
-  { id: 3, color: '#2F4F4F', name: 'Dark Rock' },
-  { id: 4, color: '#708090', name: 'Slate Rock' },
-  { id: 5, color: '#556B2F', name: 'Olive Rock' },
-  { id: 6, color: '#800000', name: 'Maroon Rock' },
+  { id: 1, color: '#00FF00', name: 'Green Rock' },
+  { id: 2, color: '#0080FF', name: 'Blue Rock' },
+  { id: 3, color: '#FF0040', name: 'Red Rock' },
+  { id: 4, color: '#FFD700', name: 'Yellow Rock' },
+  { id: 5, color: '#FF1493', name: 'Pink Rock' },
 ];
 
 export default function GameScreen() {
@@ -34,6 +33,7 @@ export default function GameScreen() {
   const [gameOver, setGameOver] = useState(false);
   const [highScore, setHighScore] = useState(0);
   const [animations, setAnimations] = useState({});
+  const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
     loadHighScore();
@@ -310,6 +310,30 @@ export default function GameScreen() {
           <TouchableOpacity style={styles.startButton} onPress={() => setGameStarted(true)}>
             <Text style={styles.startButtonText}>START GAME</Text>
           </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.instructionsButton} 
+            onPress={() => setShowInstructions(!showInstructions)}
+          >
+            <Text style={styles.instructionsButtonText}>
+              {showInstructions ? 'HIDE CONTROLS' : 'SHOW CONTROLS'}
+            </Text>
+          </TouchableOpacity>
+
+          {showInstructions && (
+            <View style={styles.controlsContainer}>
+              <Text style={styles.controlsTitle}>Game Controls:</Text>
+              <Text style={styles.controlsText}>
+                1. TAP any rock to select it (it will glow with red border)
+                {'\n'}2. TAP an adjacent rock (up, down, left, right) to swap positions
+                {'\n'}3. Make matches of 3+ rocks in a row or column to crush them
+                {'\n'}4. Rocks will fall down and new ones appear from the top
+                {'\n'}5. Score points before your 30 moves run out!
+                {'\n'}6. Chain matches together for higher scores
+              </Text>
+            </View>
+          )}
+          
           <View style={styles.scoreContainer}>
             <Text style={styles.highScoreText}>High Score: {highScore}</Text>
           </View>
@@ -394,6 +418,38 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  instructionsButton: {
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 30,
+    paddingVertical: 12,
+    borderRadius: 20,
+    marginBottom: 20,
+  },
+  instructionsButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  controlsContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 20,
+    borderRadius: 15,
+    marginBottom: 20,
+    marginHorizontal: 10,
+  },
+  controlsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ff6b6b',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  controlsText: {
+    fontSize: 14,
+    color: '#fff',
+    lineHeight: 22,
+    textAlign: 'left',
   },
   header: {
     marginBottom: 20,

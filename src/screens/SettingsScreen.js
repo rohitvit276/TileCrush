@@ -161,14 +161,13 @@ export default function SettingsScreen() {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>Rock Types</Text>
             <View style={styles.rockTypes}>
-              <View style={[styles.rockPreview, { backgroundColor: '#8B4513' }]} />
-              <View style={[styles.rockPreview, { backgroundColor: '#696969' }]} />
-              <View style={[styles.rockPreview, { backgroundColor: '#2F4F4F' }]} />
-              <View style={[styles.rockPreview, { backgroundColor: '#708090' }]} />
-              <View style={[styles.rockPreview, { backgroundColor: '#556B2F' }]} />
-              <View style={[styles.rockPreview, { backgroundColor: '#800000' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#00FF00' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#0080FF' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#FF0040' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#FFD700' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#FF1493' }]} />
             </View>
-            <Text style={styles.infoText}>6 different rock types to match and crush!</Text>
+            <Text style={styles.infoText}>5 bright colored rocks: Green, Blue, Red, Yellow, Pink!</Text>
           </View>
         </View>
 
