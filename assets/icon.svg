@@ -47,10 +47,10 @@
   <circle cx="650" cy="400" r="15" fill="#ffd93d" stroke="#ff6b6b" stroke-width="2"/>
   
   <!-- Title Text -->
-  <text x="512" y="150" font-family="Arial, sans-serif" font-size="80" font-weight="bold" text-anchor="middle" fill="#fff" stroke="#1a1a2e" stroke-width="2">
-    BABA
+  <text x="512" y="150" font-family="Arial, sans-serif" font-size="70" font-weight="bold" text-anchor="middle" fill="#fff" stroke="#1a1a2e" stroke-width="2">
+    ROCK
   </text>
   <text x="512" y="950" font-family="Arial, sans-serif" font-size="60" font-weight="bold" text-anchor="middle" fill="#fff" stroke="#1a1a2e" stroke-width="2">
-    RUN
+    CRUSH
   </text>
 </svg>

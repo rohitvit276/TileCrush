@@ -24,19 +24,19 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-### July 31, 2025 - Baba Run Endless Runner Game Development
-- ✓ **ARCHIVED**: Music Mood Mapper project moved to /archive directory
-- ✓ **CREATED**: Complete Temple Run-style endless runner game named "Baba Run"
-- ✓ **IMPLEMENTED**: 5 comprehensive game screens (Menu, Game, Store, Leaderboard, Settings)
-- ✓ **DEVELOPED**: Full gameplay mechanics with swipe controls (jump, slide, turn)
-- ✓ **BUILT**: Physics system with collision detection and scoring
-- ✓ **DESIGNED**: 6 unique characters with rarity system (Common to Mythic)
-- ✓ **CREATED**: Character store with coins and power-ups system
-- ✓ **INTEGRATED**: Local data persistence for scores, characters, and settings
-- ✓ **CONFIGURED**: Professional game UI with dark theme and animations
-- ✓ **GENERATED**: Complete SVG icon set and splash screens with "Baba Run" branding
-- ✓ **PREPARED**: Play Store deployment guide and marketing assets
-- ✓ **READY**: Complete Android game ready for Play Store submission as "Baba Run"
+### July 31, 2025 - Rock Crush Match-3 Game Development
+- ✓ **REPLACED**: Temple Runner game with new Rock Crush match-3 game
+- ✓ **CREATED**: Complete Candy Crush-style match-3 game with rocks instead of candies
+- ✓ **IMPLEMENTED**: 3 comprehensive game screens (Game, Leaderboard, Settings)
+- ✓ **DEVELOPED**: Full match-3 gameplay mechanics with swipe-to-swap controls
+- ✓ **BUILT**: Grid-based physics system with rock matching and cascading
+- ✓ **DESIGNED**: 6 unique rock types with different colors and visual styles
+- ✓ **CREATED**: Scoring system with moves limit and high score tracking
+- ✓ **INTEGRATED**: Local data persistence for scores, stats, and achievements
+- ✓ **CONFIGURED**: Professional game UI with dark theme and rock animations
+- ✓ **GENERATED**: Complete SVG icon set and splash screens with "Rock Crush" branding
+- ✓ **PREPARED**: Achievement system with 6 unlockable milestones
+- ✓ **READY**: Complete Android game ready for Play Store submission as "Rock Crush"
 
 ### July 30, 2025 - Python Server Connectivity Checker Application
 - ✓ Created standalone Python application for SSH connectivity testing

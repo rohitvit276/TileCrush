@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Baba Run",
-    "slug": "baba-run",
+    "name": "Rock Crush",
+    "slug": "rock-crush",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.svg",
@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.babarun.app"
+      "bundleIdentifier": "com.rockcrush.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.svg",
         "backgroundColor": "#1a1a2e"
       },
-      "package": "com.babarun.app",
+      "package": "com.rockcrush.app",
       "permissions": [
         "VIBRATE",
         "INTERNET",
@@ -39,7 +39,7 @@
 
     "extra": {
       "eas": {
-        "projectId": "baba-run-project"
+        "projectId": "rock-crush-project"
       }
     }
   }

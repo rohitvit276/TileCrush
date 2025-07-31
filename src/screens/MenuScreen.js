@@ -53,7 +53,7 @@ export default function MenuScreen({ navigation }) {
         {/* Game Title */}
         <Animatable.View animation="fadeInDown" duration={1500} style={styles.titleContainer}>
           <Text style={styles.gameTitle}>BABA</Text>
-<parameter name="new_str">          <Text style={styles.gameTitleAccent}>RUN</Text>
+          <Text style={styles.gameTitleAccent}>RUN</Text>
           <Text style={styles.subtitle}>Endless Adventure Awaits</Text>
         </Animatable.View>
 

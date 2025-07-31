@@ -1,283 +1,192 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
-import { Card, Title, Text, Surface, Avatar, Button, Divider } from 'react-native-paper';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as Animatable from 'react-native-animatable';
-import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { gameColors } from '../theme/gameTheme';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function LeaderboardScreen() {
-  const [localStats, setLocalStats] = useState({
-    bestScore: 0,
-    totalGames: 0,
-    totalCoins: 0,
+  const [gameStats, setGameStats] = useState({
+    gamesPlayed: 0,
+    highScore: 0,
+    totalMatches: 0,
+    totalRocksCrushed: 0,
     averageScore: 0,
+    bestStreak: 0,
   });
-  const [refreshing, setRefreshing] = useState(false);
+
+  const [achievements, setAchievements] = useState([
+    { id: 1, title: 'First Crush', description: 'Complete your first match', unlocked: false, icon: 'play-circle-filled' },
+    { id: 2, title: 'Rock Crusher', description: 'Crush 100 rocks', unlocked: false, icon: 'gesture' },
+    { id: 3, title: 'Score Master', description: 'Score 1000 points in a game', unlocked: false, icon: 'star' },
+    { id: 4, title: 'Combo King', description: 'Get a 5+ rock combo', unlocked: false, icon: 'timeline' },
+    { id: 5, title: 'High Achiever', description: 'Score 2500 points', unlocked: false, icon: 'emoji-events' },
+    { id: 6, title: 'Rock Legend', description: 'Play 50 games', unlocked: false, icon: 'diamond' },
+  ]);
 
   useEffect(() => {
-    loadLocalStats();
+    loadGameStats();
   }, []);
 
-  const loadLocalStats = async () => {
+  const loadGameStats = async () => {
     try {
-      const bestScore = await AsyncStorage.getItem('bestScore');
-      const totalGames = await AsyncStorage.getItem('totalGames');
-      const totalCoins = await AsyncStorage.getItem('totalCoins');
-      const totalScore = await AsyncStorage.getItem('totalScore');
+      const stats = await AsyncStorage.getItem('rockCrushStats');
+      const highScore = await AsyncStorage.getItem('rockCrushHighScore');
       
-      const games = totalGames ? parseInt(totalGames) : 0;
-      const score = totalScore ? parseInt(totalScore) : 0;
-      
-      setLocalStats({
-        bestScore: bestScore ? parseInt(bestScore) : 0,
-        totalGames: games,
-        totalCoins: totalCoins ? parseInt(totalCoins) : 0,
-        averageScore: games > 0 ? Math.round(score / games) : 0,
-      });
+      if (stats) {
+        const parsedStats = JSON.parse(stats);
+        if (highScore) {
+          parsedStats.highScore = parseInt(highScore);
+        }
+        setGameStats(parsedStats);
+        updateAchievements(parsedStats);
+      } else {
+        // Initialize default stats
+        const defaultStats = {
+          gamesPlayed: 0,
+          highScore: parseInt(highScore) || 0,
+          totalMatches: 0,
+          totalRocksCrushed: 0,
+          averageScore: 0,
+          bestStreak: 0,
+        };
+        setGameStats(defaultStats);
+      }
     } catch (error) {
-      console.error('Error loading local stats:', error);
+      console.log('Error loading game stats:', error);
     }
   };
 
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await loadLocalStats();
-    setRefreshing(false);
+  const updateAchievements = (stats) => {
+    setAchievements(prev => prev.map(achievement => {
+      switch (achievement.id) {
+        case 1: // First Crush
+          return { ...achievement, unlocked: stats.gamesPlayed > 0 };
+        case 2: // Rock Crusher
+          return { ...achievement, unlocked: stats.totalRocksCrushed >= 100 };
+        case 3: // Score Master
+          return { ...achievement, unlocked: stats.highScore >= 1000 };
+        case 4: // Combo King
+          return { ...achievement, unlocked: stats.bestStreak >= 5 };
+        case 5: // High Achiever
+          return { ...achievement, unlocked: stats.highScore >= 2500 };
+        case 6: // Rock Legend
+          return { ...achievement, unlocked: stats.gamesPlayed >= 50 };
+        default:
+          return achievement;
+      }
+    }));
   };
 
-  const clearStats = async () => {
-    try {
-      await AsyncStorage.multiRemove(['bestScore', 'totalGames', 'totalCoins', 'totalScore']);
-      setLocalStats({
-        bestScore: 0,
-        totalGames: 0,
-        totalCoins: 0,
-        averageScore: 0,
-      });
-    } catch (error) {
-      console.error('Error clearing stats:', error);
-    }
+  const resetStats = () => {
+    Alert.alert(
+      'Reset Statistics',
+      'Are you sure you want to reset all game statistics? This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Reset',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem('rockCrushStats');
+              await AsyncStorage.removeItem('rockCrushHighScore');
+              setGameStats({
+                gamesPlayed: 0,
+                highScore: 0,
+                totalMatches: 0,
+                totalRocksCrushed: 0,
+                averageScore: 0,
+                bestStreak: 0,
+              });
+              setAchievements(prev => prev.map(achievement => ({ ...achievement, unlocked: false })));
+              Alert.alert('Success', 'All statistics have been reset.');
+            } catch (error) {
+              Alert.alert('Error', 'Failed to reset statistics.');
+            }
+          },
+        },
+      ]
+    );
   };
 
-  // Mock global leaderboard data
-  const globalLeaderboard = [
-    { rank: 1, name: "Temple Master", score: 25000, coins: 1250 },
-    { rank: 2, name: "Speed Runner", score: 22500, coins: 1100 },
-    { rank: 3, name: "Coin Collector", score: 20000, coins: 1500 },
-    { rank: 4, name: "Obstacle Dodger", score: 18750, coins: 950 },
-    { rank: 5, name: "Endless Explorer", score: 17500, coins: 875 },
-    { rank: 6, name: "Swift Survivor", score: 16250, coins: 800 },
-    { rank: 7, name: "Temple Runner", score: 15000, coins: 750 },
-    { rank: 8, name: "Ancient Warrior", score: 13750, coins: 690 },
-    { rank: 9, name: "Mystic Jumper", score: 12500, coins: 625 },
-    { rank: 10, name: "Golden Hunter", score: 11250, coins: 560 },
-  ];
+  const renderStatCard = (title, value, icon, color = '#ff6b6b') => (
+    <View style={[styles.statCard, { borderLeftColor: color }]}>
+      <View style={styles.statHeader}>
+        <Icon name={icon} size={24} color={color} />
+        <Text style={styles.statTitle}>{title}</Text>
+      </View>
+      <Text style={styles.statValue}>{value}</Text>
+    </View>
+  );
 
-  const getTrophyIcon = (rank) => {
-    if (rank === 1) return { name: "trophy", color: "#ffd93d" };
-    if (rank === 2) return { name: "medal", color: "#c0c0c0" };
-    if (rank === 3) return { name: "medal", color: "#cd7f32" };
-    return { name: "ribbon", color: "#666" };
-  };
-
-  const getPlayerRank = () => {
-    const betterPlayers = globalLeaderboard.filter(player => player.score > localStats.bestScore).length;
-    return betterPlayers + 1;
-  };
+  const renderAchievement = (achievement) => (
+    <View
+      key={achievement.id}
+      style={[
+        styles.achievementCard,
+        { opacity: achievement.unlocked ? 1 : 0.5 }
+      ]}
+    >
+      <View style={styles.achievementIcon}>
+        <Icon
+          name={achievement.icon}
+          size={30}
+          color={achievement.unlocked ? '#ffd93d' : '#666'}
+        />
+      </View>
+      <View style={styles.achievementInfo}>
+        <Text style={[styles.achievementTitle, { color: achievement.unlocked ? '#fff' : '#666' }]}>
+          {achievement.title}
+        </Text>
+        <Text style={[styles.achievementDescription, { color: achievement.unlocked ? '#ccc' : '#555' }]}>
+          {achievement.description}
+        </Text>
+      </View>
+      {achievement.unlocked && (
+        <Icon name="check-circle" size={24} color="#4CAF50" />
+      )}
+    </View>
+  );
 
   return (
-    <ScrollView 
-      style={styles.container}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <LinearGradient colors={['#1a1a2e', '#16213e']} style={styles.gradient}>
-        
-        {/* Your Stats Card */}
-        <Animatable.View animation="fadeInDown" duration={800}>
-          <Card style={styles.yourStatsCard}>
-            <Card.Content>
-              <View style={styles.yourStatsHeader}>
-                <Avatar.Icon size={60} icon="account" backgroundColor="#ff6b6b" />
-                <View style={styles.yourStatsInfo}>
-                  <Title style={styles.yourStatsTitle}>Your Performance</Title>
-                  <Text style={styles.yourRank}>Global Rank: #{getPlayerRank()}</Text>
-                </View>
-              </View>
-              
-              <Divider style={styles.divider} />
-              
-              <View style={styles.statsGrid}>
-                <View style={styles.statItem}>
-                  <Ionicons name="trophy" size={24} color="#ffd93d" />
-                  <Text style={styles.statValue}>{localStats.bestScore}</Text>
-                  <Text style={styles.statLabel}>Best Score</Text>
-                </View>
-                
-                <View style={styles.statItem}>
-                  <Ionicons name="game-controller" size={24} color="#4ecdc4" />
-                  <Text style={styles.statValue}>{localStats.totalGames}</Text>
-                  <Text style={styles.statLabel}>Games Played</Text>
-                </View>
-                
-                <View style={styles.statItem}>
-                  <Ionicons name="diamond" size={24} color="#ff6b6b" />
-                  <Text style={styles.statValue}>{localStats.totalCoins}</Text>
-                  <Text style={styles.statLabel}>Total Coins</Text>
-                </View>
-                
-                <View style={styles.statItem}>
-                  <Ionicons name="analytics" size={24} color="#a55eea" />
-                  <Text style={styles.statValue}>{localStats.averageScore}</Text>
-                  <Text style={styles.statLabel}>Average Score</Text>
-                </View>
-              </View>
-            </Card.Content>
-          </Card>
-        </Animatable.View>
+    <LinearGradient colors={['#1a1a2e', '#16213e']} style={styles.container}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Game Statistics</Text>
+          <Text style={styles.subtitle}>Track your Rock Crush progress</Text>
+        </View>
 
-        {/* Global Leaderboard */}
-        <Animatable.View animation="fadeInUp" duration={800} delay={200}>
-          <Surface style={styles.leaderboardCard}>
-            <View style={styles.leaderboardHeader}>
-              <Title style={styles.leaderboardTitle}>🏆 Global Leaderboard</Title>
-              <Text style={styles.leaderboardSubtitle}>Top Temple Runners Worldwide</Text>
-            </View>
-            
-            {globalLeaderboard.map((player, index) => {
-              const trophy = getTrophyIcon(player.rank);
-              const isPlayerScore = player.score <= localStats.bestScore && 
-                                  (index === 0 || globalLeaderboard[index - 1].score > localStats.bestScore);
-              
-              return (
-                <Animatable.View 
-                  key={player.rank}
-                  animation="fadeInLeft" 
-                  duration={600} 
-                  delay={index * 100}
-                >
-                  <View style={[
-                    styles.leaderboardEntry,
-                    player.rank <= 3 && styles.topThreeEntry,
-                    isPlayerScore && styles.playerEntry
-                  ]}>
-                    <View style={styles.rankSection}>
-                      <Text style={[
-                        styles.rankNumber,
-                        player.rank <= 3 && styles.topRankNumber
-                      ]}>
-                        #{player.rank}
-                      </Text>
-                      <Ionicons 
-                        name={trophy.name} 
-                        size={20} 
-                        color={trophy.color} 
-                      />
-                    </View>
-                    
-                    <View style={styles.playerSection}>
-                      <Text style={[
-                        styles.playerName,
-                        player.rank <= 3 && styles.topPlayerName
-                      ]}>
-                        {player.name}
-                      </Text>
-                      <View style={styles.playerStats}>
-                        <Text style={styles.playerScore}>
-                          🏃 {player.score.toLocaleString()}
-                        </Text>
-                        <Text style={styles.playerCoins}>
-                          💎 {player.coins}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </Animatable.View>
-              );
-            })}
-          </Surface>
-        </Animatable.View>
+        <View style={styles.statsGrid}>
+          {renderStatCard('Games Played', gameStats.gamesPlayed.toString(), 'play-circle-filled', '#ff6b6b')}
+          {renderStatCard('High Score', gameStats.highScore.toLocaleString(), 'star', '#ffd93d')}
+          {renderStatCard('Total Matches', gameStats.totalMatches.toString(), 'group-work', '#4CAF50')}
+          {renderStatCard('Rocks Crushed', gameStats.totalRocksCrushed.toLocaleString(), 'gesture', '#2196F3')}
+          {renderStatCard('Average Score', Math.round(gameStats.averageScore).toString(), 'trending-up', '#9C27B0')}
+          {renderStatCard('Best Streak', gameStats.bestStreak.toString(), 'timeline', '#FF9800')}
+        </View>
 
-        {/* Achievement Badges */}
-        <Animatable.View animation="fadeInUp" duration={800} delay={400}>
-          <Card style={styles.achievementsCard}>
-            <Card.Content>
-              <Title style={styles.achievementsTitle}>🏅 Achievements</Title>
-              
-              <View style={styles.achievementsGrid}>
-                <View style={[
-                  styles.achievement,
-                  localStats.bestScore > 1000 && styles.achievementUnlocked
-                ]}>
-                  <Ionicons 
-                    name="ribbon" 
-                    size={30} 
-                    color={localStats.bestScore > 1000 ? "#ffd93d" : "#666"} 
-                  />
-                  <Text style={styles.achievementText}>First Runner</Text>
-                  <Text style={styles.achievementDesc}>Score 1,000+</Text>
-                </View>
-                
-                <View style={[
-                  styles.achievement,
-                  localStats.bestScore > 5000 && styles.achievementUnlocked
-                ]}>
-                  <Ionicons 
-                    name="medal" 
-                    size={30} 
-                    color={localStats.bestScore > 5000 ? "#c0c0c0" : "#666"} 
-                  />
-                  <Text style={styles.achievementText}>Speed Demon</Text>
-                  <Text style={styles.achievementDesc}>Score 5,000+</Text>
-                </View>
-                
-                <View style={[
-                  styles.achievement,
-                  localStats.bestScore > 10000 && styles.achievementUnlocked
-                ]}>
-                  <Ionicons 
-                    name="trophy" 
-                    size={30} 
-                    color={localStats.bestScore > 10000 ? "#ffd93d" : "#666"} 
-                  />
-                  <Text style={styles.achievementText}>Temple Master</Text>
-                  <Text style={styles.achievementDesc}>Score 10,000+</Text>
-                </View>
-                
-                <View style={[
-                  styles.achievement,
-                  localStats.totalCoins > 100 && styles.achievementUnlocked
-                ]}>
-                  <Ionicons 
-                    name="diamond" 
-                    size={30} 
-                    color={localStats.totalCoins > 100 ? "#ff6b6b" : "#666"} 
-                  />
-                  <Text style={styles.achievementText}>Coin Collector</Text>
-                  <Text style={styles.achievementDesc}>Collect 100+ coins</Text>
-                </View>
-              </View>
-            </Card.Content>
-          </Card>
-        </Animatable.View>
+        <View style={styles.achievementsSection}>
+          <Text style={styles.sectionTitle}>Achievements</Text>
+          <View style={styles.achievementsList}>
+            {achievements.map(renderAchievement)}
+          </View>
+        </View>
 
-        {/* Reset Stats Button */}
-        <Animatable.View animation="fadeInUp" duration={800} delay={600}>
-          <Button
-            mode="outlined"
-            style={styles.resetButton}
-            onPress={clearStats}
-            icon="refresh"
-          >
-            Reset All Stats
-          </Button>
-        </Animatable.View>
-
-      </LinearGradient>
-    </ScrollView>
+        <View style={styles.actionsSection}>
+          <TouchableOpacity style={styles.resetButton} onPress={resetStats}>
+            <Icon name="refresh" size={20} color="#fff" />
+            <Text style={styles.resetButtonText}>Reset Statistics</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
@@ -285,179 +194,106 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  gradient: {
-    minHeight: '100%',
+  scrollView: {
+    flex: 1,
     padding: 20,
   },
-  yourStatsCard: {
-    backgroundColor: 'rgba(22, 33, 62, 0.9)',
-    marginBottom: 20,
-    elevation: 8,
-  },
-  yourStatsHeader: {
-    flexDirection: 'row',
+  header: {
+    marginBottom: 30,
     alignItems: 'center',
-    marginBottom: 20,
   },
-  yourStatsInfo: {
-    marginLeft: 15,
-    flex: 1,
-  },
-  yourStatsTitle: {
-    color: '#fff',
-    fontSize: 20,
-  },
-  yourRank: {
-    color: '#4ecdc4',
-    fontSize: 16,
+  title: {
+    fontSize: 32,
     fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
   },
-  divider: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    marginBottom: 20,
+  subtitle: {
+    fontSize: 16,
+    color: '#ccc',
+    textAlign: 'center',
   },
   statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    marginBottom: 30,
   },
-  statItem: {
+  statCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    borderLeftWidth: 4,
+  },
+  statHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    width: '48%',
-    marginBottom: 15,
+    marginBottom: 8,
+  },
+  statTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+    marginLeft: 8,
   },
   statValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
     color: '#fff',
+  },
+  achievementsSection: {
+    marginBottom: 30,
+  },
+  sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 8,
-  },
-  statLabel: {
-    color: '#ccc',
-    fontSize: 12,
-    marginTop: 4,
-  },
-  leaderboardCard: {
-    backgroundColor: 'rgba(22, 33, 62, 0.9)',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 20,
-    elevation: 8,
-  },
-  leaderboardHeader: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  leaderboardTitle: {
-    color: '#fff',
-    fontSize: 22,
-    textAlign: 'center',
-  },
-  leaderboardSubtitle: {
-    color: '#ccc',
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 5,
-  },
-  leaderboardEntry: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    marginVertical: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 8,
-  },
-  topThreeEntry: {
-    backgroundColor: 'rgba(255, 215, 61, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 215, 61, 0.3)',
-  },
-  playerEntry: {
-    backgroundColor: 'rgba(255, 107, 107, 0.2)',
-    borderWidth: 2,
-    borderColor: '#ff6b6b',
-  },
-  rankSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 60,
-  },
-  rankNumber: {
-    color: '#ccc',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginRight: 8,
-  },
-  topRankNumber: {
-    color: '#ffd93d',
-  },
-  playerSection: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  playerName: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  topPlayerName: {
-    color: '#ffd93d',
-  },
-  playerStats: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  playerScore: {
-    color: '#4ecdc4',
-    fontSize: 14,
-    marginRight: 15,
-  },
-  playerCoins: {
     color: '#ff6b6b',
+    marginBottom: 15,
+  },
+  achievementsList: {
+    // No additional styles needed
+  },
+  achievementCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  achievementIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  achievementInfo: {
+    flex: 1,
+  },
+  achievementTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  achievementDescription: {
     fontSize: 14,
   },
-  achievementsCard: {
-    backgroundColor: 'rgba(22, 33, 62, 0.9)',
-    marginBottom: 20,
-  },
-  achievementsTitle: {
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  achievementsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  achievement: {
-    width: '48%',
-    alignItems: 'center',
-    padding: 15,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 12,
-    marginBottom: 10,
-  },
-  achievementUnlocked: {
-    backgroundColor: 'rgba(255, 215, 61, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 215, 61, 0.3)',
-  },
-  achievementText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  achievementDesc: {
-    color: '#ccc',
-    fontSize: 10,
-    textAlign: 'center',
-    marginTop: 4,
+  actionsSection: {
+    marginBottom: 30,
   },
   resetButton: {
-    borderColor: '#ff6b6b',
-    marginBottom: 20,
+    backgroundColor: '#dc3545',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    borderRadius: 12,
+  },
+  resetButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 8,
   },
 });

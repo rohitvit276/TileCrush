@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Alert, Linking } from 'react-native';
-import { Card, Title, Text, Button, Surface, Switch, Divider, List } from 'react-native-paper';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Switch,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as Animatable from 'react-native-animatable';
-import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { gameColors } from '../theme/gameTheme';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function SettingsScreen() {
   const [settings, setSettings] = useState({
     soundEnabled: true,
-    musicEnabled: true,
-    vibrationEnabled: true,
-    notifications: true,
+    vibrationsEnabled: true,
+    difficulty: 'normal',
+    gridSize: 8,
     autoSave: true,
-    cloudSync: false,
-    highQuality: true,
   });
 
   useEffect(() => {
@@ -24,342 +27,166 @@ export default function SettingsScreen() {
 
   const loadSettings = async () => {
     try {
-      const savedSettings = await AsyncStorage.getItem('gameSettings');
+      const savedSettings = await AsyncStorage.getItem('rockCrushSettings');
       if (savedSettings) {
         setSettings(JSON.parse(savedSettings));
       }
     } catch (error) {
-      console.error('Error loading settings:', error);
+      console.log('Error loading settings:', error);
     }
   };
 
   const saveSettings = async (newSettings) => {
     try {
-      await AsyncStorage.setItem('gameSettings', JSON.stringify(newSettings));
+      await AsyncStorage.setItem('rockCrushSettings', JSON.stringify(newSettings));
       setSettings(newSettings);
     } catch (error) {
-      console.error('Error saving settings:', error);
+      console.log('Error saving settings:', error);
     }
   };
 
-  const toggleSetting = (setting) => {
-    const newSettings = { ...settings, [setting]: !settings[setting] };
+  const handleToggle = (key, value) => {
+    const newSettings = { ...settings, [key]: value };
     saveSettings(newSettings);
   };
 
-  const resetProgress = () => {
+  const resetAllData = () => {
     Alert.alert(
-      'Reset Game Progress',
-      'Are you sure you want to reset all game progress? This action cannot be undone.',
+      'Reset All Data',
+      'This will delete all your game progress, scores, and settings. This action cannot be undone.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Reset',
+          text: 'Reset All',
           style: 'destructive',
           onPress: async () => {
             try {
               await AsyncStorage.multiRemove([
-                'bestScore',
-                'totalGames',
-                'totalCoins',
-                'totalScore',
-                'ownedCharacters',
-                'selectedCharacter'
+                'rockCrushHighScore',
+                'rockCrushStats',
+                'rockCrushSettings'
               ]);
-              Alert.alert('Success', 'Game progress has been reset.');
+              setSettings({
+                soundEnabled: true,
+                vibrationsEnabled: true,
+                difficulty: 'normal',
+                gridSize: 8,
+                autoSave: true,
+              });
+              Alert.alert('Success', 'All data has been reset.');
             } catch (error) {
-              Alert.alert('Error', 'Failed to reset progress.');
+              Alert.alert('Error', 'Failed to reset data.');
             }
-          }
-        }
+          },
+        },
       ]
     );
   };
 
-  const exportData = async () => {
-    try {
-      const allKeys = await AsyncStorage.getAllKeys();
-      const gameKeys = allKeys.filter(key => 
-        ['bestScore', 'totalGames', 'totalCoins', 'ownedCharacters', 'selectedCharacter', 'gameSettings'].includes(key)
-      );
-      const gameData = await AsyncStorage.multiGet(gameKeys);
-      const exportData = Object.fromEntries(gameData);
-      
-      Alert.alert(
-        'Export Data',
-        `Game data exported:\n\n${JSON.stringify(exportData, null, 2)}`,
-        [{ text: 'OK' }]
-      );
-    } catch (error) {
-      Alert.alert('Error', 'Failed to export data.');
-    }
-  };
-
-  const openPrivacyPolicy = () => {
-    Linking.openURL('https://example.com/privacy-policy');
-  };
-
-  const openTermsOfService = () => {
-    Linking.openURL('https://example.com/terms-of-service');
-  };
-
-  const contactSupport = () => {
-    Linking.openURL('mailto:support@templerunner.com?subject=Temple Runner Support');
-  };
-
-  const rateApp = () => {
-    // In real app, this would open Play Store
-    Alert.alert(
-      'Rate Temple Runner',
-      'Thank you for playing! Please rate us on the Play Store.',
-      [{ text: 'OK' }]
-    );
-  };
+  const renderSettingItem = (title, subtitle, icon, children) => (
+    <View style={styles.settingItem}>
+      <View style={styles.settingHeader}>
+        <Icon name={icon} size={24} color="#ff6b6b" />
+        <View style={styles.settingText}>
+          <Text style={styles.settingTitle}>{title}</Text>
+          {subtitle && <Text style={styles.settingSubtitle}>{subtitle}</Text>}
+        </View>
+      </View>
+      {children}
+    </View>
+  );
 
   return (
-    <ScrollView style={styles.container}>
-      <LinearGradient colors={['#1a1a2e', '#16213e']} style={styles.gradient}>
-        
-        {/* Game Settings */}
-        <Animatable.View animation="fadeInDown" duration={800}>
-          <Surface style={styles.sectionCard}>
-            <Title style={styles.sectionTitle}>🎮 Game Settings</Title>
-            
-            <List.Item
-              title="Sound Effects"
-              description="Enable game sound effects"
-              left={props => <List.Icon {...props} icon="volume-high" color="#4ecdc4" />}
-              right={() => (
-                <Switch
-                  value={settings.soundEnabled}
-                  onValueChange={() => toggleSetting('soundEnabled')}
-                  color="#ff6b6b"
-                />
-              )}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
+    <LinearGradient colors={['#1a1a2e', '#16213e']} style={styles.container}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Settings</Text>
+          <Text style={styles.subtitle}>Customize your Rock Crush experience</Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Game Settings</Text>
+          
+          {renderSettingItem(
+            'Sound Effects',
+            'Enable game sounds and music',
+            'volume-up',
+            <Switch
+              value={settings.soundEnabled}
+              onValueChange={(value) => handleToggle('soundEnabled', value)}
+              trackColor={{ false: '#767577', true: '#ff6b6b' }}
+              thumbColor={settings.soundEnabled ? '#fff' : '#f4f3f4'}
             />
+          )}
 
-            <Divider style={styles.divider} />
-
-            <List.Item
-              title="Background Music"
-              description="Enable background music"
-              left={props => <List.Icon {...props} icon="music-note" color="#4ecdc4" />}
-              right={() => (
-                <Switch
-                  value={settings.musicEnabled}
-                  onValueChange={() => toggleSetting('musicEnabled')}
-                  color="#ff6b6b"
-                />
-              )}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
+          {renderSettingItem(
+            'Vibrations',
+            'Enable haptic feedback',
+            'vibration',
+            <Switch
+              value={settings.vibrationsEnabled}
+              onValueChange={(value) => handleToggle('vibrationsEnabled', value)}
+              trackColor={{ false: '#767577', true: '#ff6b6b' }}
+              thumbColor={settings.vibrationsEnabled ? '#fff' : '#f4f3f4'}
             />
+          )}
 
-            <Divider style={styles.divider} />
-
-            <List.Item
-              title="Vibration"
-              description="Enable haptic feedback"
-              left={props => <List.Icon {...props} icon="vibrate" color="#4ecdc4" />}
-              right={() => (
-                <Switch
-                  value={settings.vibrationEnabled}
-                  onValueChange={() => toggleSetting('vibrationEnabled')}
-                  color="#ff6b6b"
-                />
-              )}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
+          {renderSettingItem(
+            'Auto Save',
+            'Automatically save game progress',
+            'save',
+            <Switch
+              value={settings.autoSave}
+              onValueChange={(value) => handleToggle('autoSave', value)}
+              trackColor={{ false: '#767577', true: '#ff6b6b' }}
+              thumbColor={settings.autoSave ? '#fff' : '#f4f3f4'}
             />
+          )}
+        </View>
 
-            <Divider style={styles.divider} />
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Game Info</Text>
+          
+          <View style={styles.infoCard}>
+            <Text style={styles.infoTitle}>How to Play</Text>
+            <Text style={styles.infoText}>
+              • Tap a rock to select it{'\n'}
+              • Tap an adjacent rock to swap positions{'\n'}
+              • Match 3 or more rocks in a row or column{'\n'}
+              • Score points before moves run out{'\n'}
+              • Try to beat your high score!
+            </Text>
+          </View>
 
-            <List.Item
-              title="High Quality Graphics"
-              description="Better visuals, may affect performance"
-              left={props => <List.Icon {...props} icon="high-definition-box" color="#4ecdc4" />}
-              right={() => (
-                <Switch
-                  value={settings.highQuality}
-                  onValueChange={() => toggleSetting('highQuality')}
-                  color="#ff6b6b"
-                />
-              )}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
-            />
-          </Surface>
-        </Animatable.View>
-
-        {/* App Settings */}
-        <Animatable.View animation="fadeInUp" duration={800} delay={200}>
-          <Surface style={styles.sectionCard}>
-            <Title style={styles.sectionTitle}>📱 App Settings</Title>
-            
-            <List.Item
-              title="Push Notifications"
-              description="Receive game updates and reminders"
-              left={props => <List.Icon {...props} icon="bell" color="#ffd93d" />}
-              right={() => (
-                <Switch
-                  value={settings.notifications}
-                  onValueChange={() => toggleSetting('notifications')}
-                  color="#ff6b6b"
-                />
-              )}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
-            />
-
-            <Divider style={styles.divider} />
-
-            <List.Item
-              title="Auto Save"
-              description="Automatically save game progress"
-              left={props => <List.Icon {...props} icon="content-save" color="#ffd93d" />}
-              right={() => (
-                <Switch
-                  value={settings.autoSave}
-                  onValueChange={() => toggleSetting('autoSave')}
-                  color="#ff6b6b"
-                />
-              )}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
-            />
-
-            <Divider style={styles.divider} />
-
-            <List.Item
-              title="Cloud Sync"
-              description="Sync progress across devices"
-              left={props => <List.Icon {...props} icon="cloud-sync" color="#ffd93d" />}
-              right={() => (
-                <Switch
-                  value={settings.cloudSync}
-                  onValueChange={() => toggleSetting('cloudSync')}
-                  color="#ff6b6b"
-                />
-              )}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
-            />
-          </Surface>
-        </Animatable.View>
-
-        {/* Data Management */}
-        <Animatable.View animation="fadeInUp" duration={800} delay={400}>
-          <Surface style={styles.sectionCard}>
-            <Title style={styles.sectionTitle}>💾 Data Management</Title>
-            
-            <Button
-              mode="outlined"
-              icon="export"
-              style={styles.actionButton}
-              onPress={exportData}
-            >
-              Export Game Data
-            </Button>
-
-            <Button
-              mode="outlined"
-              icon="backup-restore"
-              style={styles.actionButton}
-            >
-              Import Game Data
-            </Button>
-
-            <Button
-              mode="outlined"
-              icon="delete-forever"
-              style={[styles.actionButton, styles.dangerButton]}
-              onPress={resetProgress}
-            >
-              Reset All Progress
-            </Button>
-          </Surface>
-        </Animatable.View>
-
-        {/* App Info */}
-        <Animatable.View animation="fadeInUp" duration={800} delay={600}>
-          <Surface style={styles.sectionCard}>
-            <Title style={styles.sectionTitle}>ℹ️ App Information</Title>
-            
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Version</Text>
-              <Text style={styles.infoValue}>1.0.0</Text>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoTitle}>Rock Types</Text>
+            <View style={styles.rockTypes}>
+              <View style={[styles.rockPreview, { backgroundColor: '#8B4513' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#696969' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#2F4F4F' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#708090' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#556B2F' }]} />
+              <View style={[styles.rockPreview, { backgroundColor: '#800000' }]} />
             </View>
+            <Text style={styles.infoText}>6 different rock types to match and crush!</Text>
+          </View>
+        </View>
 
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Build</Text>
-              <Text style={styles.infoValue}>20250731</Text>
-            </View>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Data Management</Text>
+          
+          <TouchableOpacity style={styles.dangerButton} onPress={resetAllData}>
+            <Icon name="delete-forever" size={20} color="#fff" />
+            <Text style={styles.dangerButtonText}>Reset All Data</Text>
+          </TouchableOpacity>
+        </View>
 
-            <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Engine</Text>
-              <Text style={styles.infoValue}>React Native + Expo</Text>
-            </View>
-
-            <Divider style={styles.divider} />
-
-            <Button
-              mode="outlined"
-              icon="star"
-              style={styles.actionButton}
-              onPress={rateApp}
-            >
-              Rate Temple Runner
-            </Button>
-
-            <Button
-              mode="outlined"
-              icon="help-circle"
-              style={styles.actionButton}
-              onPress={contactSupport}
-            >
-              Contact Support
-            </Button>
-          </Surface>
-        </Animatable.View>
-
-        {/* Legal */}
-        <Animatable.View animation="fadeInUp" duration={800} delay={800}>
-          <Surface style={styles.sectionCard}>
-            <Title style={styles.sectionTitle}>⚖️ Legal</Title>
-            
-            <Button
-              mode="text"
-              icon="shield-check"
-              style={styles.legalButton}
-              onPress={openPrivacyPolicy}
-            >
-              Privacy Policy
-            </Button>
-
-            <Button
-              mode="text"
-              icon="file-document"
-              style={styles.legalButton}
-              onPress={openTermsOfService}
-            >
-              Terms of Service
-            </Button>
-
-            <View style={styles.copyrightContainer}>
-              <Text style={styles.copyrightText}>
-                © 2025 Temple Runner. All rights reserved.
-              </Text>
-              <Text style={styles.copyrightSubtext}>
-                Made with ❤️ for endless running fun
-              </Text>
-            </View>
-          </Surface>
-        </Animatable.View>
-
-      </LinearGradient>
-    </ScrollView>
+        <View style={styles.footer}>
+          <Text style={styles.versionText}>Rock Crush v1.0.0</Text>
+          <Text style={styles.copyrightText}>Made with React Native & Expo</Text>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
@@ -367,77 +194,117 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  gradient: {
-    minHeight: '100%',
+  scrollView: {
+    flex: 1,
     padding: 20,
   },
-  sectionCard: {
-    backgroundColor: 'rgba(22, 33, 62, 0.9)',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 20,
-    elevation: 8,
+  header: {
+    marginBottom: 30,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#ccc',
+    textAlign: 'center',
+  },
+  section: {
+    marginBottom: 30,
   },
   sectionTitle: {
-    color: '#fff',
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 20,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#ff6b6b',
+    marginBottom: 15,
   },
-  listTitle: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  listDescription: {
-    color: '#ccc',
-    fontSize: 14,
-  },
-  divider: {
+  settingItem: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    marginVertical: 8,
-  },
-  actionButton: {
-    marginVertical: 6,
-    borderColor: '#4ecdc4',
-  },
-  dangerButton: {
-    borderColor: '#ff4757',
-  },
-  infoRow: {
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 8,
   },
-  infoLabel: {
-    color: '#ccc',
+  settingHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  settingText: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  settingTitle: {
     fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
   },
-  infoValue: {
+  settingSubtitle: {
+    fontSize: 14,
+    color: '#ccc',
+    marginTop: 2,
+  },
+  infoCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+  },
+  infoTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#ccc',
+    lineHeight: 20,
+  },
+  rockTypes: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  rockPreview: {
+    width: 30,
+    height: 30,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#333',
+  },
+  dangerButton: {
+    backgroundColor: '#dc3545',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    borderRadius: 12,
+  },
+  dangerButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    marginLeft: 8,
   },
-  legalButton: {
-    alignSelf: 'flex-start',
-    marginVertical: 4,
-  },
-  copyrightContainer: {
+  footer: {
     alignItems: 'center',
-    marginTop: 20,
-    paddingTop: 20,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  versionText: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 4,
   },
   copyrightText: {
-    color: '#ccc',
     fontSize: 12,
-    textAlign: 'center',
-  },
-  copyrightSubtext: {
-    color: '#666',
-    fontSize: 10,
-    textAlign: 'center',
-    marginTop: 4,
+    color: '#555',
   },
 });
