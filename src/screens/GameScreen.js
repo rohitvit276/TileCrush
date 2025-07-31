@@ -180,6 +180,44 @@ export default function GameScreen() {
     }
   };
 
+  const playGameOverSound = async () => {
+    try {
+      if (typeof window !== 'undefined' && window.AudioContext) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Create dramatic game over music with descending notes
+        const notes = [
+          { freq: 523.25, time: 0 },    // C5
+          { freq: 493.88, time: 0.3 },  // B4
+          { freq: 440.00, time: 0.6 },  // A4
+          { freq: 392.00, time: 0.9 },  // G4
+          { freq: 349.23, time: 1.2 },  // F4
+          { freq: 293.66, time: 1.5 },  // D4
+          { freq: 261.63, time: 1.8 },  // C4
+        ];
+        
+        notes.forEach(({ freq, time }) => {
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          
+          oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + time);
+          oscillator.type = 'sine';
+          
+          gainNode.gain.setValueAtTime(0.4, audioContext.currentTime + time);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + time + 0.4);
+          
+          oscillator.start(audioContext.currentTime + time);
+          oscillator.stop(audioContext.currentTime + time + 0.4);
+        });
+      }
+    } catch (error) {
+      console.log('Error playing game over sound:', error);
+    }
+  };
+
   // Check if there are any possible moves
   const checkPossibleMoves = (gridToCheck) => {
     const possibleMoves = [];
@@ -227,15 +265,13 @@ export default function GameScreen() {
       // No moves possible - Game Over
       setGameOver(true);
       saveHighScore(score);
+      playGameOverSound();
       Alert.alert(
         'Game Over!',
         `No more matches possible!\n\nFinal Score: ${score}\nHigh Score: ${Math.max(score, highScore)}\n\nThe board has no valid moves left.`,
         [{ 
           text: 'Play Again', 
-          onPress: () => {
-            setGameOver(false);
-            initializeGrid();
-          }
+          onPress: restartGame
         }]
       );
     } else if (possibleMoves.length === 1) {
@@ -338,15 +374,13 @@ export default function GameScreen() {
         [
           {
             text: 'Play Again',
-            onPress: () => {
-              setGameOver(false);
-              initializeGrid();
-            },
+            onPress: restartGame,
           },
         ]
       );
       setGameOver(true);
       saveHighScore(score);
+      playGameOverSound();
     }
   }, [moves, gameStarted, gameOver, score, highScore]);
 
@@ -370,6 +404,18 @@ export default function GameScreen() {
     } catch (error) {
       console.log('Error saving high score:', error);
     }
+  };
+
+  const restartGame = () => {
+    setGameOver(false);
+    setScore(0);
+    setMoves(30);
+    setSelectedRock(null);
+    setGameStarted(false);
+    setHintAvailable(false);
+    setHintPattern(null);
+    setShowHint(false);
+    initializeGrid();
   };
 
   const initializeGrid = () => {
@@ -822,6 +868,21 @@ export default function GameScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      {gameOver && (
+        <View style={styles.gameOverOverlay}>
+          <View style={styles.gameOverContainer}>
+            <Text style={styles.gameOverText}>GAME OVER</Text>
+            <Text style={styles.finalScoreText}>Final Score: {score}</Text>
+            <Text style={styles.highScoreGameOverText}>
+              High Score: {Math.max(score, highScore)}
+            </Text>
+            <TouchableOpacity style={styles.restartButton} onPress={restartGame}>
+              <Text style={styles.restartButtonText}>RESTART GAME</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </LinearGradient>
   );
 }
@@ -1040,5 +1101,65 @@ const styles = StyleSheet.create({
   },
   scoreContainer: {
     marginTop: 20,
+  },
+  gameOverOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  gameOverContainer: {
+    backgroundColor: 'rgba(255, 107, 107, 0.95)',
+    padding: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+  },
+  gameOverText: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 20,
+    textShadowColor: '#000',
+    textShadowOffset: { width: 3, height: 3 },
+    textShadowRadius: 6,
+  },
+  finalScoreText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  highScoreGameOverText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#ffeb3b',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  restartButton: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 40,
+    paddingVertical: 15,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#ff6b6b',
+  },
+  restartButtonText: {
+    color: '#ff6b6b',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
