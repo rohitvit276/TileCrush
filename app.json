@@ -6,6 +6,8 @@
     "orientation": "portrait",
     "icon": "./assets/icon.svg",
     "userInterfaceStyle": "light",
+    "primaryColor": "#6366f1",
+    "entryPoint": "./index.js",
     "splash": {
       "image": "./assets/splash.svg",
       "resizeMode": "contain",

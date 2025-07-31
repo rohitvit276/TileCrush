@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@expo/cli": "^0.24.20",
-    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-camera-roll/camera-roll": "^7.10.1",
     "@react-navigation/bottom-tabs": "^7.4.4",
     "@react-navigation/native": "^7.1.16",
@@ -21,17 +21,19 @@
     "expo-camera": "^16.1.11",
     "expo-file-system": "^18.1.11",
     "expo-haptics": "^14.1.4",
+    "expo-keep-awake": "^14.1.4",
     "expo-linear-gradient": "^14.1.5",
     "expo-media-library": "^17.1.7",
-    "react-native": "^0.80.2",
+    "expo-status-bar": "^2.2.3",
+    "react-native": "0.79.5",
     "react-native-animatable": "^1.4.0",
     "react-native-chart-kit": "^6.12.0",
     "react-native-charts-wrapper": "^0.6.0",
     "react-native-modal": "^14.0.0-rc.1",
     "react-native-paper": "^5.14.5",
-    "react-native-safe-area-context": "^5.5.2",
-    "react-native-screens": "^4.13.1",
-    "react-native-svg": "^15.12.0",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "react-native-svg": "15.11.2",
     "react-native-vector-icons": "^10.3.0"
   }
 }
