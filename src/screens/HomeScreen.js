@@ -6,15 +6,18 @@ import * as Animatable from 'react-native-animatable';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { moodColors } from '../theme/theme';
+import LanguageSelector from '../components/LanguageSelector';
 
 const { width } = Dimensions.get('window');
 
 export default function HomeScreen({ navigation }) {
   const [recentMood, setRecentMood] = useState(null);
   const [totalSessions, setTotalSessions] = useState(0);
+  const [selectedLanguage, setSelectedLanguage] = useState('english');
 
   useEffect(() => {
     loadRecentData();
+    loadLanguagePreference();
   }, []);
 
   const loadRecentData = async () => {
@@ -32,6 +35,26 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+  const loadLanguagePreference = async () => {
+    try {
+      const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+      if (savedLanguage) {
+        setSelectedLanguage(savedLanguage);
+      }
+    } catch (error) {
+      console.error('Error loading language preference:', error);
+    }
+  };
+
+  const handleLanguageChange = async (language) => {
+    setSelectedLanguage(language);
+    try {
+      await AsyncStorage.setItem('selectedLanguage', language);
+    } catch (error) {
+      console.error('Error saving language preference:', error);
+    }
+  };
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <LinearGradient
@@ -39,13 +62,25 @@ export default function HomeScreen({ navigation }) {
         style={styles.header}
       >
         <Animatable.View animation="fadeInDown" duration={1000}>
-          <Text style={styles.welcomeText}>Welcome to</Text>
+          <Text style={styles.welcomeText}>
+            {selectedLanguage === 'hindi' ? 'आपका स्वागत है' : 'Welcome to'}
+          </Text>
           <Text style={styles.appTitle}>Music Mood Mapper</Text>
-          <Text style={styles.subtitle}>Discover music that matches your mood</Text>
+          <Text style={styles.subtitle}>
+            {selectedLanguage === 'hindi' ? 
+              'अपने मूड के अनुसार संगीत खोजें' : 
+              'Discover music that matches your mood'
+            }
+          </Text>
         </Animatable.View>
       </LinearGradient>
 
       <View style={styles.content}>
+        <LanguageSelector
+          selectedLanguage={selectedLanguage}
+          onLanguageChange={handleLanguageChange}
+        />
+
         {recentMood && (
           <Animatable.View animation="fadeInUp" duration={800} delay={200}>
             <Card style={styles.recentMoodCard}>
@@ -57,7 +92,9 @@ export default function HomeScreen({ navigation }) {
                     style={{ backgroundColor: moodColors[recentMood.mood] || moodColors.neutral }}
                   />
                   <View style={styles.recentMoodText}>
-                    <Title>Last Detected Mood</Title>
+                    <Title>
+                      {selectedLanguage === 'hindi' ? 'अंतिम पहचाना गया मूड' : 'Last Detected Mood'}
+                    </Title>
                     <Paragraph style={[styles.moodText, { color: moodColors[recentMood.mood] }]}>
                       {recentMood.mood.toUpperCase()}
                     </Paragraph>
@@ -78,12 +115,16 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.statItem}>
                   <Ionicons name="analytics-outline" size={32} color="#6366f1" />
                   <Text style={styles.statNumber}>{totalSessions}</Text>
-                  <Text style={styles.statLabel}>Mood Sessions</Text>
+                  <Text style={styles.statLabel}>
+                    {selectedLanguage === 'hindi' ? 'मूड सेशन' : 'Mood Sessions'}
+                  </Text>
                 </View>
                 <View style={styles.statItem}>
                   <Ionicons name="musical-notes-outline" size={32} color="#f59e0b" />
                   <Text style={styles.statNumber}>{totalSessions * 3}</Text>
-                  <Text style={styles.statLabel}>Songs Discovered</Text>
+                  <Text style={styles.statLabel}>
+                    {selectedLanguage === 'hindi' ? 'गाने खोजे' : 'Songs Discovered'}
+                  </Text>
                 </View>
               </View>
             </Card.Content>
@@ -92,7 +133,9 @@ export default function HomeScreen({ navigation }) {
 
         <Animatable.View animation="fadeInUp" duration={800} delay={600}>
           <Surface style={styles.quickActions}>
-            <Title style={styles.sectionTitle}>Quick Actions</Title>
+            <Title style={styles.sectionTitle}>
+              {selectedLanguage === 'hindi' ? 'त्वरित कार्य' : 'Quick Actions'}
+            </Title>
             
             <View style={styles.actionButtons}>
               <Button
@@ -102,7 +145,7 @@ export default function HomeScreen({ navigation }) {
                 contentStyle={styles.buttonContent}
                 onPress={() => navigation.navigate('Detect Mood')}
               >
-                Take Mood Selfie
+                {selectedLanguage === 'hindi' ? 'मूड सेल्फी लें' : 'Take Mood Selfie'}
               </Button>
 
               <Button
@@ -112,7 +155,7 @@ export default function HomeScreen({ navigation }) {
                 contentStyle={styles.buttonContent}
                 onPress={() => navigation.navigate('Music')}
               >
-                Browse Music
+                {selectedLanguage === 'hindi' ? 'संगीत ब्राउज़ करें' : 'Browse Music'}
               </Button>
 
               <Button
@@ -122,7 +165,7 @@ export default function HomeScreen({ navigation }) {
                 contentStyle={styles.buttonContent}
                 onPress={() => navigation.navigate('History')}
               >
-                View History
+                {selectedLanguage === 'hindi' ? 'इतिहास देखें' : 'View History'}
               </Button>
             </View>
           </Surface>
@@ -131,19 +174,36 @@ export default function HomeScreen({ navigation }) {
         <Animatable.View animation="fadeInUp" duration={800} delay={800}>
           <Card style={styles.infoCard}>
             <Card.Content>
-              <Title>How It Works</Title>
+              <Title>
+                {selectedLanguage === 'hindi' ? 'यह कैसे काम करता है' : 'How It Works'}
+              </Title>
               <View style={styles.stepContainer}>
                 <View style={styles.step}>
                   <Avatar.Icon size={40} icon="camera" style={styles.stepIcon} />
-                  <Text style={styles.stepText}>Take a selfie or record audio</Text>
+                  <Text style={styles.stepText}>
+                    {selectedLanguage === 'hindi' ? 
+                      'सेल्फी लें या ऑडियो रिकॉर्ड करें' : 
+                      'Take a selfie or record audio'
+                    }
+                  </Text>
                 </View>
                 <View style={styles.step}>
                   <Avatar.Icon size={40} icon="brain" style={styles.stepIcon} />
-                  <Text style={styles.stepText}>AI analyzes your mood</Text>
+                  <Text style={styles.stepText}>
+                    {selectedLanguage === 'hindi' ? 
+                      'AI आपके मूड का विश्लेषण करता है' : 
+                      'AI analyzes your mood'
+                    }
+                  </Text>
                 </View>
                 <View style={styles.step}>
                   <Avatar.Icon size={40} icon="music" style={styles.stepIcon} />
-                  <Text style={styles.stepText}>Get personalized music recommendations</Text>
+                  <Text style={styles.stepText}>
+                    {selectedLanguage === 'hindi' ? 
+                      'व्यक्तिगत संगीत सिफारिशें प्राप्त करें' : 
+                      'Get personalized music recommendations'
+                    }
+                  </Text>
                 </View>
               </View>
             </Card.Content>

@@ -3,10 +3,13 @@ import { View, StyleSheet, ScrollView, FlatList, Linking, Alert } from 'react-na
 import { Card, Title, Text, Button, Surface, Chip, Avatar, Searchbar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { moodColors } from '../theme/theme';
+import { getMoodSongs, getAllSongs, languageOptions } from '../data/musicDatabase';
+import LanguageSelector from '../components/LanguageSelector';
 
-// Mock music database with mood-based recommendations
-const musicDatabase = {
+// Legacy database for backward compatibility
+const legacyMusicDatabase = {
   happy: [
     { id: 1, title: "Happy", artist: "Pharrell Williams", genre: "Pop", spotify: "spotify:track:60nZcImufyMA1MKQY3dcCH", youtube: "ZbZSe6N_BXs" },
     { id: 2, title: "Good as Hell", artist: "Lizzo", genre: "Pop", spotify: "spotify:track:1PVzeHeNMg2HSS8nOcbBaL", youtube: "SmbmeOgWsqE" },
@@ -60,20 +63,45 @@ const musicDatabase = {
 
 export default function MusicRecommendationsScreen({ route }) {
   const [selectedMood, setSelectedMood] = useState(route?.params?.mood || 'neutral');
+  const [selectedLanguage, setSelectedLanguage] = useState('english');
   const [searchQuery, setSearchQuery] = useState('');
   const [recommendations, setRecommendations] = useState([]);
   const [filteredRecommendations, setFilteredRecommendations] = useState([]);
 
   useEffect(() => {
+    loadLanguagePreference();
+  }, []);
+
+  useEffect(() => {
     loadRecommendations();
-  }, [selectedMood]);
+  }, [selectedMood, selectedLanguage]);
 
   useEffect(() => {
     filterRecommendations();
   }, [searchQuery, recommendations]);
 
+  const loadLanguagePreference = async () => {
+    try {
+      const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+      if (savedLanguage) {
+        setSelectedLanguage(savedLanguage);
+      }
+    } catch (error) {
+      console.error('Error loading language preference:', error);
+    }
+  };
+
+  const handleLanguageChange = async (language) => {
+    setSelectedLanguage(language);
+    try {
+      await AsyncStorage.setItem('selectedLanguage', language);
+    } catch (error) {
+      console.error('Error saving language preference:', error);
+    }
+  };
+
   const loadRecommendations = () => {
-    const moodSongs = musicDatabase[selectedMood] || musicDatabase.neutral;
+    const moodSongs = getMoodSongs(selectedLanguage, selectedMood);
     setRecommendations(moodSongs);
   };
 
@@ -115,9 +143,9 @@ export default function MusicRecommendationsScreen({ route }) {
 
   const renderMoodSelector = () => (
     <Surface style={styles.moodSelector}>
-      <Title style={styles.selectorTitle}>Select Mood</Title>
+      <Title style={styles.selectorTitle}>Select Mood / मूड चुनें</Title>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.moodChips}>
-        {Object.keys(musicDatabase).map((mood) => (
+        {Object.keys(legacyMusicDatabase).map((mood) => (
           <Chip
             key={mood}
             selected={selectedMood === mood}
@@ -179,13 +207,26 @@ export default function MusicRecommendationsScreen({ route }) {
     </Animatable.View>
   );
 
+  const getLanguageLabel = () => {
+    const lang = languageOptions.find(l => l.value === selectedLanguage);
+    return lang ? lang.label : 'English';
+  };
+
   return (
     <View style={styles.container}>
+      <LanguageSelector
+        selectedLanguage={selectedLanguage}
+        onLanguageChange={handleLanguageChange}
+      />
+      
       {renderMoodSelector()}
       
       <Surface style={styles.searchContainer}>
         <Searchbar
-          placeholder="Search songs, artists, or genres..."
+          placeholder={selectedLanguage === 'hindi' ? 
+            "गाने, कलाकार या शैली खोजें..." : 
+            "Search songs, artists, or genres..."
+          }
           onChangeText={setSearchQuery}
           value={searchQuery}
           style={styles.searchBar}
@@ -197,10 +238,16 @@ export default function MusicRecommendationsScreen({ route }) {
       <View style={styles.content}>
         <View style={styles.headerSection}>
           <Title style={styles.sectionTitle}>
-            Music for {selectedMood.charAt(0).toUpperCase() + selectedMood.slice(1)} Mood
+            {selectedLanguage === 'hindi' ? 
+              `${selectedMood.charAt(0).toUpperCase() + selectedMood.slice(1)} मूड के लिए संगीत` :
+              `Music for ${selectedMood.charAt(0).toUpperCase() + selectedMood.slice(1)} Mood`
+            }
           </Title>
           <Text style={styles.sectionSubtitle}>
-            {filteredRecommendations.length} songs found
+            {selectedLanguage === 'hindi' ? 
+              `${filteredRecommendations.length} गाने मिले (${getLanguageLabel()})` :
+              `${filteredRecommendations.length} songs found (${getLanguageLabel()})`
+            }
           </Text>
         </View>
 
@@ -214,11 +261,14 @@ export default function MusicRecommendationsScreen({ route }) {
             <View style={styles.emptyState}>
               <Ionicons name="musical-notes-outline" size={64} color="#ccc" />
               <Text style={styles.emptyText}>
-                {searchQuery ? 'No songs match your search' : 'No recommendations available'}
+                {searchQuery ? 
+                  (selectedLanguage === 'hindi' ? 'कोई गाना आपकी खोज से मेल नहीं खाता' : 'No songs match your search') :
+                  (selectedLanguage === 'hindi' ? 'कोई सिफारिश उपलब्ध नहीं' : 'No recommendations available')
+                }
               </Text>
               {searchQuery && (
                 <Button mode="outlined" onPress={() => setSearchQuery('')}>
-                  Clear Search
+                  {selectedLanguage === 'hindi' ? 'खोज साफ़ करें' : 'Clear Search'}
                 </Button>
               )}
             </View>

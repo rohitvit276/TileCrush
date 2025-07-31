@@ -84,12 +84,16 @@
         <div class="features">
             <h3>Features Included:</h3>
             <div class="feature">
+                <span class="feature-icon">🌐</span>
+                <strong>Multi-Language Support</strong> - Hindi and English UI & music
+            </div>
+            <div class="feature">
                 <span class="feature-icon">📷</span>
                 <strong>Mood Detection</strong> - Camera selfies and audio analysis
             </div>
             <div class="feature">
                 <span class="feature-icon">🎵</span>
-                <strong>Music Recommendations</strong> - 35+ curated songs for different moods
+                <strong>Music Recommendations</strong> - 70+ curated songs in both languages
             </div>
             <div class="feature">
                 <span class="feature-icon">📊</span>
@@ -105,11 +109,18 @@
             </div>
         </div>
 
+        <div style="margin: 20px 0;">
+            <select id="languageSelect" onchange="changeLanguage()" style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: white; margin-bottom: 15px;">
+                <option value="english">🇺🇸 English</option>
+                <option value="hindi">🇮🇳 हिंदी (Hindi)</option>
+            </select>
+        </div>
+
         <button class="demo-button" onclick="simulateMoodDetection()">
-            Demo: Detect Mood
+            <span id="moodBtn">Demo: Detect Mood</span>
         </button>
         <button class="demo-button" onclick="showMusicRecs()">
-            Demo: Music Recommendations
+            <span id="musicBtn">Demo: Music Recommendations</span>
         </button>
 
         <div id="demo-result" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px; display: none;">
@@ -123,37 +134,90 @@
     </div>
 
     <script>
+        let currentLanguage = 'english';
+
+        const translations = {
+            english: {
+                moodBtn: 'Demo: Detect Mood',
+                musicBtn: 'Demo: Music Recommendations',
+                moodDetected: 'Mood Detected',
+                confidence: 'Confidence',
+                method: 'Method',
+                cameraAnalysis: 'Camera Analysis',
+                simulation: 'This is a simulation - the real app uses AI mood detection!',
+                musicRec: 'Music Recommendation',
+                perfect: 'Perfect for your current mood!',
+                realApp: 'Real app has 70+ songs with Spotify/YouTube links'
+            },
+            hindi: {
+                moodBtn: 'डेमो: मूड पहचानें',
+                musicBtn: 'डेमो: संगीत सिफारिशें',
+                moodDetected: 'मूड पहचाना गया',
+                confidence: 'विश्वास',
+                method: 'तरीका',
+                cameraAnalysis: 'कैमरा विश्लेषण',
+                simulation: 'यह एक सिमुलेशन है - वास्तविक ऐप AI मूड डिटेक्शन का उपयोग करता है!',
+                musicRec: 'संगीत सिफारिश',
+                perfect: 'आपके वर्तमान मूड के लिए बिल्कुल सही!',
+                realApp: 'वास्तविक ऐप में Spotify/YouTube लिंक के साथ 70+ गाने हैं'
+            }
+        };
+
+        function changeLanguage() {
+            currentLanguage = document.getElementById('languageSelect').value;
+            updateUI();
+        }
+
+        function updateUI() {
+            const t = translations[currentLanguage];
+            document.getElementById('moodBtn').textContent = t.moodBtn;
+            document.getElementById('musicBtn').textContent = t.musicBtn;
+        }
+
         function simulateMoodDetection() {
             const moods = ['happy', 'calm', 'excited', 'energetic', 'peaceful'];
             const randomMood = moods[Math.floor(Math.random() * moods.length)];
             const confidence = Math.floor(Math.random() * 20) + 80;
+            const t = translations[currentLanguage];
             
             const resultDiv = document.getElementById('demo-result');
             resultDiv.innerHTML = `
-                <h4>🎭 Mood Detected: ${randomMood.toUpperCase()}</h4>
-                <p>Confidence: ${confidence}%</p>
-                <p>Method: Camera Analysis</p>
-                <p><em>This is a simulation - the real app uses AI mood detection!</em></p>
+                <h4>🎭 ${t.moodDetected}: ${randomMood.toUpperCase()}</h4>
+                <p>${t.confidence}: ${confidence}%</p>
+                <p>${t.method}: ${t.cameraAnalysis}</p>
+                <p><em>${t.simulation}</em></p>
             `;
             resultDiv.style.display = 'block';
         }
 
         function showMusicRecs() {
-            const songs = [
+            const t = translations[currentLanguage];
+            
+            const englishSongs = [
                 'Happy - Pharrell Williams',
                 'Don\'t Stop Me Now - Queen',
                 'Weightless - Marconi Union',
                 'Uptown Funk - Bruno Mars',
                 'Clair de Lune - Debussy'
             ];
+
+            const hindiSongs = [
+                'Jai Ho - A.R. Rahman',
+                'Tum Hi Ho - Arijit Singh',
+                'Malhari - Vishal Dadlani',
+                'Ae Dil Hai Mushkil - Arijit Singh',
+                'Dangal - Daler Mehndi'
+            ];
+
+            const songs = currentLanguage === 'hindi' ? hindiSongs : englishSongs;
             const randomSong = songs[Math.floor(Math.random() * songs.length)];
             
             const resultDiv = document.getElementById('demo-result');
             resultDiv.innerHTML = `
-                <h4>🎵 Music Recommendation</h4>
+                <h4>🎵 ${t.musicRec}</h4>
                 <p><strong>${randomSong}</strong></p>
-                <p>Perfect for your current mood!</p>
-                <p><em>Real app has 35+ songs with Spotify/YouTube links</em></p>
+                <p>${t.perfect}</p>
+                <p><em>${t.realApp}</em></p>
             `;
             resultDiv.style.display = 'block';
         }
