@@ -195,6 +195,67 @@ export default function GameScreen() {
     );
   };
 
+  // Find all matches in the grid
+  const findMatches = (gridToCheck) => {
+    const matches = [];
+    
+    // Check horizontal matches
+    for (let row = 0; row < GRID_SIZE; row++) {
+      let matchCount = 1;
+      let currentType = gridToCheck[row][0].type;
+      
+      for (let col = 1; col < GRID_SIZE; col++) {
+        if (gridToCheck[row][col].type === currentType) {
+          matchCount++;
+        } else {
+          if (matchCount >= 3) {
+            for (let i = col - matchCount; i < col; i++) {
+              matches.push({ row, col: i });
+            }
+          }
+          matchCount = 1;
+          currentType = gridToCheck[row][col].type;
+        }
+      }
+      
+      // Check end of row
+      if (matchCount >= 3) {
+        for (let i = GRID_SIZE - matchCount; i < GRID_SIZE; i++) {
+          matches.push({ row, col: i });
+        }
+      }
+    }
+    
+    // Check vertical matches
+    for (let col = 0; col < GRID_SIZE; col++) {
+      let matchCount = 1;
+      let currentType = gridToCheck[0][col].type;
+      
+      for (let row = 1; row < GRID_SIZE; row++) {
+        if (gridToCheck[row][col].type === currentType) {
+          matchCount++;
+        } else {
+          if (matchCount >= 3) {
+            for (let i = row - matchCount; i < row; i++) {
+              matches.push({ row: i, col });
+            }
+          }
+          matchCount = 1;
+          currentType = gridToCheck[row][col].type;
+        }
+      }
+      
+      // Check end of column
+      if (matchCount >= 3) {
+        for (let i = GRID_SIZE - matchCount; i < GRID_SIZE; i++) {
+          matches.push({ row: i, col });
+        }
+      }
+    }
+    
+    return matches;
+  };
+
   useEffect(() => {
     if (moves === 0 && gameStarted) {
       endGame();
