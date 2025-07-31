@@ -266,14 +266,6 @@ export default function GameScreen() {
       setGameOver(true);
       saveHighScore(score);
       playGameOverSound();
-      Alert.alert(
-        'Game Over!',
-        `No more matches possible!\n\nFinal Score: ${score}\nHigh Score: ${Math.max(score, highScore)}\n\nThe board has no valid moves left.`,
-        [{ 
-          text: 'Play Again', 
-          onPress: restartGame
-        }]
-      );
     } else if (possibleMoves.length === 1) {
       // Only one move possible - Show hint option
       setHintAvailable(true);
@@ -367,17 +359,7 @@ export default function GameScreen() {
 
   useEffect(() => {
     if (moves === 0 && gameStarted && !gameOver) {
-      // Show out of moves popup
-      Alert.alert(
-        'Out of Moves!',
-        `Game Over!\n\nFinal Score: ${score}\nHigh Score: ${Math.max(score, highScore)}\n\nYou've used all 30 moves.`,
-        [
-          {
-            text: 'Play Again',
-            onPress: restartGame,
-          },
-        ]
-      );
+      // Trigger game over without Alert popup
       setGameOver(true);
       saveHighScore(score);
       playGameOverSound();
@@ -873,6 +855,9 @@ export default function GameScreen() {
         <View style={styles.gameOverOverlay}>
           <View style={styles.gameOverContainer}>
             <Text style={styles.gameOverText}>GAME OVER</Text>
+            <Text style={styles.gameOverReason}>
+              {moves === 0 ? 'Out of Moves!' : 'No More Matches Possible!'}
+            </Text>
             <Text style={styles.finalScoreText}>Final Score: {score}</Text>
             <Text style={styles.highScoreGameOverText}>
               High Score: {Math.max(score, highScore)}
@@ -1130,10 +1115,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
     textShadowColor: '#000',
     textShadowOffset: { width: 3, height: 3 },
     textShadowRadius: 6,
+  },
+  gameOverReason: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 20,
+    opacity: 0.9,
   },
   finalScoreText: {
     fontSize: 24,
