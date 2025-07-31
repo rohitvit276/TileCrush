@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Temple Runner 3D",
-    "slug": "temple-runner-3d",
+    "name": "Baba Run",
+    "slug": "baba-run",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.svg",
@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.templerunner3d.app"
+      "bundleIdentifier": "com.babarun.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.svg",
         "backgroundColor": "#1a1a2e"
       },
-      "package": "com.templerunner3d.app",
+      "package": "com.babarun.app",
       "permissions": [
         "VIBRATE",
         "INTERNET",
@@ -39,7 +39,7 @@
 
     "extra": {
       "eas": {
-        "projectId": "temple-runner-3d-project"
+        "projectId": "baba-run-project"
       }
     }
   }

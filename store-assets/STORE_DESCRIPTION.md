@@ -1,13 +1,13 @@
-# Temple Runner 3D - Play Store Assets
+# Baba Run - Play Store Assets
 
 ## App Title
-**Temple Runner 3D - Endless Adventure**
+**Baba Run - Endless Adventure**
 
 ## Short Description (80 characters max)
-Ultimate endless running adventure through ancient temples with 3D environments!
+Ultimate endless running adventure through ancient temples with Baba character!
 
 ## Full Description
-🏃 TEMPLE RUNNER 3D - THE ULTIMATE ENDLESS ADVENTURE! 🏃
+🏃 BABA RUN - THE ULTIMATE ENDLESS ADVENTURE! 🏃
 
 Embark on an epic journey through mysterious ancient temples in this heart-pounding endless runner game! Dodge deadly obstacles, collect precious coins, and run as far as you can in beautifully crafted 3D environments.
 
@@ -45,12 +45,12 @@ Embark on an epic journey through mysterious ancient temples in this heart-pound
 📊 Detailed progress tracking
 ⚙️ Customizable game settings
 
-Whether you're a casual gamer or hardcore runner, Temple Runner 3D offers endless entertainment with its addictive gameplay, beautiful graphics, and challenging obstacles.
+Whether you're a casual gamer or hardcore runner, Baba Run offers endless entertainment with its addictive gameplay, beautiful graphics, and challenging obstacles.
 
-🔥 DOWNLOAD TEMPLE RUNNER 3D TODAY - THE ADVENTURE AWAITS! 🔥
+🔥 DOWNLOAD BABA RUN TODAY - THE ADVENTURE AWAITS! 🔥
 
 ## Keywords
-temple run, endless runner, adventure game, 3d runner, obstacle course, ancient temple, coin collector, character unlock, arcade game, mobile gaming
+baba run, endless runner, adventure game, 3d runner, obstacle course, ancient temple, coin collector, character unlock, arcade game, mobile gaming
 
 ## Category
 Games > Arcade
@@ -59,7 +59,7 @@ Games > Arcade
 Everyone
 
 ## Privacy Policy URL
-https://templerunner3d.com/privacy-policy
+https://babarun.com/privacy-policy
 
 ## Screenshots Needed
 1. Main menu with game stats

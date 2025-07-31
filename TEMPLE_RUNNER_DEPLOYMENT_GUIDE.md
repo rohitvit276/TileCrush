@@ -1,8 +1,8 @@
-# Temple Runner 3D - Play Store Deployment Guide
+# Baba Run - Play Store Deployment Guide
 
 ## 🎮 Game Overview
 
-**Temple Runner 3D** is a complete endless runner game inspired by Temple Run, built with React Native and Expo for Android Play Store deployment.
+**Baba Run** is a complete endless runner game inspired by Temple Run, built with React Native and Expo for Android Play Store deployment.
 
 ### Game Features
 
@@ -65,7 +65,7 @@ eas build --platform android --profile production
 ### App Store Information
 
 #### App Title
-**Temple Runner 3D - Endless Adventure**
+**Baba Run - Endless Adventure**
 
 #### Short Description
 Experience the ultimate endless running adventure in ancient temples with stunning 3D environments and challenging obstacles.
@@ -116,7 +116,7 @@ Whether you're a casual gamer or hardcore runner, Temple Runner 3D offers endles
 ```
 
 #### Keywords
-temple run, endless runner, adventure game, 3d runner, obstacle course, ancient temple, coin collector, character unlock, arcade game, mobile gaming
+baba run, endless runner, adventure game, 3d runner, obstacle course, ancient temple, coin collector, character unlock, arcade game, mobile gaming
 
 #### Category
 **Games > Arcade**

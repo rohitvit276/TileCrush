@@ -325,7 +325,7 @@ export default function GameScreen({ navigation }) {
       <View style={styles.container}>
         <LinearGradient colors={['#1a1a2e', '#16213e']} style={styles.menuContainer}>
           <Animatable.View animation="pulse" iterationCount="infinite">
-            <Text style={styles.gameTitle}>TEMPLE RUNNER</Text>
+            <Text style={styles.gameTitle}>BABA RUN</Text>
           </Animatable.View>
           <Text style={styles.subtitle}>Swipe to control your character</Text>
           <Button

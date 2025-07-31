@@ -61,7 +61,7 @@ export default function App() {
           <Tab.Screen 
             name="Menu" 
             component={MenuScreen} 
-            options={{ title: 'Temple Runner' }}
+            options={{ title: 'Baba Run' }}
           />
           <Tab.Screen 
             name="Play" 
