@@ -286,18 +286,35 @@ export default function GameScreen() {
 
   const initializeGrid = () => {
     const newGrid = [];
+    
+    // Fill the grid row by row, ensuring no initial matches
     for (let row = 0; row < GRID_SIZE; row++) {
       const gridRow = [];
       for (let col = 0; col < GRID_SIZE; col++) {
+        let rockType;
+        let attempts = 0;
+        
+        do {
+          rockType = Math.floor(Math.random() * ROCK_TYPES.length) + 1;
+          attempts++;
+          
+          // Prevent infinite loops
+          if (attempts > 50) {
+            rockType = 1;
+            break;
+          }
+        } while (wouldCreateInitialMatch(newGrid, row, col, rockType));
+        
         gridRow.push({
           id: `${row}-${col}`,
-          type: Math.floor(Math.random() * ROCK_TYPES.length) + 1,
+          type: rockType,
           row,
           col,
         });
       }
       newGrid.push(gridRow);
     }
+    
     setGrid(newGrid);
     setScore(0);
     setMoves(30);
@@ -307,6 +324,24 @@ export default function GameScreen() {
     setHintAvailable(false);
     setShowHint(false);
     setHintPattern(null);
+  };
+
+  const wouldCreateInitialMatch = (grid, row, col, rockType) => {
+    // Check horizontal match (left)
+    if (col >= 2 && 
+        grid[row][col - 1] && grid[row][col - 1].type === rockType &&
+        grid[row][col - 2] && grid[row][col - 2].type === rockType) {
+      return true;
+    }
+    
+    // Check vertical match (up)
+    if (row >= 2 && 
+        grid[row - 1] && grid[row - 1][col] && grid[row - 1][col].type === rockType &&
+        grid[row - 2] && grid[row - 2][col] && grid[row - 2][col].type === rockType) {
+      return true;
+    }
+    
+    return false;
   };
 
   const handleRockPress = (rock) => {
