@@ -131,8 +131,8 @@ eas build --platform android --profile preview
   Perfect for puzzle lovers of all ages! Download Rock Crush now and start your addictive matching adventure.
 
   ✨ HIGHLIGHTS:
-  • No ads or annoying interruptions
-  • No in-app purchases
+  • Free version with optional premium upgrade
+  • Premium removes ads and unlocks unlimited hints
   • Offline gameplay - play anywhere
   • Family-friendly content
   • Professional graphics and sound
@@ -170,7 +170,7 @@ eas build --platform android --profile preview
 - **Website**: Your website or GitHub repo
 - **Email**: Your contact email
 - **Phone**: Optional
-- **Privacy policy**: Required (see template below)
+- **Privacy policy**: Required - Use the comprehensive `PRIVACY_POLICY.md` file included in your project
 
 ### Phase 5: App Release Management
 
@@ -195,7 +195,7 @@ eas build --platform android --profile preview
    🎯 Features:
    • Classic match-3 puzzle mechanics
    • 30-move challenge system
-   • No ads or in-app purchases
+   • Free with ads or premium subscription
    • Offline gameplay
    • Family-friendly content
 
@@ -206,9 +206,9 @@ eas build --platform android --profile preview
 Complete the content rating questionnaire:
 - **Interactive elements**: None
 - **User-generated content**: None
-- **Data sharing**: None
-- **Ads**: None
-- **In-app purchases**: None
+- **Data sharing**: Limited (analytics only)
+- **Ads**: Yes (free version shows ads)
+- **In-app purchases**: Yes (premium subscription)
 - **Final rating**: Everyone
 
 #### 5.3 Target Audience
@@ -219,10 +219,11 @@ Complete the content rating questionnaire:
 ### Phase 6: Privacy and Data Safety
 
 #### 6.1 Data Safety Section
-Since your game doesn't collect data:
-- **Data collection**: No data collected
-- **Data sharing**: No data shared
-- **Security practices**: No data encryption needed
+Configure data safety for your monetized game:
+- **Data collection**: App activity, Device identifiers (for ads)
+- **Data sharing**: Shared with advertising partners (free users only)
+- **Security practices**: Data encrypted in transit
+- **Privacy policy**: Upload your `PRIVACY_POLICY.md` file
 
 #### 6.2 Privacy Policy Template
 ```
