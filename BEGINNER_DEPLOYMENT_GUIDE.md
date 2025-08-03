@@ -109,6 +109,12 @@ Expo is the service that will build your app into the format Google Play Store n
    ```
    (Wait for this to finish - takes 2-5 minutes)
 
+   **❌ If you get a 404 error**: Your project has dependency issues. Follow these steps:
+   - Rename the current package.json: `mv package.json package-old.json`
+   - Use the simplified version: `mv package-simple.json package.json`
+   - Try again: `npm install`
+   - **Still having issues?** See `TROUBLESHOOTING_DEPLOYMENT.md` for complete solutions
+
 ### Login to Expo
 3. **Type this command**:
    ```
