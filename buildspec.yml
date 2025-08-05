@@ -49,8 +49,8 @@ phases:
       - npx expo prebuild --platform android --no-install
       - echo Configuring Expo autolinking in settings.gradle...
       - cd android
-      - echo "apply from: file('../node_modules/@react-native-community/cli-platform-android/native_modules.gradle'); applyNativeModulesSettingsGradle(settings)" >> settings.gradle
-      - echo "apply from: file('../node_modules/expo/scripts/autolinking.gradle'); useExpoModules()" >> settings.gradle
+      - echo 'apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)' >> settings.gradle
+      - echo 'apply from: file("../node_modules/expo/scripts/autolinking.gradle"); useExpoModules()' >> settings.gradle
       - cd ..
       - echo Building AAB with Gradle...
       - cd android
