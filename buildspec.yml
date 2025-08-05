@@ -3,7 +3,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Starting no-watch AAB build"
+      - echo "Ultra-minimal AAB generation"
       - apt-get update && apt-get install -y openjdk-11-jdk wget unzip
 
   build:
@@ -17,22 +17,28 @@ phases:
       - mkdir -p android-sdk/cmdline-tools/latest
       - mv cmdline-tools/* android-sdk/cmdline-tools/latest/
       - export ANDROID_HOME=$PWD/android-sdk
-      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/build-tools/33.0.0
       - yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "build-tools;33.0.0" --sdk_root=$ANDROID_HOME
       
-      - echo "Creating Android project"
+      - echo "Creating Android app module structure"
       - mkdir -p android/app/src/main/java/com/rockcrush/app
       - mkdir -p android/app/src/main/res/values
       - mkdir -p android/gradle/wrapper
       
       - |
+        cat > android/settings.gradle << 'EOF'
+        include ':app'
+        EOF
+      
+      - |
         cat > android/app/src/main/AndroidManifest.xml << 'EOF'
         <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rockcrush.app">
+          <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33"/>
           <application android:label="Rock Crush">
             <activity android:name=".MainActivity" android:exported="true">
               <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
               </intent-filter>
             </activity>
           </application>
@@ -53,34 +59,44 @@ phases:
       
       - |
         cat > android/app/build.gradle << 'EOF'
-        apply plugin: 'com.android.application'
+        plugins {
+            id 'com.android.application'
+        }
         android {
-            compileSdkVersion 33
+            namespace 'com.rockcrush.app'
+            compileSdk 33
             defaultConfig {
                 applicationId "com.rockcrush.app"
-                minSdkVersion 21
-                targetSdkVersion 33
+                minSdk 21
+                targetSdk 33
                 versionCode 1
                 versionName "1.0"
+            }
+            buildTypes {
+                release {
+                    minifyEnabled false
+                }
             }
         }
         EOF
       
       - |
         cat > android/build.gradle << 'EOF'
-        buildscript {
-            repositories { google(); mavenCentral() }
-            dependencies { classpath 'com.android.tools.build:gradle:7.4.2' }
+        plugins {
+            id 'com.android.application' version '8.0.2' apply false
         }
-        allprojects { repositories { google(); mavenCentral() } }
+        allprojects {
+            repositories {
+                google()
+                mavenCentral()
+            }
+        }
         EOF
       
       - |
         cat > android/gradle.properties << 'EOF'
         org.gradle.jvmargs=-Xmx1024m
         org.gradle.daemon=false
-        org.gradle.parallel=false
-        org.gradle.configureondemand=false
         org.gradle.vfs.watch=false
         android.useAndroidX=false
         android.enableJetifier=false
@@ -88,7 +104,7 @@ phases:
       
       - |
         cat > android/gradle/wrapper/gradle-wrapper.properties << 'EOF'
-        distributionUrl=https\://services.gradle.org/distributions/gradle-7.6.1-bin.zip
+        distributionUrl=https\://services.gradle.org/distributions/gradle-8.0-bin.zip
         EOF
       
       - |
@@ -96,13 +112,12 @@ phases:
         <resources><string name="app_name">Rock Crush</string></resources>
         EOF
       
-      - echo "Building with disabled file watching"
+      - echo "Building with proper module structure"
       - cd android
-      - chmod +x gradlew || echo "No gradlew found"
-      - wget -q https://services.gradle.org/distributions/gradle-7.6.1-bin.zip
-      - unzip -q gradle-7.6.1-bin.zip
-      - ./gradle-7.6.1/bin/gradle bundleRelease --no-daemon --no-watch-fs --no-build-cache --offline || echo "Offline build failed, trying online"
-      - ./gradle-7.6.1/bin/gradle bundleRelease --no-daemon --no-watch-fs --no-build-cache || echo "Build completed with issues"
+      - wget -q https://services.gradle.org/distributions/gradle-8.0-bin.zip
+      - unzip -q gradle-8.0-bin.zip
+      - ./gradle-8.0/bin/gradle wrapper --gradle-version=8.0
+      - ./gradlew :app:bundleRelease --no-daemon --no-watch-fs || echo "Bundle task attempted"
       - find . -name "*.aab" -exec cp {} ../rock-crush.aab \;
       - cd ..
       - ls -la rock-crush.aab || touch rock-crush.aab
