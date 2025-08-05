@@ -3,7 +3,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Ultra-minimal AAB generation"
+      - echo "Compatible Android Gradle Plugin build"
       - apt-get update && apt-get install -y openjdk-11-jdk wget unzip
 
   build:
@@ -20,7 +20,7 @@ phases:
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/build-tools/33.0.0
       - yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "build-tools;33.0.0" --sdk_root=$ANDROID_HOME
       
-      - echo "Creating Android app module structure"
+      - echo "Creating Android project with compatible versions"
       - mkdir -p android/app/src/main/java/com/rockcrush/app
       - mkdir -p android/app/src/main/res/values
       - mkdir -p android/gradle/wrapper
@@ -59,16 +59,14 @@ phases:
       
       - |
         cat > android/app/build.gradle << 'EOF'
-        plugins {
-            id 'com.android.application'
-        }
+        apply plugin: 'com.android.application'
         android {
-            namespace 'com.rockcrush.app'
-            compileSdk 33
+            compileSdkVersion 33
+            buildToolsVersion "33.0.0"
             defaultConfig {
                 applicationId "com.rockcrush.app"
-                minSdk 21
-                targetSdk 33
+                minSdkVersion 21
+                targetSdkVersion 33
                 versionCode 1
                 versionName "1.0"
             }
@@ -82,8 +80,14 @@ phases:
       
       - |
         cat > android/build.gradle << 'EOF'
-        plugins {
-            id 'com.android.application' version '8.0.2' apply false
+        buildscript {
+            repositories {
+                google()
+                mavenCentral()
+            }
+            dependencies {
+                classpath 'com.android.tools.build:gradle:7.4.2'
+            }
         }
         allprojects {
             repositories {
@@ -104,7 +108,7 @@ phases:
       
       - |
         cat > android/gradle/wrapper/gradle-wrapper.properties << 'EOF'
-        distributionUrl=https\://services.gradle.org/distributions/gradle-8.0-bin.zip
+        distributionUrl=https\://services.gradle.org/distributions/gradle-7.6.1-bin.zip
         EOF
       
       - |
@@ -112,11 +116,11 @@ phases:
         <resources><string name="app_name">Rock Crush</string></resources>
         EOF
       
-      - echo "Building with proper module structure"
+      - echo "Building with compatible Gradle versions"
       - cd android
-      - wget -q https://services.gradle.org/distributions/gradle-8.0-bin.zip
-      - unzip -q gradle-8.0-bin.zip
-      - ./gradle-8.0/bin/gradle wrapper --gradle-version=8.0
+      - wget -q https://services.gradle.org/distributions/gradle-7.6.1-bin.zip
+      - unzip -q gradle-7.6.1-bin.zip
+      - ./gradle-7.6.1/bin/gradle wrapper --gradle-version=7.6.1
       - ./gradlew :app:bundleRelease --no-daemon --no-watch-fs || echo "Bundle task attempted"
       - find . -name "*.aab" -exec cp {} ../rock-crush.aab \;
       - cd ..
