@@ -6,11 +6,10 @@ phases:
       nodejs: 18
     commands:
       - apt-get update
-      - apt-get install -y openjdk-17-jdk unzip wget imagemagick librsvg2-bin
+      - apt-get install -y openjdk-17-jdk unzip wget imagemagick librsvg2-bin curl
 
   pre_build:
     commands:
-      - npm install -g @expo/cli@10.2.0
       - wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
       - unzip -q commandlinetools-linux-9477386_latest.zip
       - mkdir -p android-sdk/cmdline-tools/latest
@@ -24,7 +23,7 @@ phases:
     commands:
       - export ANDROID_HOME=$PWD/android-sdk
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-      - echo Using minimal configuration...
+      - echo Building Rock Crush AAB...
       - cp app-minimal.json app.json
       - cp package-minimal.json package.json
       - rm -rf node_modules package-lock.json
@@ -35,10 +34,10 @@ phases:
       - rsvg-convert -w 2048 -h 2048 assets/splash.svg -o assets/splash.png
       - rsvg-convert -w 32 -h 32 assets/favicon.svg -o assets/favicon.png
       - rm -rf android ios
-      - npx expo prebuild --platform android --no-install --skip-dependency-update react,react-native
+      - npx --package=@expo/cli@latest expo prebuild --platform android --no-install
       - cd android
       - chmod +x ./gradlew
-      - ./gradlew clean bundleRelease --no-daemon --offline
+      - ./gradlew clean bundleRelease --no-daemon --stacktrace
       - cd ..
 
   post_build:
