@@ -4,33 +4,31 @@ phases:
   pre_build:
     commands:
       - echo "Pre-build phase started on `date`"
-      - echo "Installing Node.js 18..."
-      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-      - export NVM_DIR="$HOME/.nvm"
-      - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
-      - nvm install 18
-      - nvm use 18
+      - echo "Using system Node.js version..."
       - node --version
       - npm --version
+      - echo "Installing system dependencies..."
+      - apt-get update && apt-get install -y imagemagick unzip wget
 
   build:
     commands:
       - echo "Build phase started on `date`"
       - echo "Using core configuration files..."
       - cp app-core.json app.json
-      - cp package-core.json package.json
+      - cp package-babel-fixed.json package.json
       
-      - echo "Installing dependencies with babel-preset-expo..."
+      - echo "Installing npm dependencies..."
       - npm config set legacy-peer-deps true
-      - npm install --include=dev --no-optional
-      - npm list babel-preset-expo || npm install babel-preset-expo@~10.0.0
+      - npm install --include=dev --no-optional --prefer-offline
+      
+      - echo "Verifying babel-preset-expo installation..."
+      - npm list babel-preset-expo || npm install babel-preset-expo@~10.0.0 --save-dev
       
       - echo "Converting SVG assets to PNG..."
-      - apt-get update && apt-get install -y imagemagick
-      - magick assets/icon.svg -resize 1024x1024 assets/icon.png || convert assets/icon.svg -resize 1024x1024 assets/icon.png
-      - magick assets/adaptive-icon.svg -resize 1024x1024 assets/adaptive-icon.png || convert assets/adaptive-icon.svg -resize 1024x1024 assets/adaptive-icon.png
-      - magick assets/splash.svg -resize 2048x2048 assets/splash.png || convert assets/splash.svg -resize 2048x2048 assets/splash.png
-      - magick assets/favicon.svg -resize 32x32 assets/favicon.png || convert assets/favicon.svg -resize 32x32 assets/favicon.png
+      - convert assets/icon.svg -resize 1024x1024 assets/icon.png
+      - convert assets/adaptive-icon.svg -resize 1024x1024 assets/adaptive-icon.png
+      - convert assets/splash.svg -resize 2048x2048 assets/splash.png
+      - convert assets/favicon.svg -resize 32x32 assets/favicon.png
       
       - echo "Setting up Android SDK..."
       - wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
@@ -41,20 +39,20 @@ phases:
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
       - yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" --sdk_root=$ANDROID_HOME
       
-      - echo "Generating Android project with expo prebuild..."
+      - echo "Generating Android project..."
       - npx expo prebuild --platform android --no-install --clear
       
       - echo "Configuring Gradle..."
-      - cd android/app
-      - echo 'android.compileSdkVersion=33' >> gradle.properties
-      - echo 'android.targetSdkVersion=33' >> gradle.properties  
-      - echo 'android.buildToolsVersion=33.0.0' >> gradle.properties
-      - cd ../..
+      - cd android
+      - echo 'android.compileSdkVersion=33' >> app/gradle.properties
+      - echo 'android.targetSdkVersion=33' >> app/gradle.properties
+      - echo 'android.buildToolsVersion=33.0.0' >> app/gradle.properties
+      - chmod +x ./gradlew
+      - cd ..
       
       - echo "Building Android App Bundle..."
       - cd android
-      - chmod +x ./gradlew
-      - ./gradlew clean bundleRelease --no-daemon --stacktrace
+      - ./gradlew clean bundleRelease --no-daemon --stacktrace --info
       - cd ..
       
       - echo "Copying AAB file..."
