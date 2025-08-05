@@ -1,5 +1,11 @@
 version: 0.2
 
+env:
+  variables:
+    ANDROID_COMPILE_SDK: "33"
+    ANDROID_BUILD_TOOLS: "33.0.0"
+    NODE_VERSION: "18"
+
 phases:
   install:
     runtime-versions:
@@ -7,7 +13,7 @@ phases:
     commands:
       - echo Installing system dependencies...
       - apt-get update
-      - apt-get install -y openjdk-17-jdk unzip wget
+      - apt-get install -y openjdk-17-jdk unzip wget gradle
       - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       
   pre_build:
@@ -20,32 +26,31 @@ phases:
       - mkdir -p android-sdk/cmdline-tools/latest
       - mv cmdline-tools/* android-sdk/cmdline-tools/latest/
       - export ANDROID_HOME=$PWD/android-sdk
-      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-      - export PATH=$PATH:$ANDROID_HOME/platform-tools
+      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
       - yes | sdkmanager --licenses || true
-      - sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" "ndk;25.1.8937393"
-      - echo Setting environment variables...
-      - echo "export ANDROID_HOME=$PWD/android-sdk" >> ~/.bashrc
-      - echo "export PATH=\$PATH:\$ANDROID_HOME/cmdline-tools/latest/bin:\$ANDROID_HOME/platform-tools" >> ~/.bashrc
-      - source ~/.bashrc
+      - sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
       
   build:
     commands:
       - echo Starting build process...
+      - export ANDROID_HOME=$PWD/android-sdk
+      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
       - echo Installing project dependencies...
       - npm install
-      - echo Installing additional React Native CLI...
+      - echo Installing React Native CLI...
       - npm install --save-dev @react-native-community/cli
       - echo Creating Android project structure...
       - npx expo prebuild --platform android --clear --no-install
-      - echo Installing Android dependencies...
-      - cd android && npm install && cd ..
       - echo Building AAB with Gradle...
       - cd android
       - chmod +x ./gradlew
-      - ./gradlew bundleRelease -x test -x lint --stacktrace
+      - export ANDROID_HOME=$PWD/../android-sdk
+      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+      - echo "Building release bundle..."
+      - ./gradlew bundleRelease -x test -x lint --info --stacktrace
+      - echo "Gradle build completed"
       - cd ..
-      - echo Build completed, locating AAB file...
+      - echo Locating AAB file...
       - find . -name "*.aab" -type f -ls
       
   post_build:
@@ -56,10 +61,11 @@ phases:
       - find . -name "*.aab" -type f -exec cp {} ./rock-crush-release.aab \;
       - ls -la *.aab || echo "No AAB files found in root"
       - echo Uploading AAB to S3...
-      - aws s3 cp ./rock-crush-release.aab s3://rock-crush-builds/rock-crush-$(date +%Y%m%d-%H%M%S).aab || echo "S3 upload failed"
+      - aws s3 cp ./rock-crush-release.aab s3://rock-crush-builds/rock-crush-$(date +%Y%m%d-%H%M%S).aab || echo "S3 upload failed - check bucket exists"
       - echo Upload completed
 
 artifacts:
   files:
     - '**/*.aab'
-  name: rock-crush-playstore-build
+    - 'android/app/build/outputs/bundle/release/*.aab'
+  name: rock-crush-gradle-build
