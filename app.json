@@ -17,7 +17,8 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.rockcrush.app"
+      "bundleIdentifier": "com.rockcrush.app",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
