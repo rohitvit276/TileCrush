@@ -10,7 +10,7 @@ phases:
 
   pre_build:
     commands:
-      - npm install -g @expo/cli
+      - npm install -g @expo/cli@latest
       - wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
       - unzip -q commandlinetools-linux-9477386_latest.zip
       - mkdir -p android-sdk/cmdline-tools/latest
@@ -24,12 +24,11 @@ phases:
     commands:
       - export ANDROID_HOME=$PWD/android-sdk
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-      - echo Removing problematic packages...
-      - npm uninstall expo-ads-admob expo-in-app-purchases || true
-      - echo Using simplified configuration...
+      - echo Using compatible package versions...
       - cp app-simple.json app.json
-      - cp package-simple.json package.json
-      - npm install
+      - cp package-compatible.json package.json
+      - rm -rf node_modules package-lock.json
+      - npm install --legacy-peer-deps
       - rsvg-convert -w 1024 -h 1024 assets/icon.svg -o assets/icon.png
       - rsvg-convert -w 1024 -h 1024 assets/adaptive-icon.svg -o assets/adaptive-icon.png
       - rsvg-convert -w 2048 -h 2048 assets/splash.svg -o assets/splash.png
