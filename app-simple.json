@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "Rock Crush",
+    "slug": "rock-crush",
+    "version": "1.0.0",
+    "description": "A Candy Crush-style match-3 puzzle game featuring colorful rocks. Match 3+ rocks to score points! Perfect for all ages!",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1a2e"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.rockcrush.app",
+      "buildNumber": "1"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a1a2e"
+      },
+      "package": "com.rockcrush.app",
+      "permissions": [
+        "VIBRATE",
+        "INTERNET"
+      ],
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "platforms": ["android", "web"],
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}
