@@ -1,6 +1,0 @@
-[splunk_deployment_servers]
-localhost ansible_connection=local ansible_user=runner become=false
-
-[splunk_deployment_servers:vars]
-deployment_environment=production
-splunk_environment=prod

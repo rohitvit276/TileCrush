@@ -1,0 +1,586 @@
+2025-07-30 10:44:42,099 p=755 u=runner n=ansible INFO| playbook: site.yml
+2025-07-30 10:44:52,346 p=814 u=runner n=ansible INFO| PLAY [Deploy Splunk Enterprise Deployment Server] ******************************
+2025-07-30 10:44:52,405 p=814 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: environment
+
+2025-07-30 10:44:52,983 p=814 u=runner n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2025-07-30 10:44:52,983 p=814 u=runner n=ansible INFO| fatal: [localhost]: FAILED! => {"ansible_facts": {}, "changed": false, "failed_modules": {"ansible.legacy.setup": {"failed": true, "module_stderr": "\t\u001b[93mYou don't need sudo in Replit, all files that\u001b[0m\n\t\u001b[93mcan be modified already have the correct permissions\u001b[0m\n\t\u001b[93mand you can install new software using Nix.\u001b[0m\n\n/bin/sh: 1: /usr/bin/python3: not found\n", "module_stdout": "", "msg": "The module failed to execute correctly, you probably need to set the interpreter.\nSee stdout/stderr for the exact error", "rc": 127}}, "msg": "The following modules failed to execute: ansible.legacy.setup\n"}
+2025-07-30 10:44:52,986 p=814 u=runner n=ansible INFO| 	to retry, use: --limit @/home/runner/workspace/tmp/site.retry
+
+2025-07-30 10:44:52,986 p=814 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 10:44:52,986 p=814 u=runner n=ansible INFO| localhost                  : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-30 10:45:35,390 p=948 u=runner n=ansible INFO| PLAY [Deploy Splunk Enterprise Deployment Server] ******************************
+2025-07-30 10:45:35,412 p=948 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 10:45:36,767 p=948 u=runner n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2025-07-30 10:45:36,768 p=948 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python
+interpreter at /home/runner/workspace/.pythonlibs/bin/python3.11, but future
+installation of another Python interpreter could change the meaning of that
+path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-30 10:45:36,768 p=948 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:45:36,818 p=948 u=runner n=ansible INFO| TASK [Validate required variables] *********************************************
+2025-07-30 10:45:36,819 p=948 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+2025-07-30 10:45:36,855 p=948 u=runner n=ansible INFO| TASK [Check system requirements] ***********************************************
+2025-07-30 10:45:36,856 p=948 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+2025-07-30 10:45:37,674 p=948 u=runner n=ansible INFO| TASK [common : Update package cache] *******************************************
+2025-07-30 10:45:37,676 p=948 u=runner n=ansible INFO| fatal: [localhost]: FAILED! => {"changed": false, "msg": "python3-apt must be installed to use check mode. If run normally this module can auto-install it."}
+2025-07-30 10:45:37,679 p=948 u=runner n=ansible INFO| 	to retry, use: --limit @/home/runner/workspace/tmp/site.retry
+
+2025-07-30 10:45:37,679 p=948 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 10:45:37,679 p=948 u=runner n=ansible INFO| localhost                  : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-30 10:45:37,916 p=1049 u=runner n=ansible INFO| playbook: test_syntax.yml
+2025-07-30 10:45:42,645 p=1121 u=runner n=ansible INFO| PLAY [Test Splunk Enterprise Deployment Server Playbook Syntax] ****************
+2025-07-30 10:45:42,666 p=1121 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 10:45:42,720 p=1121 u=runner n=ansible INFO| TASK [Validate required variables] *********************************************
+2025-07-30 10:45:42,720 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+2025-07-30 10:45:42,745 p=1121 u=runner n=ansible INFO| TASK [Display test configuration] **********************************************
+2025-07-30 10:45:42,746 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Testing Splunk Enterprise Deployment Server Configuration:\n- Splunk Home: /tmp/test_splunk\n- Splunk User: runner\n- Backup Location: /tmp/test_backups\n- GitHub Repository: https://github.com/example/splunk-config.git\n"
+}
+2025-07-30 10:45:42,775 p=1121 u=runner n=ansible INFO| TASK [Validate role dependencies] **********************************************
+2025-07-30 10:45:42,776 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "All required roles are available for execution"
+}
+2025-07-30 10:45:42,797 p=1121 u=runner n=ansible INFO| TASK [Test template rendering] *************************************************
+2025-07-30 10:45:42,797 p=1121 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:45:42,825 p=1121 u=runner n=ansible INFO| TASK [Validate server configuration template] **********************************
+2025-07-30 10:45:42,825 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Server configuration template rendered successfully"
+}
+2025-07-30 10:45:42,840 p=1121 u=runner n=ansible INFO| TASK [Test serverclass configuration] ******************************************
+2025-07-30 10:45:42,840 p=1121 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:45:42,866 p=1121 u=runner n=ansible INFO| TASK [Validate serverclass template] *******************************************
+2025-07-30 10:45:42,867 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Serverclass configuration template rendered successfully"
+}
+2025-07-30 10:45:42,911 p=1121 u=runner n=ansible INFO| TASK [Test backup restoration logic] *******************************************
+2025-07-30 10:45:42,912 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Backup restoration would be executed with:\n- Source URL: https://example.com/backup.tar.gz\n- Destination: /tmp/test_backups\n- Restore enabled: True\n"
+}
+2025-07-30 10:45:42,941 p=1121 u=runner n=ansible INFO| TASK [Test GitHub integration logic] *******************************************
+2025-07-30 10:45:42,942 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "GitHub integration would be configured with:\n- Repository: https://github.com/example/splunk-config.git\n- Branch: main\n- Config Path: splunk/deployment-server\n"
+}
+2025-07-30 10:45:42,972 p=1121 u=runner n=ansible INFO| TASK [Validate deployment server apps configuration] ***************************
+2025-07-30 10:45:42,972 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Deployment server apps configuration:\n- base_config: Base configuration for all Splunk instances\n- indexer_cluster: Indexer cluster configuration\n- search_head_cluster: Search head cluster configuration\n"
+}
+2025-07-30 10:45:43,005 p=1121 u=runner n=ansible INFO| TASK [Test server classes configuration] ***************************************
+2025-07-30 10:45:43,006 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Server classes configuration:\n- all_servers: All Splunk servers\n- indexers: Indexer servers\n- search_heads: Search head servers\n"
+}
+2025-07-30 10:45:43,034 p=1121 u=runner n=ansible INFO| TASK [Syntax validation complete] **********************************************
+2025-07-30 10:45:43,035 p=1121 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "✓ Playbook syntax validation completed successfully\n✓ All templates and configurations validated\n✓ Role dependencies verified\n✓ Variable definitions confirmed\n\nThe Ansible automation is ready for deployment in a real environment."
+}
+2025-07-30 10:45:43,036 p=1121 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 10:45:43,036 p=1121 u=runner n=ansible INFO| localhost                  : ok=12   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-30 10:45:48,288 p=1180 u=runner n=ansible INFO| playbook: playbooks/deploy_splunk_ds.yml
+2025-07-30 10:45:54,332 p=1225 u=runner n=ansible INFO| playbook: playbooks/restore_backup.yml
+2025-07-30 10:45:58,429 p=1270 u=runner n=ansible INFO| playbook: playbooks/update_from_github.yml
+2025-07-30 10:47:36,928 p=1507 u=runner n=ansible INFO| PLAY [Deploy Splunk Enterprise Deployment Server] ******************************
+2025-07-30 10:47:36,941 p=1507 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 10:47:38,066 p=1507 u=runner n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2025-07-30 10:47:38,068 p=1507 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python
+interpreter at /home/runner/workspace/.pythonlibs/bin/python3.11, but future
+installation of another Python interpreter could change the meaning of that
+path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-30 10:47:38,068 p=1507 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:47:38,097 p=1507 u=runner n=ansible INFO| TASK [Validate required variables] *********************************************
+2025-07-30 10:47:38,097 p=1507 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+2025-07-30 10:47:38,123 p=1507 u=runner n=ansible INFO| TASK [Check system requirements] ***********************************************
+2025-07-30 10:47:38,123 p=1507 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+2025-07-30 10:47:38,584 p=1507 u=runner n=ansible INFO| TASK [common : Update package cache] *******************************************
+2025-07-30 10:47:38,585 p=1507 u=runner n=ansible INFO| fatal: [localhost]: FAILED! => {"changed": false, "msg": "python3-apt must be installed to use check mode. If run normally this module can auto-install it."}
+2025-07-30 10:47:38,586 p=1507 u=runner n=ansible INFO| 	to retry, use: --limit @/home/runner/workspace/tmp/site.retry
+
+2025-07-30 10:47:38,586 p=1507 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 10:47:38,586 p=1507 u=runner n=ansible INFO| localhost                  : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-30 10:49:05,429 p=2106 u=runner n=ansible INFO| playbook: site.yml
+2025-07-30 10:49:23,724 p=2207 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-30 10:49:23,988 p=2207 u=runner n=ansible ERROR| ERROR! 'check_mode' is not a valid attribute for a IncludeRole
+
+The error appears to be in '/home/runner/workspace/test_deployment.yml': line 58, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+    - name: Test role dependencies
+      ^ here
+
+2025-07-30 10:49:42,686 p=2340 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-30 10:49:42,939 p=2340 u=runner n=ansible INFO| PLAY [Test Splunk Deployment Configuration] ************************************
+2025-07-30 10:49:42,975 p=2340 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 10:49:44,351 p=2340 u=runner n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2025-07-30 10:49:44,352 p=2340 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python
+interpreter at /home/runner/workspace/.pythonlibs/bin/python3.11, but future
+installation of another Python interpreter could change the meaning of that
+path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-30 10:49:44,352 p=2340 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:49:44,383 p=2340 u=runner n=ansible INFO| TASK [Check Ansible version] ***************************************************
+2025-07-30 10:49:44,388 p=2340 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Ansible version: 2.18.7"
+}
+2025-07-30 10:49:44,443 p=2340 u=runner n=ansible INFO| TASK [Validate required variables are defined] *********************************
+2025-07-30 10:49:44,443 p=2340 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required variables are properly defined"
+}
+2025-07-30 10:49:44,493 p=2340 u=runner n=ansible INFO| TASK [Check system facts] ******************************************************
+2025-07-30 10:49:44,494 p=2340 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "System Information:\n- OS: Ubuntu 24.04\n- Architecture: x86_64\n- Memory: 64312 MB\n- CPU Cores: 8\n- Python Version: 3.11.13\n"
+}
+2025-07-30 10:49:44,551 p=2340 u=runner n=ansible INFO| TASK [Validate system requirements] ********************************************
+2025-07-30 10:49:44,554 p=2340 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "System meets minimum requirements"
+}
+2025-07-30 10:49:45,159 p=2340 u=runner n=ansible INFO| TASK [Check file system structure] *********************************************
+2025-07-30 10:49:45,160 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=./roles) => {"ansible_loop_var": "item", "changed": false, "item": "./roles", "stat": {"atime": 1753871975.7712522, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872035.3396773, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 338, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872035.3396773, "nlink": 1, "path": "./roles", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 118, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:49:45,424 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=./inventory) => {"ansible_loop_var": "item", "changed": false, "item": "./inventory", "stat": {"atime": 1753871943.726544, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872302.41213, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 328, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872302.41213, "nlink": 1, "path": "./inventory", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 72, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:49:45,672 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=./playbooks) => {"ansible_loop_var": "item", "changed": false, "item": "./playbooks", "stat": {"atime": 1753872043.2024305, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872050.5452106, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 376, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872050.5452106, "nlink": 1, "path": "./playbooks", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 120, "uid": 1000, "version": "24", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:49:45,951 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=./site.yml) => {"ansible_loop_var": "item", "changed": false, "item": "./site.yml", "stat": {"atime": 1753871942.8075237, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fc09ad3da4ba915e75eadc6ffde585f5db4ae102", "ctime": 1753871942.8275242, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 327, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871942.8075237, "nlink": 1, "path": "./site.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1619, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:49:46,185 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=./ansible.cfg) => {"ansible_loop_var": "item", "changed": false, "item": "./ansible.cfg", "stat": {"atime": 1753872255.167208, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fb46c34cc20e08d6c3add21e77d740ab11b913d5", "ctime": 1753872255.5612066, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32289, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872255.167208, "nlink": 1, "path": "./ansible.cfg", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1116, "uid": 1000, "version": "39", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:49:46,239 p=2340 u=runner n=ansible INFO| TASK [Validate project structure] **********************************************
+2025-07-30 10:49:46,239 p=2340 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "Project structure validated successfully"
+}
+2025-07-30 10:49:46,519 p=2340 u=runner n=ansible INFO| TASK [Test role dependencies] **************************************************
+2025-07-30 10:49:46,520 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=common) => {"ansible_loop_var": "item", "changed": false, "item": "common", "stat": {"atime": 1753872528.6664782, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "9b6c845ab4236097f84ce0134c9e01aa6e05339d", "ctime": 1753872528.6784782, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32767, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872528.6664782, "nlink": 1, "path": "./roles/common/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 2088, "uid": 1000, "version": "61", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:49:46,729 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=splunk_enterprise) => {"ansible_loop_var": "item", "changed": false, "item": "splunk_enterprise", "stat": {"atime": 1753871975.7752523, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 16, "charset": "unknown", "checksum": "d6182dd4b12716c7b715cbdf06de62034d95b075", "ctime": 1753871975.809253, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 341, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871975.7762523, "nlink": 1, "path": "./roles/splunk_enterprise/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4215, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:49:46,963 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=backup_restoration) => {"ansible_loop_var": "item", "changed": false, "item": "backup_restoration", "stat": {"atime": 1753872009.3590102, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "65a42deccefd1b96bf7d78be0964d902d90ba893", "ctime": 1753872009.388011, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 357, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872009.3590102, "nlink": 1, "path": "./roles/backup_restoration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3054, "uid": 1000, "version": "22", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:49:47,193 p=2340 u=runner n=ansible INFO| ok: [localhost] => (item=github_integration) => {"ansible_loop_var": "item", "changed": false, "item": "github_integration", "stat": {"atime": 1753872025.1980138, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "09f4ad379de9cd066d3ebe083923abf422edc430", "ctime": 1753872025.2410123, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 364, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872025.1980138, "nlink": 1, "path": "./roles/github_integration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3192, "uid": 1000, "version": "23", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:49:47,226 p=2340 u=runner n=ansible INFO| TASK [Validate all roles exist] ************************************************
+2025-07-30 10:49:47,227 p=2340 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required roles are present"
+}
+2025-07-30 10:49:47,256 p=2340 u=runner n=ansible INFO| TASK [Display test summary] ****************************************************
+2025-07-30 10:49:47,257 p=2340 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Test Results:\n✓ Ansible configuration validated\n✓ Required variables checked\n✓ System requirements verified\n✓ Project structure confirmed\n✓ Role dependencies tested\n\nReady for deployment!"
+}
+2025-07-30 10:49:47,260 p=2340 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 10:49:47,260 p=2340 u=runner n=ansible INFO| localhost                  : ok=10   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-30 10:50:32,423 p=2606 u=runner n=ansible INFO| playbook: site.yml
+2025-07-30 10:50:33,544 p=2622 u=runner n=ansible INFO| playbook: test_deployment.yml
+2025-07-30 10:50:40,926 p=2689 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-30 10:50:41,150 p=2689 u=runner n=ansible INFO| PLAY [Test Splunk Deployment Configuration] ************************************
+2025-07-30 10:50:41,181 p=2689 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 10:50:42,242 p=2689 u=runner n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2025-07-30 10:50:42,242 p=2689 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python
+interpreter at /home/runner/workspace/.pythonlibs/bin/python3.11, but future
+installation of another Python interpreter could change the meaning of that
+path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-30 10:50:42,242 p=2689 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:50:42,271 p=2689 u=runner n=ansible INFO| TASK [Check Ansible version] ***************************************************
+2025-07-30 10:50:42,272 p=2689 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Ansible version: 2.18.7"
+}
+2025-07-30 10:50:42,309 p=2689 u=runner n=ansible INFO| TASK [Validate required variables are defined] *********************************
+2025-07-30 10:50:42,309 p=2689 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required variables are properly defined"
+}
+2025-07-30 10:50:42,331 p=2689 u=runner n=ansible INFO| TASK [Check system facts] ******************************************************
+2025-07-30 10:50:42,331 p=2689 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "System Information:\n- OS: Ubuntu 24.04\n- Architecture: x86_64\n- Memory: 64312 MB\n- CPU Cores: 8\n- Python Version: 3.11.13\n"
+}
+2025-07-30 10:50:42,353 p=2689 u=runner n=ansible INFO| TASK [Validate system requirements] ********************************************
+2025-07-30 10:50:42,353 p=2689 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "System meets minimum requirements"
+}
+2025-07-30 10:50:42,620 p=2689 u=runner n=ansible INFO| TASK [Check file system structure] *********************************************
+2025-07-30 10:50:42,621 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=./roles) => {"ansible_loop_var": "item", "changed": false, "item": "./roles", "stat": {"atime": 1753871975.7712522, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872035.3396773, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 338, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872035.3396773, "nlink": 1, "path": "./roles", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 118, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:50:42,796 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=./inventory) => {"ansible_loop_var": "item", "changed": false, "item": "./inventory", "stat": {"atime": 1753871943.726544, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872302.41213, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 328, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872302.41213, "nlink": 1, "path": "./inventory", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 72, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:50:42,967 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=./playbooks) => {"ansible_loop_var": "item", "changed": false, "item": "./playbooks", "stat": {"atime": 1753872043.2024305, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872050.5452106, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 376, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872050.5452106, "nlink": 1, "path": "./playbooks", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 120, "uid": 1000, "version": "24", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:50:43,146 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=./site.yml) => {"ansible_loop_var": "item", "changed": false, "item": "./site.yml", "stat": {"atime": 1753871942.8075237, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fc09ad3da4ba915e75eadc6ffde585f5db4ae102", "ctime": 1753871942.8275242, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 327, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871942.8075237, "nlink": 1, "path": "./site.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1619, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:50:43,323 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=./ansible.cfg) => {"ansible_loop_var": "item", "changed": false, "item": "./ansible.cfg", "stat": {"atime": 1753872255.167208, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fb46c34cc20e08d6c3add21e77d740ab11b913d5", "ctime": 1753872255.5612066, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32289, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872255.167208, "nlink": 1, "path": "./ansible.cfg", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1116, "uid": 1000, "version": "39", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:50:43,361 p=2689 u=runner n=ansible INFO| TASK [Validate project structure] **********************************************
+2025-07-30 10:50:43,362 p=2689 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "Project structure validated successfully"
+}
+2025-07-30 10:50:43,576 p=2689 u=runner n=ansible INFO| TASK [Test role dependencies] **************************************************
+2025-07-30 10:50:43,578 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=common) => {"ansible_loop_var": "item", "changed": false, "item": "common", "stat": {"atime": 1753872528.6664782, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "9b6c845ab4236097f84ce0134c9e01aa6e05339d", "ctime": 1753872528.6784782, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32767, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872528.6664782, "nlink": 1, "path": "./roles/common/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 2088, "uid": 1000, "version": "61", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:50:43,759 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=splunk_enterprise) => {"ansible_loop_var": "item", "changed": false, "item": "splunk_enterprise", "stat": {"atime": 1753871975.7752523, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 16, "charset": "unknown", "checksum": "d6182dd4b12716c7b715cbdf06de62034d95b075", "ctime": 1753871975.809253, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 341, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871975.7762523, "nlink": 1, "path": "./roles/splunk_enterprise/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4215, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:50:43,975 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=backup_restoration) => {"ansible_loop_var": "item", "changed": false, "item": "backup_restoration", "stat": {"atime": 1753872009.3590102, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "65a42deccefd1b96bf7d78be0964d902d90ba893", "ctime": 1753872009.388011, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 357, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872009.3590102, "nlink": 1, "path": "./roles/backup_restoration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3054, "uid": 1000, "version": "22", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:50:44,163 p=2689 u=runner n=ansible INFO| ok: [localhost] => (item=github_integration) => {"ansible_loop_var": "item", "changed": false, "item": "github_integration", "stat": {"atime": 1753872025.1980138, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "09f4ad379de9cd066d3ebe083923abf422edc430", "ctime": 1753872025.2410123, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 364, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872025.1980138, "nlink": 1, "path": "./roles/github_integration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3192, "uid": 1000, "version": "23", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:50:44,193 p=2689 u=runner n=ansible INFO| TASK [Validate all roles exist] ************************************************
+2025-07-30 10:50:44,193 p=2689 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required roles are present"
+}
+2025-07-30 10:50:44,220 p=2689 u=runner n=ansible INFO| TASK [Display test summary] ****************************************************
+2025-07-30 10:50:44,220 p=2689 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Test Results:\n✓ Ansible configuration validated\n✓ Required variables checked\n✓ System requirements verified\n✓ Project structure confirmed\n✓ Role dependencies tested\n\nReady for deployment!"
+}
+2025-07-30 10:50:44,221 p=2689 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 10:50:44,222 p=2689 u=runner n=ansible INFO| localhost                  : ok=10   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-30 10:51:06,912 p=3022 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-30 10:51:07,083 p=3022 u=runner n=ansible INFO| PLAY [Test Splunk Deployment Configuration] ************************************
+2025-07-30 10:51:07,101 p=3022 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 10:51:07,981 p=3022 u=runner n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2025-07-30 10:51:07,981 p=3022 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python
+interpreter at /home/runner/workspace/.pythonlibs/bin/python3.11, but future
+installation of another Python interpreter could change the meaning of that
+path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-30 10:51:07,981 p=3022 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:51:08,001 p=3022 u=runner n=ansible INFO| TASK [Check Ansible version] ***************************************************
+2025-07-30 10:51:08,002 p=3022 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Ansible version: 2.18.7"
+}
+2025-07-30 10:51:08,027 p=3022 u=runner n=ansible INFO| TASK [Validate required variables are defined] *********************************
+2025-07-30 10:51:08,028 p=3022 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required variables are properly defined"
+}
+2025-07-30 10:51:08,048 p=3022 u=runner n=ansible INFO| TASK [Check system facts] ******************************************************
+2025-07-30 10:51:08,048 p=3022 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "System Information:\n- OS: Ubuntu 24.04\n- Architecture: x86_64\n- Memory: 64312 MB\n- CPU Cores: 8\n- Python Version: 3.11.13\n"
+}
+2025-07-30 10:51:08,068 p=3022 u=runner n=ansible INFO| TASK [Validate system requirements] ********************************************
+2025-07-30 10:51:08,069 p=3022 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "System meets minimum requirements"
+}
+2025-07-30 10:51:08,319 p=3022 u=runner n=ansible INFO| TASK [Check file system structure] *********************************************
+2025-07-30 10:51:08,320 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=./roles) => {"ansible_loop_var": "item", "changed": false, "item": "./roles", "stat": {"atime": 1753871975.7712522, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872035.3396773, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 338, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872035.3396773, "nlink": 1, "path": "./roles", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 118, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:51:08,480 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=./inventory) => {"ansible_loop_var": "item", "changed": false, "item": "./inventory", "stat": {"atime": 1753871943.726544, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872302.41213, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 328, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872302.41213, "nlink": 1, "path": "./inventory", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 72, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:51:08,645 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=./playbooks) => {"ansible_loop_var": "item", "changed": false, "item": "./playbooks", "stat": {"atime": 1753872043.2024305, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872050.5452106, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 376, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872050.5452106, "nlink": 1, "path": "./playbooks", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 120, "uid": 1000, "version": "24", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:51:08,823 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=./site.yml) => {"ansible_loop_var": "item", "changed": false, "item": "./site.yml", "stat": {"atime": 1753871942.8075237, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fc09ad3da4ba915e75eadc6ffde585f5db4ae102", "ctime": 1753871942.8275242, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 327, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871942.8075237, "nlink": 1, "path": "./site.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1619, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:09,007 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=./ansible.cfg) => {"ansible_loop_var": "item", "changed": false, "item": "./ansible.cfg", "stat": {"atime": 1753872255.167208, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fb46c34cc20e08d6c3add21e77d740ab11b913d5", "ctime": 1753872255.5612066, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32289, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872255.167208, "nlink": 1, "path": "./ansible.cfg", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1116, "uid": 1000, "version": "39", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:09,041 p=3022 u=runner n=ansible INFO| TASK [Validate project structure] **********************************************
+2025-07-30 10:51:09,041 p=3022 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "Project structure validated successfully"
+}
+2025-07-30 10:51:09,237 p=3022 u=runner n=ansible INFO| TASK [Test role dependencies] **************************************************
+2025-07-30 10:51:09,238 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=common) => {"ansible_loop_var": "item", "changed": false, "item": "common", "stat": {"atime": 1753872528.6664782, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "9b6c845ab4236097f84ce0134c9e01aa6e05339d", "ctime": 1753872528.6784782, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32767, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872528.6664782, "nlink": 1, "path": "./roles/common/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 2088, "uid": 1000, "version": "61", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:09,420 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=splunk_enterprise) => {"ansible_loop_var": "item", "changed": false, "item": "splunk_enterprise", "stat": {"atime": 1753871975.7752523, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 16, "charset": "unknown", "checksum": "d6182dd4b12716c7b715cbdf06de62034d95b075", "ctime": 1753871975.809253, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 341, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871975.7762523, "nlink": 1, "path": "./roles/splunk_enterprise/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4215, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:09,608 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=backup_restoration) => {"ansible_loop_var": "item", "changed": false, "item": "backup_restoration", "stat": {"atime": 1753872009.3590102, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "65a42deccefd1b96bf7d78be0964d902d90ba893", "ctime": 1753872009.388011, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 357, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872009.3590102, "nlink": 1, "path": "./roles/backup_restoration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3054, "uid": 1000, "version": "22", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:09,792 p=3022 u=runner n=ansible INFO| ok: [localhost] => (item=github_integration) => {"ansible_loop_var": "item", "changed": false, "item": "github_integration", "stat": {"atime": 1753872025.1980138, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "09f4ad379de9cd066d3ebe083923abf422edc430", "ctime": 1753872025.2410123, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 364, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872025.1980138, "nlink": 1, "path": "./roles/github_integration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3192, "uid": 1000, "version": "23", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:09,826 p=3022 u=runner n=ansible INFO| TASK [Validate all roles exist] ************************************************
+2025-07-30 10:51:09,826 p=3022 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required roles are present"
+}
+2025-07-30 10:51:09,849 p=3022 u=runner n=ansible INFO| TASK [Display test summary] ****************************************************
+2025-07-30 10:51:09,850 p=3022 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Test Results:\n✓ Ansible configuration validated\n✓ Required variables checked\n✓ System requirements verified\n✓ Project structure confirmed\n✓ Role dependencies tested\n\nReady for deployment!"
+}
+2025-07-30 10:51:09,851 p=3022 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 10:51:09,851 p=3022 u=runner n=ansible INFO| localhost                  : ok=10   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-30 10:51:16,709 p=3206 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-30 10:51:16,881 p=3206 u=runner n=ansible INFO| PLAY [Test Splunk Deployment Configuration] ************************************
+2025-07-30 10:51:16,898 p=3206 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 10:51:17,796 p=3206 u=runner n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2025-07-30 10:51:17,796 p=3206 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python
+interpreter at /home/runner/workspace/.pythonlibs/bin/python3.11, but future
+installation of another Python interpreter could change the meaning of that
+path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-30 10:51:17,797 p=3206 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:51:17,816 p=3206 u=runner n=ansible INFO| TASK [Check Ansible version] ***************************************************
+2025-07-30 10:51:17,817 p=3206 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Ansible version: 2.18.7"
+}
+2025-07-30 10:51:17,843 p=3206 u=runner n=ansible INFO| TASK [Validate required variables are defined] *********************************
+2025-07-30 10:51:17,843 p=3206 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required variables are properly defined"
+}
+2025-07-30 10:51:17,867 p=3206 u=runner n=ansible INFO| TASK [Check system facts] ******************************************************
+2025-07-30 10:51:17,868 p=3206 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "System Information:\n- OS: Ubuntu 24.04\n- Architecture: x86_64\n- Memory: 64312 MB\n- CPU Cores: 8\n- Python Version: 3.11.13\n"
+}
+2025-07-30 10:51:17,892 p=3206 u=runner n=ansible INFO| TASK [Validate system requirements] ********************************************
+2025-07-30 10:51:17,892 p=3206 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "System meets minimum requirements"
+}
+2025-07-30 10:51:18,166 p=3206 u=runner n=ansible INFO| TASK [Check file system structure] *********************************************
+2025-07-30 10:51:18,167 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=./roles) => {"ansible_loop_var": "item", "changed": false, "item": "./roles", "stat": {"atime": 1753871975.7712522, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872035.3396773, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 338, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872035.3396773, "nlink": 1, "path": "./roles", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 118, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:51:18,349 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=./inventory) => {"ansible_loop_var": "item", "changed": false, "item": "./inventory", "stat": {"atime": 1753871943.726544, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872302.41213, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 328, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872302.41213, "nlink": 1, "path": "./inventory", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 72, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:51:18,573 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=./playbooks) => {"ansible_loop_var": "item", "changed": false, "item": "./playbooks", "stat": {"atime": 1753872043.2024305, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872050.5452106, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 376, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872050.5452106, "nlink": 1, "path": "./playbooks", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 120, "uid": 1000, "version": "24", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:51:18,771 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=./site.yml) => {"ansible_loop_var": "item", "changed": false, "item": "./site.yml", "stat": {"atime": 1753871942.8075237, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fc09ad3da4ba915e75eadc6ffde585f5db4ae102", "ctime": 1753871942.8275242, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 327, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871942.8075237, "nlink": 1, "path": "./site.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1619, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:18,990 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=./ansible.cfg) => {"ansible_loop_var": "item", "changed": false, "item": "./ansible.cfg", "stat": {"atime": 1753872255.167208, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fb46c34cc20e08d6c3add21e77d740ab11b913d5", "ctime": 1753872255.5612066, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32289, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872255.167208, "nlink": 1, "path": "./ansible.cfg", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1116, "uid": 1000, "version": "39", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:19,023 p=3206 u=runner n=ansible INFO| TASK [Validate project structure] **********************************************
+2025-07-30 10:51:19,023 p=3206 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "Project structure validated successfully"
+}
+2025-07-30 10:51:19,268 p=3206 u=runner n=ansible INFO| TASK [Test role dependencies] **************************************************
+2025-07-30 10:51:19,269 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=common) => {"ansible_loop_var": "item", "changed": false, "item": "common", "stat": {"atime": 1753872528.6664782, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "9b6c845ab4236097f84ce0134c9e01aa6e05339d", "ctime": 1753872528.6784782, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32767, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872528.6664782, "nlink": 1, "path": "./roles/common/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 2088, "uid": 1000, "version": "61", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:19,489 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=splunk_enterprise) => {"ansible_loop_var": "item", "changed": false, "item": "splunk_enterprise", "stat": {"atime": 1753871975.7752523, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 16, "charset": "unknown", "checksum": "d6182dd4b12716c7b715cbdf06de62034d95b075", "ctime": 1753871975.809253, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 341, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871975.7762523, "nlink": 1, "path": "./roles/splunk_enterprise/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4215, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:19,685 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=backup_restoration) => {"ansible_loop_var": "item", "changed": false, "item": "backup_restoration", "stat": {"atime": 1753872009.3590102, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "65a42deccefd1b96bf7d78be0964d902d90ba893", "ctime": 1753872009.388011, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 357, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872009.3590102, "nlink": 1, "path": "./roles/backup_restoration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3054, "uid": 1000, "version": "22", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:19,913 p=3206 u=runner n=ansible INFO| ok: [localhost] => (item=github_integration) => {"ansible_loop_var": "item", "changed": false, "item": "github_integration", "stat": {"atime": 1753872025.1980138, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "09f4ad379de9cd066d3ebe083923abf422edc430", "ctime": 1753872025.2410123, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 364, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872025.1980138, "nlink": 1, "path": "./roles/github_integration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3192, "uid": 1000, "version": "23", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:51:19,947 p=3206 u=runner n=ansible INFO| TASK [Validate all roles exist] ************************************************
+2025-07-30 10:51:19,952 p=3206 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required roles are present"
+}
+2025-07-30 10:51:19,984 p=3206 u=runner n=ansible INFO| TASK [Display test summary] ****************************************************
+2025-07-30 10:51:19,984 p=3206 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Test Results:\n✓ Ansible configuration validated\n✓ Required variables checked\n✓ System requirements verified\n✓ Project structure confirmed\n✓ Role dependencies tested\n\nReady for deployment!"
+}
+2025-07-30 10:51:19,985 p=3206 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 10:51:19,986 p=3206 u=runner n=ansible INFO| localhost                  : ok=10   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-30 10:56:26,295 p=3388 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-30 10:56:26,606 p=3388 u=runner n=ansible INFO| PLAY [Test Splunk Deployment Configuration] ********************************************************************************
+2025-07-30 10:56:26,635 p=3388 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 10:56:27,681 p=3388 u=runner n=ansible INFO| TASK [Gathering Facts] *****************************************************************************************************
+2025-07-30 10:56:27,682 p=3388 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python interpreter at
+/home/runner/workspace/.pythonlibs/bin/python3.11, but future installation of another Python interpreter could change the
+meaning of that path. See https://docs.ansible.com/ansible-core/2.18/reference_appendices/interpreter_discovery.html for
+more information.
+
+2025-07-30 10:56:27,682 p=3388 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 10:56:27,712 p=3388 u=runner n=ansible INFO| TASK [Check Ansible version] ***********************************************************************************************
+2025-07-30 10:56:27,713 p=3388 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Ansible version: 2.18.7"
+}
+2025-07-30 10:56:27,745 p=3388 u=runner n=ansible INFO| TASK [Validate required variables are defined] *****************************************************************************
+2025-07-30 10:56:27,745 p=3388 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required variables are properly defined"
+}
+2025-07-30 10:56:27,772 p=3388 u=runner n=ansible INFO| TASK [Check system facts] **************************************************************************************************
+2025-07-30 10:56:27,773 p=3388 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "System Information:\n- OS: Ubuntu 24.04\n- Architecture: x86_64\n- Memory: 64312 MB\n- CPU Cores: 8\n- Python Version: 3.11.13\n"
+}
+2025-07-30 10:56:27,795 p=3388 u=runner n=ansible INFO| TASK [Validate system requirements] ****************************************************************************************
+2025-07-30 10:56:27,795 p=3388 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "System meets minimum requirements"
+}
+2025-07-30 10:56:28,071 p=3388 u=runner n=ansible INFO| TASK [Check file system structure] *****************************************************************************************
+2025-07-30 10:56:28,071 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=./roles) => {"ansible_loop_var": "item", "changed": false, "item": "./roles", "stat": {"atime": 1753871975.7712522, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872035.3396773, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 338, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872035.3396773, "nlink": 1, "path": "./roles", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 118, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:56:28,249 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=./inventory) => {"ansible_loop_var": "item", "changed": false, "item": "./inventory", "stat": {"atime": 1753871943.726544, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872302.41213, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 328, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872302.41213, "nlink": 1, "path": "./inventory", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 72, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:56:28,427 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=./playbooks) => {"ansible_loop_var": "item", "changed": false, "item": "./playbooks", "stat": {"atime": 1753872043.2024305, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "ctime": 1753872050.5452106, "dev": 5242930, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 376, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872050.5452106, "nlink": 1, "path": "./playbooks", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 120, "uid": 1000, "version": "24", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 10:56:28,604 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=./site.yml) => {"ansible_loop_var": "item", "changed": false, "item": "./site.yml", "stat": {"atime": 1753871942.8075237, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fc09ad3da4ba915e75eadc6ffde585f5db4ae102", "ctime": 1753871942.8275242, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 327, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871942.8075237, "nlink": 1, "path": "./site.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1619, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:56:28,807 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=./ansible.cfg) => {"ansible_loop_var": "item", "changed": false, "item": "./ansible.cfg", "stat": {"atime": 1753872255.167208, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fb46c34cc20e08d6c3add21e77d740ab11b913d5", "ctime": 1753872255.5612066, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32289, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872255.167208, "nlink": 1, "path": "./ansible.cfg", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1116, "uid": 1000, "version": "39", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:56:28,841 p=3388 u=runner n=ansible INFO| TASK [Validate project structure] ******************************************************************************************
+2025-07-30 10:56:28,841 p=3388 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "Project structure validated successfully"
+}
+2025-07-30 10:56:29,032 p=3388 u=runner n=ansible INFO| TASK [Test role dependencies] **********************************************************************************************
+2025-07-30 10:56:29,032 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=common) => {"ansible_loop_var": "item", "changed": false, "item": "common", "stat": {"atime": 1753872528.6664782, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "9b6c845ab4236097f84ce0134c9e01aa6e05339d", "ctime": 1753872528.6784782, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32767, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872528.6664782, "nlink": 1, "path": "./roles/common/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 2088, "uid": 1000, "version": "61", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:56:29,212 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=splunk_enterprise) => {"ansible_loop_var": "item", "changed": false, "item": "splunk_enterprise", "stat": {"atime": 1753871975.7752523, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 16, "charset": "unknown", "checksum": "d6182dd4b12716c7b715cbdf06de62034d95b075", "ctime": 1753871975.809253, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 341, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871975.7762523, "nlink": 1, "path": "./roles/splunk_enterprise/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4215, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:56:29,379 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=backup_restoration) => {"ansible_loop_var": "item", "changed": false, "item": "backup_restoration", "stat": {"atime": 1753872009.3590102, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "65a42deccefd1b96bf7d78be0964d902d90ba893", "ctime": 1753872009.388011, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 357, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872009.3590102, "nlink": 1, "path": "./roles/backup_restoration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3054, "uid": 1000, "version": "22", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:56:29,563 p=3388 u=runner n=ansible INFO| ok: [localhost] => (item=github_integration) => {"ansible_loop_var": "item", "changed": false, "item": "github_integration", "stat": {"atime": 1753872025.1980138, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "09f4ad379de9cd066d3ebe083923abf422edc430", "ctime": 1753872025.2410123, "dev": 5242930, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 364, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872025.1980138, "nlink": 1, "path": "./roles/github_integration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3192, "uid": 1000, "version": "23", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 10:56:29,594 p=3388 u=runner n=ansible INFO| TASK [Validate all roles exist] ********************************************************************************************
+2025-07-30 10:56:29,594 p=3388 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required roles are present"
+}
+2025-07-30 10:56:29,615 p=3388 u=runner n=ansible INFO| TASK [Display test summary] ************************************************************************************************
+2025-07-30 10:56:29,616 p=3388 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Test Results:\n✓ Ansible configuration validated\n✓ Required variables checked\n✓ System requirements verified\n✓ Project structure confirmed\n✓ Role dependencies tested\n\nReady for deployment!"
+}
+2025-07-30 10:56:29,617 p=3388 u=runner n=ansible INFO| PLAY RECAP *****************************************************************************************************************
+2025-07-30 10:56:29,617 p=3388 u=runner n=ansible INFO| localhost                  : ok=10   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-30 13:43:59,098 p=722 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-30 13:43:59,617 p=722 u=runner n=ansible INFO| PLAY [Test Splunk Deployment Configuration] ***************************************************************
+2025-07-30 13:43:59,667 p=722 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 13:44:00,952 p=722 u=runner n=ansible INFO| TASK [Gathering Facts] ************************************************************************************
+2025-07-30 13:44:00,952 p=722 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python interpreter at
+/home/runner/workspace/.pythonlibs/bin/python3.11, but future installation of another Python interpreter
+could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-30 13:44:00,953 p=722 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 13:44:00,989 p=722 u=runner n=ansible INFO| TASK [Check Ansible version] ******************************************************************************
+2025-07-30 13:44:00,990 p=722 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Ansible version: 2.18.7"
+}
+2025-07-30 13:44:01,036 p=722 u=runner n=ansible INFO| TASK [Validate required variables are defined] ************************************************************
+2025-07-30 13:44:01,036 p=722 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required variables are properly defined"
+}
+2025-07-30 13:44:01,069 p=722 u=runner n=ansible INFO| TASK [Check system facts] *********************************************************************************
+2025-07-30 13:44:01,070 p=722 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "System Information:\n- OS: Ubuntu 24.04\n- Architecture: x86_64\n- Memory: 64312 MB\n- CPU Cores: 8\n- Python Version: 3.11.13\n"
+}
+2025-07-30 13:44:01,107 p=722 u=runner n=ansible INFO| TASK [Validate system requirements] ***********************************************************************
+2025-07-30 13:44:01,107 p=722 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "System meets minimum requirements"
+}
+2025-07-30 13:44:01,477 p=722 u=runner n=ansible INFO| TASK [Check file system structure] ************************************************************************
+2025-07-30 13:44:01,480 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=./roles) => {"ansible_loop_var": "item", "changed": false, "item": "./roles", "stat": {"atime": 1753871975.7712522, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872035.3396773, "dev": 5242946, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 338, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872035.3396773, "nlink": 1, "path": "./roles", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 118, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 13:44:01,689 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=./inventory) => {"ansible_loop_var": "item", "changed": false, "item": "./inventory", "stat": {"atime": 1753871943.726544, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872302.41213, "dev": 5242946, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 328, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872302.41213, "nlink": 1, "path": "./inventory", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 72, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 13:44:01,885 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=./playbooks) => {"ansible_loop_var": "item", "changed": false, "item": "./playbooks", "stat": {"atime": 1753872043.2024305, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872050.5452106, "dev": 5242946, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 376, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872050.5452106, "nlink": 1, "path": "./playbooks", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 120, "uid": 1000, "version": "24", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 13:44:02,091 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=./site.yml) => {"ansible_loop_var": "item", "changed": false, "item": "./site.yml", "stat": {"atime": 1753871942.8075237, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fc09ad3da4ba915e75eadc6ffde585f5db4ae102", "ctime": 1753871942.8275242, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 327, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871942.8075237, "nlink": 1, "path": "./site.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1619, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:44:02,326 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=./ansible.cfg) => {"ansible_loop_var": "item", "changed": false, "item": "./ansible.cfg", "stat": {"atime": 1753872255.167208, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fb46c34cc20e08d6c3add21e77d740ab11b913d5", "ctime": 1753872255.5612066, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32289, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872255.167208, "nlink": 1, "path": "./ansible.cfg", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1116, "uid": 1000, "version": "39", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:44:02,374 p=722 u=runner n=ansible INFO| TASK [Validate project structure] *************************************************************************
+2025-07-30 13:44:02,376 p=722 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "Project structure validated successfully"
+}
+2025-07-30 13:44:02,616 p=722 u=runner n=ansible INFO| TASK [Test role dependencies] *****************************************************************************
+2025-07-30 13:44:02,617 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=common) => {"ansible_loop_var": "item", "changed": false, "item": "common", "stat": {"atime": 1753880390.5019326, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "b9c22f865d4a375a11868ff9bb1c822b528b5a3d", "ctime": 1753880390.5309327, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32902, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753880390.5039327, "nlink": 1, "path": "./roles/common/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 2089, "uid": 1000, "version": "93", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:44:02,824 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=splunk_enterprise) => {"ansible_loop_var": "item", "changed": false, "item": "splunk_enterprise", "stat": {"atime": 1753871975.7752523, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 16, "charset": "unknown", "checksum": "d6182dd4b12716c7b715cbdf06de62034d95b075", "ctime": 1753871975.809253, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 341, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871975.7762523, "nlink": 1, "path": "./roles/splunk_enterprise/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4215, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:44:03,028 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=backup_restoration) => {"ansible_loop_var": "item", "changed": false, "item": "backup_restoration", "stat": {"atime": 1753872009.3590102, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "65a42deccefd1b96bf7d78be0964d902d90ba893", "ctime": 1753872009.388011, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 357, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872009.3590102, "nlink": 1, "path": "./roles/backup_restoration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3054, "uid": 1000, "version": "22", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:44:03,233 p=722 u=runner n=ansible INFO| ok: [localhost] => (item=github_integration) => {"ansible_loop_var": "item", "changed": false, "item": "github_integration", "stat": {"atime": 1753872025.1980138, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "09f4ad379de9cd066d3ebe083923abf422edc430", "ctime": 1753872025.2410123, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 364, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872025.1980138, "nlink": 1, "path": "./roles/github_integration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3192, "uid": 1000, "version": "23", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:44:03,275 p=722 u=runner n=ansible INFO| TASK [Validate all roles exist] ***************************************************************************
+2025-07-30 13:44:03,277 p=722 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required roles are present"
+}
+2025-07-30 13:44:03,313 p=722 u=runner n=ansible INFO| TASK [Display test summary] *******************************************************************************
+2025-07-30 13:44:03,313 p=722 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Test Results:\n✓ Ansible configuration validated\n✓ Required variables checked\n✓ System requirements verified\n✓ Project structure confirmed\n✓ Role dependencies tested\n\nReady for deployment!"
+}
+2025-07-30 13:44:03,314 p=722 u=runner n=ansible INFO| PLAY RECAP ************************************************************************************************
+2025-07-30 13:44:03,314 p=722 u=runner n=ansible INFO| localhost                  : ok=10   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-30 13:48:08,728 p=1370 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-30 13:48:08,939 p=1370 u=runner n=ansible INFO| PLAY [Test Splunk Deployment Configuration] ************************************
+2025-07-30 13:48:08,963 p=1370 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-30 13:48:10,093 p=1370 u=runner n=ansible INFO| TASK [Gathering Facts] *********************************************************
+2025-07-30 13:48:10,093 p=1370 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python
+interpreter at /home/runner/workspace/.pythonlibs/bin/python3.11, but future
+installation of another Python interpreter could change the meaning of that
+path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-30 13:48:10,093 p=1370 u=runner n=ansible INFO| ok: [localhost]
+2025-07-30 13:48:10,125 p=1370 u=runner n=ansible INFO| TASK [Check Ansible version] ***************************************************
+2025-07-30 13:48:10,126 p=1370 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Ansible version: 2.18.7"
+}
+2025-07-30 13:48:10,170 p=1370 u=runner n=ansible INFO| TASK [Validate required variables are defined] *********************************
+2025-07-30 13:48:10,171 p=1370 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required variables are properly defined"
+}
+2025-07-30 13:48:10,209 p=1370 u=runner n=ansible INFO| TASK [Check system facts] ******************************************************
+2025-07-30 13:48:10,210 p=1370 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "System Information:\n- OS: Ubuntu 24.04\n- Architecture: x86_64\n- Memory: 64312 MB\n- CPU Cores: 8\n- Python Version: 3.11.13\n"
+}
+2025-07-30 13:48:10,242 p=1370 u=runner n=ansible INFO| TASK [Validate system requirements] ********************************************
+2025-07-30 13:48:10,244 p=1370 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "System meets minimum requirements"
+}
+2025-07-30 13:48:10,598 p=1370 u=runner n=ansible INFO| TASK [Check file system structure] *********************************************
+2025-07-30 13:48:10,601 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=./roles) => {"ansible_loop_var": "item", "changed": false, "item": "./roles", "stat": {"atime": 1753871975.7712522, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872035.3396773, "dev": 5242946, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 338, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872035.3396773, "nlink": 1, "path": "./roles", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 118, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 13:48:10,809 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=./inventory) => {"ansible_loop_var": "item", "changed": false, "item": "./inventory", "stat": {"atime": 1753871943.726544, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872302.41213, "dev": 5242946, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 328, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872302.41213, "nlink": 1, "path": "./inventory", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 72, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 13:48:11,003 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=./playbooks) => {"ansible_loop_var": "item", "changed": false, "item": "./playbooks", "stat": {"atime": 1753872043.2024305, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872050.5452106, "dev": 5242946, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 376, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872050.5452106, "nlink": 1, "path": "./playbooks", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 120, "uid": 1000, "version": "24", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-30 13:48:11,222 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=./site.yml) => {"ansible_loop_var": "item", "changed": false, "item": "./site.yml", "stat": {"atime": 1753871942.8075237, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fc09ad3da4ba915e75eadc6ffde585f5db4ae102", "ctime": 1753871942.8275242, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 327, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871942.8075237, "nlink": 1, "path": "./site.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1619, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:48:11,455 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=./ansible.cfg) => {"ansible_loop_var": "item", "changed": false, "item": "./ansible.cfg", "stat": {"atime": 1753872255.167208, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fb46c34cc20e08d6c3add21e77d740ab11b913d5", "ctime": 1753872255.5612066, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32289, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872255.167208, "nlink": 1, "path": "./ansible.cfg", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1116, "uid": 1000, "version": "39", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:48:11,500 p=1370 u=runner n=ansible INFO| TASK [Validate project structure] **********************************************
+2025-07-30 13:48:11,502 p=1370 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "Project structure validated successfully"
+}
+2025-07-30 13:48:11,758 p=1370 u=runner n=ansible INFO| TASK [Test role dependencies] **************************************************
+2025-07-30 13:48:11,765 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=common) => {"ansible_loop_var": "item", "changed": false, "item": "common", "stat": {"atime": 1753880390.5019326, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "b9c22f865d4a375a11868ff9bb1c822b528b5a3d", "ctime": 1753880390.5309327, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32902, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753880390.5039327, "nlink": 1, "path": "./roles/common/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 2089, "uid": 1000, "version": "93", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:48:11,964 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=splunk_enterprise) => {"ansible_loop_var": "item", "changed": false, "item": "splunk_enterprise", "stat": {"atime": 1753871975.7752523, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 16, "charset": "unknown", "checksum": "d6182dd4b12716c7b715cbdf06de62034d95b075", "ctime": 1753871975.809253, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 341, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871975.7762523, "nlink": 1, "path": "./roles/splunk_enterprise/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4215, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:48:12,161 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=backup_restoration) => {"ansible_loop_var": "item", "changed": false, "item": "backup_restoration", "stat": {"atime": 1753872009.3590102, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "65a42deccefd1b96bf7d78be0964d902d90ba893", "ctime": 1753872009.388011, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 357, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872009.3590102, "nlink": 1, "path": "./roles/backup_restoration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3054, "uid": 1000, "version": "22", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:48:12,363 p=1370 u=runner n=ansible INFO| ok: [localhost] => (item=github_integration) => {"ansible_loop_var": "item", "changed": false, "item": "github_integration", "stat": {"atime": 1753872025.1980138, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "09f4ad379de9cd066d3ebe083923abf422edc430", "ctime": 1753872025.2410123, "dev": 5242946, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 364, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872025.1980138, "nlink": 1, "path": "./roles/github_integration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3192, "uid": 1000, "version": "23", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-30 13:48:12,409 p=1370 u=runner n=ansible INFO| TASK [Validate all roles exist] ************************************************
+2025-07-30 13:48:12,410 p=1370 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required roles are present"
+}
+2025-07-30 13:48:12,442 p=1370 u=runner n=ansible INFO| TASK [Display test summary] ****************************************************
+2025-07-30 13:48:12,442 p=1370 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Test Results:\n✓ Ansible configuration validated\n✓ Required variables checked\n✓ System requirements verified\n✓ Project structure confirmed\n✓ Role dependencies tested\n\nReady for deployment!"
+}
+2025-07-30 13:48:12,443 p=1370 u=runner n=ansible INFO| PLAY RECAP *********************************************************************
+2025-07-30 13:48:12,443 p=1370 u=runner n=ansible INFO| localhost                  : ok=10   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-31 13:51:25,490 p=653 u=runner n=ansible INFO| Using /home/runner/workspace/ansible.cfg as config file
+2025-07-31 13:51:26,063 p=653 u=runner n=ansible INFO| PLAY [Test Splunk Deployment Configuration] ***************************************************************
+2025-07-31 13:51:26,102 p=653 u=runner n=ansible WARNING| [WARNING]: Found variable using reserved name: become
+
+2025-07-31 13:51:27,239 p=653 u=runner n=ansible INFO| TASK [Gathering Facts] ************************************************************************************
+2025-07-31 13:51:27,239 p=653 u=runner n=ansible WARNING| [WARNING]: Platform linux on host localhost is using the discovered Python interpreter at
+/home/runner/workspace/.pythonlibs/bin/python3.11, but future installation of another Python interpreter
+could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-07-31 13:51:27,239 p=653 u=runner n=ansible INFO| ok: [localhost]
+2025-07-31 13:51:27,264 p=653 u=runner n=ansible INFO| TASK [Check Ansible version] ******************************************************************************
+2025-07-31 13:51:27,264 p=653 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Ansible version: 2.18.7"
+}
+2025-07-31 13:51:27,298 p=653 u=runner n=ansible INFO| TASK [Validate required variables are defined] ************************************************************
+2025-07-31 13:51:27,299 p=653 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required variables are properly defined"
+}
+2025-07-31 13:51:27,316 p=653 u=runner n=ansible INFO| TASK [Check system facts] *********************************************************************************
+2025-07-31 13:51:27,316 p=653 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "System Information:\n- OS: Ubuntu 24.04\n- Architecture: x86_64\n- Memory: 64312 MB\n- CPU Cores: 8\n- Python Version: 3.11.13\n"
+}
+2025-07-31 13:51:27,335 p=653 u=runner n=ansible INFO| TASK [Validate system requirements] ***********************************************************************
+2025-07-31 13:51:27,335 p=653 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "System meets minimum requirements"
+}
+2025-07-31 13:51:27,585 p=653 u=runner n=ansible INFO| TASK [Check file system structure] ************************************************************************
+2025-07-31 13:51:27,586 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=./roles) => {"ansible_loop_var": "item", "changed": false, "item": "./roles", "stat": {"atime": 1753871975.7712522, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872035.3396773, "dev": 67, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 338, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872035.3396773, "nlink": 1, "path": "./roles", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 118, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-31 13:51:27,747 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=./inventory) => {"ansible_loop_var": "item", "changed": false, "item": "./inventory", "stat": {"atime": 1753871943.726544, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872302.41213, "dev": 67, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 328, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872302.41213, "nlink": 1, "path": "./inventory", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 72, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-31 13:51:27,914 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=./playbooks) => {"ansible_loop_var": "item", "changed": false, "item": "./playbooks", "stat": {"atime": 1753872043.2024305, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "unknown", "ctime": 1753872050.5452106, "dev": 67, "device_type": 0, "executable": true, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 376, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0755", "mtime": 1753872050.5452106, "nlink": 1, "path": "./playbooks", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 120, "uid": 1000, "version": "24", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+2025-07-31 13:51:28,078 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=./site.yml) => {"ansible_loop_var": "item", "changed": false, "item": "./site.yml", "stat": {"atime": 1753871942.8075237, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fc09ad3da4ba915e75eadc6ffde585f5db4ae102", "ctime": 1753871942.8275242, "dev": 67, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 327, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871942.8075237, "nlink": 1, "path": "./site.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1619, "uid": 1000, "version": "17", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-31 13:51:28,237 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=./ansible.cfg) => {"ansible_loop_var": "item", "changed": false, "item": "./ansible.cfg", "stat": {"atime": 1753872255.167208, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "fb46c34cc20e08d6c3add21e77d740ab11b913d5", "ctime": 1753872255.5612066, "dev": 67, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32289, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872255.167208, "nlink": 1, "path": "./ansible.cfg", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 1116, "uid": 1000, "version": "39", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-31 13:51:28,271 p=653 u=runner n=ansible INFO| TASK [Validate project structure] *************************************************************************
+2025-07-31 13:51:28,271 p=653 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "Project structure validated successfully"
+}
+2025-07-31 13:51:28,470 p=653 u=runner n=ansible INFO| TASK [Test role dependencies] *****************************************************************************
+2025-07-31 13:51:28,471 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=common) => {"ansible_loop_var": "item", "changed": false, "item": "common", "stat": {"atime": 1753880390.5019326, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "b9c22f865d4a375a11868ff9bb1c822b528b5a3d", "ctime": 1753880390.5309327, "dev": 67, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 32902, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753880390.5039327, "nlink": 1, "path": "./roles/common/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 2089, "uid": 1000, "version": "93", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-31 13:51:28,640 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=splunk_enterprise) => {"ansible_loop_var": "item", "changed": false, "item": "splunk_enterprise", "stat": {"atime": 1753871975.7752523, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 16, "charset": "unknown", "checksum": "d6182dd4b12716c7b715cbdf06de62034d95b075", "ctime": 1753871975.809253, "dev": 67, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 341, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753871975.7762523, "nlink": 1, "path": "./roles/splunk_enterprise/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4215, "uid": 1000, "version": "19", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-31 13:51:28,815 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=backup_restoration) => {"ansible_loop_var": "item", "changed": false, "item": "backup_restoration", "stat": {"atime": 1753872009.3590102, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "65a42deccefd1b96bf7d78be0964d902d90ba893", "ctime": 1753872009.388011, "dev": 67, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 357, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872009.3590102, "nlink": 1, "path": "./roles/backup_restoration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3054, "uid": 1000, "version": "22", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-31 13:51:29,011 p=653 u=runner n=ansible INFO| ok: [localhost] => (item=github_integration) => {"ansible_loop_var": "item", "changed": false, "item": "github_integration", "stat": {"atime": 1753872025.1980138, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "unknown", "checksum": "09f4ad379de9cd066d3ebe083923abf422edc430", "ctime": 1753872025.2410123, "dev": 67, "device_type": 0, "executable": false, "exists": true, "gid": 1000, "gr_name": "runner", "inode": 364, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "unknown", "mode": "0644", "mtime": 1753872025.1980138, "nlink": 1, "path": "./roles/github_integration/tasks/main.yml", "pw_name": "runner", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 3192, "uid": 1000, "version": "23", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}}
+2025-07-31 13:51:29,038 p=653 u=runner n=ansible INFO| TASK [Validate all roles exist] ***************************************************************************
+2025-07-31 13:51:29,041 p=653 u=runner n=ansible INFO| ok: [localhost] => {
+    "changed": false,
+    "msg": "All required roles are present"
+}
+2025-07-31 13:51:29,060 p=653 u=runner n=ansible INFO| TASK [Display test summary] *******************************************************************************
+2025-07-31 13:51:29,061 p=653 u=runner n=ansible INFO| ok: [localhost] => {
+    "msg": "Test Results:\n✓ Ansible configuration validated\n✓ Required variables checked\n✓ System requirements verified\n✓ Project structure confirmed\n✓ Role dependencies tested\n\nReady for deployment!"
+}
+2025-07-31 13:51:29,061 p=653 u=runner n=ansible INFO| PLAY RECAP ************************************************************************************************
+2025-07-31 13:51:29,062 p=653 u=runner n=ansible INFO| localhost                  : ok=10   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

@@ -1,3 +1,0 @@
-# Test servers - localhost should be reachable
-localhost
-127.0.0.1

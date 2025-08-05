@@ -1,6 +1,0 @@
-[splunk_deployment_servers]
-splunk-ds-staging ansible_host=10.0.2.100 ansible_user=ansible
-
-[splunk_deployment_servers:vars]
-environment=staging
-splunk_environment=staging

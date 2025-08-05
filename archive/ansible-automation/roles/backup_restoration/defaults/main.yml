@@ -1,8 +1,0 @@
----
-# Default variables for backup restoration
-backup_enabled: true
-restore_from_backup: false
-backup_location: "/opt/splunk/backups"
-backup_retention_days: 30
-backup_source_url: ""
-backup_schedule: "0 2 * * *"  # Daily at 2 AM
