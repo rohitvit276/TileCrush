@@ -139,6 +139,7 @@ phases:
       - echo "Post-build phase - verifying artifacts"
       - ls -la rock-crush.aab
       - echo "Build completed successfully"
+      - aws s3 cp rock-crush.aab s3://rock-crush-builds/rock-crush.aab
 
 artifacts:
   files:
