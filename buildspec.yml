@@ -138,7 +138,7 @@ phases:
       - echo "Uploading AAB to S3"
       - aws s3 cp rock-crush.aab s3://rock-crush-builds/rock-crush-$(date +%Y%m%d-%H%M%S).aab
       - echo "S3 upload completed"
-      - echo "Download your AAB from: https://rock-crush-builds.s3.amazonaws.com/rock-crush-$(date +%Y%m%d-%H%M%S).aab"
+      - echo "Download your AAB from S3 bucket"
 
 artifacts:
   files:
