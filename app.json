@@ -42,7 +42,7 @@
 
     "extra": {
       "eas": {
-        "projectId": "rock-crush-project"
+        "projectId": ""
       }
     }
   }
