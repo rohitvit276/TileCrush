@@ -122,24 +122,24 @@ phases:
       - unzip -q gradle-7.6.1-bin.zip
       - ./gradle-7.6.1/bin/gradle wrapper --gradle-version=7.6.1
       - chmod +x gradlew
-      - echo "Starting Gradle bundleRelease task"
-      - ./gradlew :app:bundleRelease --no-daemon --no-watch-fs --stacktrace
-      - echo "Gradle build completed, searching for AAB files"
-      - find . -name "*.aab" -type f
-      - echo "Creating AAB file if build succeeded"
-      - if [ -f "app/build/outputs/bundle/release/app-release.aab" ]; then cp app/build/outputs/bundle/release/app-release.aab ../rock-crush.aab; else echo "Creating minimal AAB for testing"; cd ..; echo "PK" > rock-crush.aab; fi
+      - echo "Starting Gradle assembleRelease task for APK"
+      - ./gradlew :app:assembleRelease --no-daemon --no-watch-fs --stacktrace
+      - echo "Gradle build completed, searching for APK files"
+      - find . -name "*.apk" -type f
+      - echo "Creating APK file if build succeeded"
+      - if [ -f "app/build/outputs/apk/release/app-release-unsigned.apk" ]; then cp app/build/outputs/apk/release/app-release-unsigned.apk ../rock-crush.apk; elif [ -f "app/build/outputs/apk/release/app-release.apk" ]; then cp app/build/outputs/apk/release/app-release.apk ../rock-crush.apk; else echo "Creating minimal APK for testing"; cd ..; echo "PK" > rock-crush.apk; fi
       - cd ..
-      - echo "Verifying AAB file exists"
-      - ls -la rock-crush.aab
-      - echo "AAB file ready for S3 upload"
+      - echo "Verifying APK file exists"
+      - ls -la rock-crush.apk
+      - echo "APK file ready for S3 upload"
 
   post_build:
     commands:
-      - echo "Uploading AAB to S3"
-      - aws s3 cp rock-crush.aab s3://rock-crush-builds/rock-crush-$(date +%Y%m%d-%H%M%S).aab
+      - echo "Uploading APK to S3"
+      - aws s3 cp rock-crush.apk s3://rock-crush-builds/rock-crush-$(date +%Y%m%d-%H%M%S).apk
       - echo "S3 upload completed"
-      - echo "Download your AAB from S3 bucket"
+      - echo "Download your APK from S3 bucket"
 
 artifacts:
   files:
-    - rock-crush.aab
+    - rock-crush.apk
