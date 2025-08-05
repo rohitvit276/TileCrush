@@ -1,0 +1,267 @@
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Dimensions, 
+  Alert,
+  Animated,
+  Platform
+} from 'react-native';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const GRID_SIZE = 8;
+const CELL_SIZE = Math.min(screenWidth, screenHeight) * 0.08;
+const ROCK_TYPES = ['🟦', '🟩', '🟪', '🟨', '🟧', '🟥'];
+
+export default function App() {
+  const [grid, setGrid] = useState([]);
+  const [score, setScore] = useState(0);
+  const [selectedCell, setSelectedCell] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const animatedValues = useRef({});
+
+  // Initialize grid
+  useEffect(() => {
+    const newGrid = [];
+    for (let row = 0; row < GRID_SIZE; row++) {
+      const newRow = [];
+      for (let col = 0; col < GRID_SIZE; col++) {
+        newRow.push(ROCK_TYPES[Math.floor(Math.random() * ROCK_TYPES.length)]);
+        animatedValues.current[`${row}-${col}`] = new Animated.Value(1);
+      }
+      newGrid.push(newRow);
+    }
+    setGrid(newGrid);
+  }, []);
+
+  // Find matches
+  const findMatches = useCallback((currentGrid) => {
+    const matches = new Set();
+    
+    // Check horizontal matches
+    for (let row = 0; row < GRID_SIZE; row++) {
+      for (let col = 0; col < GRID_SIZE - 2; col++) {
+        if (currentGrid[row][col] && 
+            currentGrid[row][col] === currentGrid[row][col + 1] && 
+            currentGrid[row][col] === currentGrid[row][col + 2]) {
+          matches.add(`${row}-${col}`);
+          matches.add(`${row}-${col + 1}`);
+          matches.add(`${row}-${col + 2}`);
+        }
+      }
+    }
+    
+    // Check vertical matches
+    for (let row = 0; row < GRID_SIZE - 2; row++) {
+      for (let col = 0; col < GRID_SIZE; col++) {
+        if (currentGrid[row][col] && 
+            currentGrid[row][col] === currentGrid[row + 1][col] && 
+            currentGrid[row][col] === currentGrid[row + 2][col]) {
+          matches.add(`${row}-${col}`);
+          matches.add(`${row + 1}-${col}`);
+          matches.add(`${row + 2}-${col}`);
+        }
+      }
+    }
+    
+    return matches;
+  }, []);
+
+  // Handle cell press
+  const handleCellPress = useCallback((row, col) => {
+    if (isAnimating) return;
+    
+    if (selectedCell) {
+      const [selectedRow, selectedCol] = selectedCell;
+      
+      // Check if adjacent
+      const isAdjacent = 
+        (Math.abs(row - selectedRow) === 1 && col === selectedCol) ||
+        (Math.abs(col - selectedCol) === 1 && row === selectedRow);
+      
+      if (isAdjacent) {
+        // Swap pieces
+        const newGrid = grid.map(row => [...row]);
+        [newGrid[row][col], newGrid[selectedRow][selectedCol]] = 
+        [newGrid[selectedRow][selectedCol], newGrid[row][col]];
+        
+        const matches = findMatches(newGrid);
+        
+        if (matches.size > 0) {
+          setGrid(newGrid);
+          setScore(prev => prev + matches.size * 10);
+          
+          // Animate matches
+          setIsAnimating(true);
+          const animations = Array.from(matches).map(pos => {
+            return Animated.timing(animatedValues.current[pos], {
+              toValue: 0,
+              duration: 300,
+              useNativeDriver: true,
+            });
+          });
+          
+          Animated.parallel(animations).start(() => {
+            // Remove matched pieces and apply gravity
+            const finalGrid = newGrid.map(row => [...row]);
+            matches.forEach(pos => {
+              const [r, c] = pos.split('-').map(Number);
+              finalGrid[r][c] = null;
+            });
+            
+            // Apply gravity
+            for (let col = 0; col < GRID_SIZE; col++) {
+              const column = [];
+              for (let row = GRID_SIZE - 1; row >= 0; row--) {
+                if (finalGrid[row][col]) {
+                  column.push(finalGrid[row][col]);
+                }
+              }
+              
+              for (let row = GRID_SIZE - 1; row >= 0; row--) {
+                const index = GRID_SIZE - 1 - row;
+                if (index < column.length) {
+                  finalGrid[row][col] = column[index];
+                } else {
+                  finalGrid[row][col] = ROCK_TYPES[Math.floor(Math.random() * ROCK_TYPES.length)];
+                }
+                animatedValues.current[`${row}-${col}`] = new Animated.Value(1);
+              }
+            }
+            
+            setGrid(finalGrid);
+            setIsAnimating(false);
+          });
+        }
+      }
+      setSelectedCell(null);
+    } else {
+      setSelectedCell([row, col]);
+    }
+  }, [selectedCell, grid, isAnimating, findMatches]);
+
+  const resetGame = () => {
+    const newGrid = [];
+    for (let row = 0; row < GRID_SIZE; row++) {
+      const newRow = [];
+      for (let col = 0; col < GRID_SIZE; col++) {
+        newRow.push(ROCK_TYPES[Math.floor(Math.random() * ROCK_TYPES.length)]);
+        animatedValues.current[`${row}-${col}`] = new Animated.Value(1);
+      }
+      newGrid.push(newRow);
+    }
+    setGrid(newGrid);
+    setScore(0);
+    setSelectedCell(null);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Rock Crush</Text>
+      <Text style={styles.score}>Score: {score}</Text>
+      
+      <View style={styles.gameBoard}>
+        {grid.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((cell, colIndex) => {
+              const isSelected = selectedCell && 
+                selectedCell[0] === rowIndex && selectedCell[1] === colIndex;
+              
+              return (
+                <TouchableOpacity
+                  key={`${rowIndex}-${colIndex}`}
+                  style={[
+                    styles.cell,
+                    isSelected && styles.selectedCell
+                  ]}
+                  onPress={() => handleCellPress(rowIndex, colIndex)}
+                  disabled={isAnimating}
+                >
+                  <Animated.View
+                    style={{
+                      transform: [{ 
+                        scale: animatedValues.current[`${rowIndex}-${colIndex}`] || 1 
+                      }]
+                    }}
+                  >
+                    <Text style={styles.rock}>{cell}</Text>
+                  </Animated.View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        ))}
+      </View>
+      
+      <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
+        <Text style={styles.resetButtonText}>New Game</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a2e',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: Platform.OS === 'android' ? 50 : 0,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 10,
+  },
+  score: {
+    fontSize: 24,
+    color: '#fff',
+    marginBottom: 20,
+  },
+  gameBoard: {
+    backgroundColor: '#16213e',
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  cell: {
+    width: CELL_SIZE,
+    height: CELL_SIZE,
+    margin: 2,
+    backgroundColor: '#0f3460',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#533483',
+  },
+  selectedCell: {
+    borderColor: '#e94560',
+    backgroundColor: '#533483',
+  },
+  rock: {
+    fontSize: CELL_SIZE * 0.6,
+  },
+  resetButton: {
+    backgroundColor: '#e94560',
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    borderRadius: 25,
+    marginTop: 30,
+  },
+  resetButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
