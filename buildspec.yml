@@ -5,78 +5,42 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo Installing system dependencies...
       - apt-get update
-      - apt-get install -y openjdk-17-jdk unzip wget
-      - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-      
+      - apt-get install -y openjdk-17-jdk unzip wget imagemagick librsvg2-bin
+
   pre_build:
     commands:
-      - echo Installing Expo CLI...
       - npm install -g @expo/cli
-      - echo Setting up Android SDK...
       - wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
       - unzip -q commandlinetools-linux-9477386_latest.zip
       - mkdir -p android-sdk/cmdline-tools/latest
       - mv cmdline-tools/* android-sdk/cmdline-tools/latest/
       - export ANDROID_HOME=$PWD/android-sdk
-      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-      - export PATH=$PATH:$ANDROID_HOME/platform-tools
+      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
       - yes | sdkmanager --licenses || true
-      - sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" "ndk;25.1.8937393"
-      
+      - sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+
   build:
     commands:
-      - echo Starting build process...
-      - echo Setting Android environment variables...
       - export ANDROID_HOME=$PWD/android-sdk
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-      - echo Installing project dependencies...
       - npm install
-      - echo Installing additional React Native CLI...
-      - npm install --save-dev @react-native-community/cli
-      - echo Installing image processing tools...
-      - apt-get install -y imagemagick librsvg2-bin
-      - echo Converting SVG icons to PNG format...
       - rsvg-convert -w 1024 -h 1024 assets/icon.svg -o assets/icon.png
       - rsvg-convert -w 1024 -h 1024 assets/adaptive-icon.svg -o assets/adaptive-icon.png
       - rsvg-convert -w 2048 -h 2048 assets/splash.svg -o assets/splash.png
       - rsvg-convert -w 32 -h 32 assets/favicon.svg -o assets/favicon.png
-      - echo Verifying PNG files created...
-      - ls -la assets/*.png
-      - echo Creating Android project structure...
-      - rm -rf android ios || echo "No existing native folders"
+      - rm -rf android ios
       - npx expo prebuild --platform android --no-install
-      - echo Configuring Expo autolinking in settings.gradle...
-      - cd android
-      - echo 'apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)' >> settings.gradle
-      - echo 'apply from: file("../node_modules/expo/scripts/autolinking.gradle"); useExpoModules()' >> settings.gradle
-      - cd ..
-      - echo Building AAB with Gradle...
       - cd android
       - chmod +x ./gradlew
-      - export ANDROID_HOME=$PWD/../android-sdk
-      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-      - echo Cleaning previous build...
-      - ./gradlew clean
-      - echo Building release bundle...
-      - ./gradlew bundleRelease -x test -x lint --no-daemon --stacktrace
+      - ./gradlew clean bundleRelease --no-daemon
       - cd ..
-      - echo Build completed, locating AAB file...
-      - find . -name "*.aab" -type f -ls
-      
+
   post_build:
     commands:
-      - echo Locating generated AAB file...
-      - find . -name "*.aab" -type f -ls
-      - echo Copying AAB to root directory...
-      - find . -name "*.aab" -type f -exec cp {} ./rock-crush-release.aab \;
-      - ls -la *.aab || echo "No AAB files found in root"
-      - echo Uploading AAB to S3...
-      - aws s3 cp ./rock-crush-release.aab s3://rock-crush-builds/rock-crush-$(date +%Y%m%d-%H%M%S).aab || echo "S3 upload failed"
-      - echo Upload completed
+      - find . -name "*.aab" -exec cp {} ./rock-crush.aab \;
+      - ls -la *.aab
 
 artifacts:
   files:
-    - '**/*.aab'
-  name: rock-crush-playstore-build
+    - '*.aab'
