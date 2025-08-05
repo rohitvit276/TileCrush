@@ -121,11 +121,26 @@ phases:
       - wget -q https://services.gradle.org/distributions/gradle-7.6.1-bin.zip
       - unzip -q gradle-7.6.1-bin.zip
       - ./gradle-7.6.1/bin/gradle wrapper --gradle-version=7.6.1
-      - ./gradlew :app:bundleRelease --no-daemon --no-watch-fs || echo "Bundle task attempted"
-      - find . -name "*.aab" -exec cp {} ../rock-crush.aab \;
+      - chmod +x gradlew
+      - echo "Starting Gradle bundleRelease task"
+      - ./gradlew :app:bundleRelease --no-daemon --no-watch-fs --stacktrace
+      - echo "Gradle build completed, searching for AAB files"
+      - find . -name "*.aab" -type f -exec ls -la {} \;
+      - echo "Copying AAB to root directory"
+      - find . -name "*.aab" -type f -exec cp {} ../rock-crush.aab \;
       - cd ..
-      - ls -la rock-crush.aab || touch rock-crush.aab
+      - echo "Verifying AAB file exists and size"
+      - ls -la rock-crush.aab
+      - file rock-crush.aab
+      - echo "AAB file ready for S3 upload"
+
+  post_build:
+    commands:
+      - echo "Post-build phase - verifying artifacts"
+      - ls -la rock-crush.aab
+      - echo "Build completed successfully"
 
 artifacts:
   files:
     - rock-crush.aab
+  name: rock-crush-build-$(date +%Y%m%d-%H%M%S)
