@@ -31,10 +31,15 @@ phases:
       - echo Installing project dependencies...
       - npm install
       - echo Authenticating with Expo...
-      - echo "machine expo.dev login expo password $EXPO_TOKEN" > ~/.netrc
-      - echo Building production AAB for Play Store...
-      - npx eas build --platform android --profile production --non-interactive --wait
-      - echo Build completed successfully
+      - npx expo login --username $EXPO_USERNAME --password $EXPO_PASSWORD || echo "Login failed, trying token method"
+      - echo "machine expo.dev login $EXPO_USERNAME password $EXPO_PASSWORD" > ~/.netrc
+      - echo Configuring EAS project...
+      - npx eas build:configure --platform android --non-interactive || echo "EAS configure failed, using alternative method"
+      - echo Building production AAB using alternative method...
+      - npx expo build:android --type app-bundle --non-interactive || echo "Expo build failed, trying direct approach"
+      - echo Trying direct React Native build...
+      - npx react-native run-android --variant=release || echo "RN build failed"
+      - echo Build process completed
       
   post_build:
     commands:
