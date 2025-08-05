@@ -43,103 +43,101 @@ phases:
       - mkdir -p android/app/src/main/res/mipmap-xxxhdpi
       
       - echo "Creating basic Android manifest..."
-      - cat > android/app/src/main/AndroidManifest.xml << 'EOF'
-      <?xml version="1.0" encoding="utf-8"?>
-      <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.rockcrush.app">
-        <uses-permission android:name="android.permission.INTERNET" />
-        <application
-            android:name=".MainApplication"
-            android:label="@string/app_name"
-            android:icon="@mipmap/ic_launcher"
-            android:theme="@style/AppTheme">
-          <activity
-              android:name=".MainActivity"
-              android:label="@string/app_name"
-              android:exported="true">
-            <intent-filter>
-              <action android:name="android.intent.action.MAIN" />
-              <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-          </activity>
-        </application>
-      </manifest>
-      EOF
+      - |
+        cat > android/app/src/main/AndroidManifest.xml << 'EOF'
+        <?xml version="1.0" encoding="utf-8"?>
+        <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rockcrush.app">
+          <uses-permission android:name="android.permission.INTERNET" />
+          <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:theme="@style/AppTheme">
+            <activity android:name=".MainActivity" android:label="@string/app_name" android:exported="true">
+              <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+              </intent-filter>
+            </activity>
+          </application>
+        </manifest>
+        EOF
       
       - echo "Creating build.gradle..."
-      - cat > android/app/build.gradle << 'EOF'
-      apply plugin: "com.android.application"
-      android {
-          compileSdkVersion 33
-          buildToolsVersion "33.0.0"
-          defaultConfig {
-              applicationId "com.rockcrush.app"
-              minSdkVersion 21
-              targetSdkVersion 33
-              versionCode 1
-              versionName "1.0"
-          }
-          buildTypes {
-              release {
-                  minifyEnabled false
-                  proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-              }
-          }
-      }
-      dependencies {
-          implementation 'androidx.appcompat:appcompat:1.4.0'
-      }
-      EOF
+      - |
+        cat > android/app/build.gradle << 'EOF'
+        apply plugin: "com.android.application"
+        android {
+            compileSdkVersion 33
+            buildToolsVersion "33.0.0"
+            defaultConfig {
+                applicationId "com.rockcrush.app"
+                minSdkVersion 21
+                targetSdkVersion 33
+                versionCode 1
+                versionName "1.0"
+            }
+            buildTypes {
+                release {
+                    minifyEnabled false
+                    proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+                }
+            }
+        }
+        dependencies {
+            implementation 'androidx.appcompat:appcompat:1.4.0'
+        }
+        EOF
       
       - echo "Creating root build.gradle..."
-      - cat > android/build.gradle << 'EOF'
-      buildscript {
-          repositories {
-              google()
-              mavenCentral()
-          }
-          dependencies {
-              classpath 'com.android.tools.build:gradle:7.4.2'
-          }
-      }
-      allprojects {
-          repositories {
-              google()
-              mavenCentral()
-          }
-      }
-      EOF
+      - |
+        cat > android/build.gradle << 'EOF'
+        buildscript {
+            repositories {
+                google()
+                mavenCentral()
+            }
+            dependencies {
+                classpath 'com.android.tools.build:gradle:7.4.2'
+            }
+        }
+        allprojects {
+            repositories {
+                google()
+                mavenCentral()
+            }
+        }
+        EOF
       
-      - echo "Creating gradle wrapper..."
-      - cat > android/gradle/wrapper/gradle-wrapper.properties << 'EOF'
-      distributionBase=GRADLE_USER_HOME
-      distributionPath=wrapper/dists
-      distributionUrl=https\://services.gradle.org/distributions/gradle-7.6-all.zip
-      zipStoreBase=GRADLE_USER_HOME
-      zipStorePath=wrapper/dists
-      EOF
+      - echo "Creating gradle wrapper properties..."
+      - mkdir -p android/gradle/wrapper
+      - |
+        cat > android/gradle/wrapper/gradle-wrapper.properties << 'EOF'
+        distributionBase=GRADLE_USER_HOME
+        distributionPath=wrapper/dists
+        distributionUrl=https\://services.gradle.org/distributions/gradle-7.6-all.zip
+        zipStoreBase=GRADLE_USER_HOME
+        zipStorePath=wrapper/dists
+        EOF
       
       - echo "Creating basic MainActivity..."
-      - mkdir -p android/app/src/main/java/com/rockcrush/app
-      - cat > android/app/src/main/java/com/rockcrush/app/MainActivity.java << 'EOF'
-      package com.rockcrush.app;
-      import androidx.appcompat.app.AppCompatActivity;
-      import android.os.Bundle;
-      public class MainActivity extends AppCompatActivity {
-          @Override
-          protected void onCreate(Bundle savedInstanceState) {
-              super.onCreate(savedInstanceState);
-              setContentView(R.layout.activity_main);
-          }
-      }
-      EOF
+      - |
+        cat > android/app/src/main/java/com/rockcrush/app/MainActivity.java << 'EOF'
+        package com.rockcrush.app;
+        import androidx.appcompat.app.AppCompatActivity;
+        import android.os.Bundle;
+        public class MainActivity extends AppCompatActivity {
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.activity_main);
+            }
+        }
+        EOF
       
       - echo "Creating strings.xml..."
-      - cat > android/app/src/main/res/values/strings.xml << 'EOF'
-      <resources>
-          <string name="app_name">Rock Crush</string>
-      </resources>
-      EOF
+      - |
+        cat > android/app/src/main/res/values/strings.xml << 'EOF'
+        <resources>
+            <string name="app_name">Rock Crush</string>
+        </resources>
+        EOF
       
       - echo "Copying app icons..."
       - cp assets/icon.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
