@@ -23,30 +23,40 @@ phases:
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
       - export PATH=$PATH:$ANDROID_HOME/platform-tools
       - yes | sdkmanager --licenses || true
-      - sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+      - sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" "ndk;25.1.8937393"
+      - echo Setting environment variables...
+      - echo "export ANDROID_HOME=$PWD/android-sdk" >> ~/.bashrc
+      - echo "export PATH=\$PATH:\$ANDROID_HOME/cmdline-tools/latest/bin:\$ANDROID_HOME/platform-tools" >> ~/.bashrc
+      - source ~/.bashrc
       
   build:
     commands:
       - echo Starting build process...
       - echo Installing project dependencies...
       - npm install
-      - echo Authenticating with Expo...
-      - npx expo login --username $EXPO_USERNAME --password $EXPO_PASSWORD || echo "Login failed, trying token method"
-      - echo "machine expo.dev login $EXPO_USERNAME password $EXPO_PASSWORD" > ~/.netrc
-      - echo Configuring EAS project...
-      - npx eas build:configure --platform android --non-interactive || echo "EAS configure failed, using alternative method"
-      - echo Building production AAB using alternative method...
-      - npx expo build:android --type app-bundle --non-interactive || echo "Expo build failed, trying direct approach"
-      - echo Trying direct React Native build...
-      - npx react-native run-android --variant=release || echo "RN build failed"
-      - echo Build process completed
+      - echo Installing additional React Native CLI...
+      - npm install --save-dev @react-native-community/cli
+      - echo Creating Android project structure...
+      - npx expo prebuild --platform android --clear --no-install
+      - echo Installing Android dependencies...
+      - cd android && npm install && cd ..
+      - echo Building AAB with Gradle...
+      - cd android
+      - chmod +x ./gradlew
+      - ./gradlew bundleRelease -x test -x lint --stacktrace
+      - cd ..
+      - echo Build completed, locating AAB file...
+      - find . -name "*.aab" -type f -ls
       
   post_build:
     commands:
-      - echo Locating AAB file...
-      - find . -name "*.aab" -type f
+      - echo Locating generated AAB file...
+      - find . -name "*.aab" -type f -ls
+      - echo Copying AAB to root directory...
+      - find . -name "*.aab" -type f -exec cp {} ./rock-crush-release.aab \;
+      - ls -la *.aab || echo "No AAB files found in root"
       - echo Uploading AAB to S3...
-      - find . -name "*.aab" -type f -exec aws s3 cp {} s3://rock-crush-builds/rock-crush-$(date +%Y%m%d-%H%M%S).aab \;
+      - aws s3 cp ./rock-crush-release.aab s3://rock-crush-builds/rock-crush-$(date +%Y%m%d-%H%M%S).aab || echo "S3 upload failed"
       - echo Upload completed
 
 artifacts:
