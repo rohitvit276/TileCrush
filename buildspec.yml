@@ -8,7 +8,7 @@ phases:
       - node --version
       - npm --version
       - echo "Installing system dependencies..."
-      - apt-get update && apt-get install -y imagemagick unzip wget
+      - apt-get update && apt-get install -y unzip wget openjdk-11-jdk
 
   build:
     commands:
@@ -24,11 +24,14 @@ phases:
       - echo "Verifying babel-preset-expo installation..."
       - npm list babel-preset-expo || npm install babel-preset-expo@~10.0.0 --save-dev
       
-      - echo "Converting SVG assets to PNG..."
-      - convert assets/icon.svg -resize 1024x1024 assets/icon.png
-      - convert assets/adaptive-icon.svg -resize 1024x1024 assets/adaptive-icon.png
-      - convert assets/splash.svg -resize 2048x2048 assets/splash.png
-      - convert assets/favicon.svg -resize 32x32 assets/favicon.png
+      - echo "Using pre-converted PNG assets (skipping SVG conversion)..."
+      - ls -la assets/
+      - echo "Assets ready for build"
+      
+      - echo "Setting up Java environment..."
+      - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+      - export PATH=$PATH:$JAVA_HOME/bin
+      - java -version
       
       - echo "Setting up Android SDK..."
       - wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
@@ -47,6 +50,7 @@ phases:
       - echo 'android.compileSdkVersion=33' >> app/gradle.properties
       - echo 'android.targetSdkVersion=33' >> app/gradle.properties
       - echo 'android.buildToolsVersion=33.0.0' >> app/gradle.properties
+      - echo 'org.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m' >> gradle.properties
       - chmod +x ./gradlew
       - cd ..
       
