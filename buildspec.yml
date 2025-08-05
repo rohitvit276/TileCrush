@@ -1,55 +1,67 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 18
-    commands:
-      - apt-get update
-      - apt-get install -y openjdk-17-jdk unzip wget imagemagick librsvg2-bin
-
   pre_build:
     commands:
+      - echo "Pre-build phase started on `date`"
+      - echo "Installing Node.js 18..."
+      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+      - export NVM_DIR="$HOME/.nvm"
+      - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+      - nvm install 18
+      - nvm use 18
+      - node --version
+      - npm --version
+
+  build:
+    commands:
+      - echo "Build phase started on `date`"
+      - echo "Using core configuration files..."
+      - cp app-core.json app.json
+      - cp package-core.json package.json
+      
+      - echo "Installing dependencies with babel-preset-expo..."
+      - npm config set legacy-peer-deps true
+      - npm install --include=dev --no-optional
+      - npm list babel-preset-expo || npm install babel-preset-expo@~10.0.0
+      
+      - echo "Converting SVG assets to PNG..."
+      - apt-get update && apt-get install -y imagemagick
+      - magick assets/icon.svg -resize 1024x1024 assets/icon.png || convert assets/icon.svg -resize 1024x1024 assets/icon.png
+      - magick assets/adaptive-icon.svg -resize 1024x1024 assets/adaptive-icon.png || convert assets/adaptive-icon.svg -resize 1024x1024 assets/adaptive-icon.png
+      - magick assets/splash.svg -resize 2048x2048 assets/splash.png || convert assets/splash.svg -resize 2048x2048 assets/splash.png
+      - magick assets/favicon.svg -resize 32x32 assets/favicon.png || convert assets/favicon.svg -resize 32x32 assets/favicon.png
+      
+      - echo "Setting up Android SDK..."
       - wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
       - unzip -q commandlinetools-linux-9477386_latest.zip
       - mkdir -p android-sdk/cmdline-tools/latest
       - mv cmdline-tools/* android-sdk/cmdline-tools/latest/
       - export ANDROID_HOME=$PWD/android-sdk
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-      - yes | sdkmanager --licenses || true
-      - sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
-
-  build:
-    commands:
-      - export ANDROID_HOME=$PWD/android-sdk
-      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-      - echo Using core-only configuration...
-      - cp app-core.json app.json
-      - cp package-core.json package.json
-      - rm -rf node_modules package-lock.json
-      - npm config set legacy-peer-deps true
-      - npm install --production --no-optional --ignore-scripts
-      - rsvg-convert -w 1024 -h 1024 assets/icon.svg -o assets/icon.png
-      - rsvg-convert -w 1024 -h 1024 assets/adaptive-icon.svg -o assets/adaptive-icon.png
-      - rsvg-convert -w 2048 -h 2048 assets/splash.svg -o assets/splash.png
-      - rsvg-convert -w 32 -h 32 assets/favicon.svg -o assets/favicon.png
-      - rm -rf android ios
-      - npx --package=@expo/cli@latest expo prebuild --platform android --no-install
+      - yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" --sdk_root=$ANDROID_HOME
+      
+      - echo "Generating Android project with expo prebuild..."
+      - npx expo prebuild --platform android --no-install --clear
+      
+      - echo "Configuring Gradle..."
       - cd android/app
       - echo 'android.compileSdkVersion=33' >> gradle.properties
       - echo 'android.targetSdkVersion=33' >> gradle.properties  
       - echo 'android.buildToolsVersion=33.0.0' >> gradle.properties
       - cd ../..
+      
+      - echo "Building Android App Bundle..."
       - cd android
       - chmod +x ./gradlew
-      - ./gradlew clean bundleRelease --no-daemon --stacktrace --info
+      - ./gradlew clean bundleRelease --no-daemon --stacktrace
       - cd ..
-
-  post_build:
-    commands:
+      
+      - echo "Copying AAB file..."
       - find . -name "*.aab" -exec cp {} ./rock-crush.aab \;
       - ls -la *.aab
 
 artifacts:
   files:
-    - '*.aab'
+    - rock-crush.aab
+    - android/app/build/outputs/bundle/release/*.aab
