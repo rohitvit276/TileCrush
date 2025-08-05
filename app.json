@@ -3,7 +3,7 @@
     "name": "Rock Crush",
     "slug": "rock-crush",
     "version": "1.0.0",
-    "description": "A Candy Crush-style match-3 puzzle game featuring colorful rocks. Match 3+ rocks to score points! Choose between Premium subscription (ad-free, unlimited hints, exclusive features) or free version with occasional ads. Perfect for all ages!",
+    "description": "A Candy Crush-style match-3 puzzle game featuring colorful rocks. Match 3+ rocks to score points! Perfect for all ages!",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -15,11 +15,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": false,
-      "bundleIdentifier": "com.rockcrush.app",
-      "buildNumber": "1"
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -27,23 +22,17 @@
       },
       "package": "com.rockcrush.app",
       "permissions": [
-        "VIBRATE",
-        "INTERNET",
-        "ACCESS_NETWORK_STATE",
-        "BILLING"
+        "INTERNET"
       ],
-      "versionCode": 1
+      "versionCode": 1,
+      "compileSdkVersion": 33,
+      "targetSdkVersion": 33,
+      "buildToolsVersion": "33.0.0"
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "platforms": ["ios", "android", "web"],
-
-    "extra": {
-      "eas": {
-        "projectId": ""
-      }
-    }
+    "platforms": ["android", "web"]
   }
 }
