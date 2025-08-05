@@ -47,14 +47,20 @@ phases:
       - echo Creating Android project structure...
       - rm -rf android ios || echo "No existing native folders"
       - npx expo prebuild --platform android --no-install
-      - echo Installing Android dependencies...
-      - cd android && npm install && cd ..
+      - echo Configuring Expo autolinking in settings.gradle...
+      - cd android
+      - echo "apply from: file('../node_modules/@react-native-community/cli-platform-android/native_modules.gradle'); applyNativeModulesSettingsGradle(settings)" >> settings.gradle
+      - echo "apply from: file('../node_modules/expo/scripts/autolinking.gradle'); useExpoModules()" >> settings.gradle
+      - cd ..
       - echo Building AAB with Gradle...
       - cd android
       - chmod +x ./gradlew
       - export ANDROID_HOME=$PWD/../android-sdk
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-      - ./gradlew bundleRelease -x test -x lint --stacktrace
+      - echo Cleaning previous build...
+      - ./gradlew clean
+      - echo Building release bundle...
+      - ./gradlew bundleRelease -x test -x lint --no-daemon --stacktrace
       - cd ..
       - echo Build completed, locating AAB file...
       - find . -name "*.aab" -type f -ls
