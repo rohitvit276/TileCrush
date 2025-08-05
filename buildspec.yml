@@ -24,6 +24,11 @@ phases:
     commands:
       - export ANDROID_HOME=$PWD/android-sdk
       - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+      - echo Removing problematic packages...
+      - npm uninstall expo-ads-admob expo-in-app-purchases || true
+      - echo Using simplified configuration...
+      - cp app-simple.json app.json
+      - cp package-simple.json package.json
       - npm install
       - rsvg-convert -w 1024 -h 1024 assets/icon.svg -o assets/icon.png
       - rsvg-convert -w 1024 -h 1024 assets/adaptive-icon.svg -o assets/adaptive-icon.png
